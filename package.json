@@ -50,6 +50,7 @@
     "react-moment-proptypes": "^1.6.0",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0",
+    "react-s3-uploader": "^4.9.3",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "seedrandom": "^3.0.5",
