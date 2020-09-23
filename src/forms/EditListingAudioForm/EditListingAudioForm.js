@@ -17,28 +17,37 @@ const ACCEPT_AUDIO = 'audio/*'
 export class EditListingAudioFormComponent extends Component {
   constructor(props) {
     super(props)
-    this.state = { imageUploadRequested: false }
+    this.state = { audioUploadRequested: false, currentFileName: '', currentFileProgress: 0  }
     this.uploader = null
     this.handleUpload = this.handleUpload.bind(this)
-    this.onImageUploadHandler = this.onImageUploadHandler.bind(this)
-    this.submittedImages = []
+    this.handleUploadProgress = this.handleUploadProgress.bind(this)
+    // this.onImageUploadHandler = this.onImageUploadHandler.bind(this)
+    this.submittedAudio = []
   }
 
-  handleUpload() {
-    return 'blah'
+  handleUploadProgress({ type, value, fileName }) {
+    if (type === 'fileName') {
+      this.setState({currentFileName: fileName})
+    } else {
+      this.setState({currentFileProgress: value})
+    }
   }
 
-  onImageUploadHandler(file) {
+  handleUpload(fileName) {
+    this.setState({ audioUploadRequested: true })
+    this.submittedAudio = [...this.submittedAudio, fileName]
+  }
+
+  onAudioUploadHandler(file) {
     if (file) {
-      this.setState({ imageUploadRequested: true })
-      this.props
-        .onImageUpload({ id: `${file.name}_${Date.now()}`, file })
-        .then(() => {
-          this.setState({ imageUploadRequested: false })
-        })
-        .catch(() => {
-          this.setState({ imageUploadRequested: false })
-        })
+      // this.props
+      //   .onAudioUpload({ id: `${file.name}_${Date.now()}`, file })
+      //   .then(() => {
+      //     this.setState({ audioUploadRequested: false })
+      //   })
+      //   .catch(() => {
+      //     this.setState({ audioUploadRequested: false })
+      //   })
     }
   }
 
@@ -46,23 +55,26 @@ export class EditListingAudioFormComponent extends Component {
     return (
       <FinalForm
         {...this.props}
-        onImageUploadHandler={this.onImageUploadHandler}
-        imageUploadRequested={this.state.imageUploadRequested}
-        initialValues={{ images: this.props.images }}
+        // onAudioUploadHandler={this.onAudioUploadHandler}
+        audioUploadRequested={this.state.audioUploadRequested}
         render={(formRenderProps) => {
           const {
             className,
             fetchErrors,
             handleSubmit,
-            images,
-            imageUploadRequested,
+            audio,
+            audioUploadRequested,
             invalid,
             disabled,
+            bypassHandleSubmit,
             ready,
             saveActionMsg,
             updated,
             updateInProgress,
           } = formRenderProps
+
+          console.log(this.state)
+
 
           const { publishListingError, showListingsError, updateListingError, uploadImageError } =
             fetchErrors || {}
@@ -73,13 +85,13 @@ export class EditListingAudioFormComponent extends Component {
           if (uploadOverLimit) {
             uploadImageFailed = (
               <p className={css.error}>
-                <FormattedMessage id="EditListingAudioForm.imageUploadFailed.uploadOverLimit" />
+                <FormattedMessage id="EditListingAudioForm.audioUploadFailed.uploadOverLimit" />
               </p>
             )
           } else if (uploadImageError) {
             uploadImageFailed = (
               <p className={css.error}>
-                <FormattedMessage id="EditListingAudioForm.imageUploadFailed.uploadFailed" />
+                <FormattedMessage id="EditListingAudioForm.audioUploadFailed.uploadFailed" />
               </p>
             )
           }
@@ -98,28 +110,40 @@ export class EditListingAudioFormComponent extends Component {
             </p>
           ) : null
 
-          const submittedOnce = this.submittedImages.length > 0
-          // imgs can contain added images (with temp ids) and submitted images with uniq ids.
-          const arrayOfImgIds = (imgs) =>
-            imgs.map((i) => (typeof i.id === 'string' ? i.imageId : i.id))
-          const imageIdsFromProps = arrayOfImgIds(images)
-          const imageIdsFromPreviousSubmit = arrayOfImgIds(this.submittedImages)
-          const imageArrayHasSameImages = isEqual(imageIdsFromProps, imageIdsFromPreviousSubmit)
-          const pristineSinceLastSubmit = submittedOnce && imageArrayHasSameImages
+          const submittedOnce = this.submittedAudio.length > 0
+          // audio can contain added audios (with temp ids) and submitted audios with uniq ids.
+          const arrayOfAudioIds = (audio) =>
+            audio.map((i) => (typeof i.id === 'string' ? i.audioId : i.id))
+          const audioIdsFromProps = arrayOfAudioIds(audio)
+          const audioIdsFromPreviousSubmit = arrayOfAudioIds(this.submittedAudio)
+          const audioArrayHasSameImages = isEqual(audioIdsFromProps, audioIdsFromPreviousSubmit)
+          const pristineSinceLastSubmit = submittedOnce && audioArrayHasSameImages
 
           const submitReady = (updated && pristineSinceLastSubmit) || ready
           const submitInProgress = updateInProgress
           const submitDisabled =
-            invalid || disabled || submitInProgress || imageUploadRequested || ready
+            invalid || disabled || submitInProgress || audioUploadRequested || ready
 
           const classes = classNames(css.root, className)
+
+          const listAudio = this.submittedAudio.length > 0 ?
+            (<ul>
+              { this.submittedAudio.map((fileName, index) =>
+                <li key={fileName + index}>
+                  {fileName}
+                  { this.state.currentFileName === fileName ? <div style={{width: 200, height: 15, border: '1px solid red'}}>
+                    <div style={{width: this.state.currentFileProgress * 2, height: 15, background:'green'}}></div>
+                  </div>:<div style={{width: 200, height: 15, background:'green'}}></div>}
+                </li>)
+              }
+            </ul>) : <></>
 
           return (
             <Form
               className={classes}
               onSubmit={(e) => {
-                this.submittedImages = images
-                handleSubmit(e)
+                bypassHandleSubmit({ audio: this.submittedAudio})
+                e.preventDefault()
               }}
             >
               {updateListingError ? (
@@ -128,19 +152,28 @@ export class EditListingAudioFormComponent extends Component {
                 </p>
               ) : null}
 
+              { listAudio }
+
               <ReactS3Uploader
                 signingUrl="/s3/sign"
                 signingUrlMethod="GET"
                 accept={ACCEPT_AUDIO}
-                // preprocess={}
-                // onSignedUrl={}
-                // onProgress={ (thing) => {
-                //   // progress bar state
-                // }}
-                onError={ (thing) => {
-                  console.log({ onError: thing })
+                // preprocess={(thing)=> console.log({thing})}
+                onSignedUrl={(res) => {
+                  this.handleUploadProgress({ type: 'fileName', fileName: res.filename })
+                  this.handleUpload(res.filename)
                 }}
-                onFinish={thing=>console.log(thing)} // save to publicData as array of ['filename']
+                onProgress={ (value) => {
+                  this.handleUploadProgress({ type: 'value', value })
+                }}
+                onError={ (err) => {
+                  console.log({ onError: err })
+                }}
+                onFinish={thing=> {
+                  this.setState({ audioUploadRequested: false })
+                  this.handleUploadProgress({ type: 'fileName', fileName: '' })
+                  this.handleUploadProgress({ type: 'value', value: 0 })
+                }} // save to publicData as array of ['filename']
                 uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}  // this is the default
                 contentDisposition="auto"
                 scrubFilename={(filename) => filename.replace(/[^\w\d_\-.]+/ig, '')}
@@ -174,7 +207,7 @@ export class EditListingAudioFormComponent extends Component {
   }
 }
 
-EditListingAudioFormComponent.defaultProps = { fetchErrors: null, images: [] }
+EditListingAudioFormComponent.defaultProps = { fetchErrors: null, audio: [] }
 
 EditListingAudioFormComponent.propTypes = {
   fetchErrors: shape({
@@ -183,7 +216,7 @@ EditListingAudioFormComponent.propTypes = {
     uploadImageError: propTypes.error,
     updateListingError: propTypes.error,
   }),
-  images: array,
+  audio: array,
   intl: intlShape.isRequired,
   onImageUpload: func.isRequired,
   onUpdateImageOrder: func.isRequired,

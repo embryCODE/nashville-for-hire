@@ -17,9 +17,8 @@ class EditListingAudioPanel extends Component {
       errors,
       disabled,
       ready,
-      images,
+      bypassHandleSubmit,
       listing,
-      onImageUpload,
       onUpdateImageOrder,
       submitButtonText,
       panelUpdated,
@@ -32,6 +31,8 @@ class EditListingAudioPanel extends Component {
     const rootClass = rootClassName || css.root
     const classes = classNames(rootClass, className)
     const currentListing = ensureOwnListing(listing)
+
+    const { publicData } = currentListing.attributes
 
     const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
     const panelTitle = isPublished ? (
@@ -54,13 +55,10 @@ class EditListingAudioPanel extends Component {
           disabled={disabled}
           ready={ready}
           fetchErrors={errors}
-          initialValues={{ images }}
-          images={images}
-          onImageUpload={onImageUpload}
-          onSubmit={(values) => {
-            const { addImage, ...updateValues } = values
-            onSubmit(updateValues)
-          }}
+          initialValues={{ publicData }}
+          audio={[]}
+          onSubmit={() => null}
+          bypassHandleSubmit={({ audio }) => bypassHandleSubmit({ publicData: {...publicData, audio}})}
           onChange={onChange}
           onUpdateImageOrder={onUpdateImageOrder}
           onRemoveImage={onRemoveImage}
@@ -77,7 +75,7 @@ EditListingAudioPanel.defaultProps = {
   className: null,
   rootClassName: null,
   errors: null,
-  images: [],
+  audio: [],
   listing: null,
 }
 
@@ -87,7 +85,7 @@ EditListingAudioPanel.propTypes = {
   errors: object,
   disabled: bool.isRequired,
   ready: bool.isRequired,
-  images: array,
+  audio: array,
 
   // We cannot use propTypes.listing since the listing might be a draft.
   listing: object,
