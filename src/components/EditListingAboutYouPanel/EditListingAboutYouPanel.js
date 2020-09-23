@@ -6,12 +6,12 @@ import { ensureOwnListing } from '../../util/data'
 import { findOptionsForSelectFilter } from '../../util/search'
 import { LISTING_STATE_DRAFT } from '../../util/types'
 import { ListingLink } from '../../components'
-import { EditListingDescriptionForm } from '../../forms'
+import { EditListingAboutYouForm } from '../../forms'
 import config from '../../config'
 
-import css from './EditListingDescriptionPanel.css'
+import css from './EditListingAboutYouPanel.css'
 
-const EditListingDescriptionPanel = (props) => {
+const EditListingAboutYouPanel = (props) => {
   const {
     className,
     rootClassName,
@@ -33,27 +33,24 @@ const EditListingDescriptionPanel = (props) => {
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
   const panelTitle = isPublished ? (
     <FormattedMessage
-      id="EditListingDescriptionPanel.title"
+      id="EditListingAboutYouPanel.title"
       values={{ listingTitle: <ListingLink listing={listing} /> }}
     />
   ) : (
-    <FormattedMessage id="EditListingDescriptionPanel.createListingTitle" />
+    <FormattedMessage id="EditListingAboutYouPanel.createListingTitle" />
   )
 
   const categoryOptions = findOptionsForSelectFilter('category', config.custom.filters)
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
-      <EditListingDescriptionForm
+      <EditListingAboutYouForm
         className={css.form}
-        initialValues={{ title, description, category: publicData.category }}
+        initialValues={{ title, description, ...publicData }}
         saveActionMsg={submitButtonText}
         onSubmit={(values) => {
-          const { title, description, category } = values
           const updateValues = {
-            title: title.trim(),
-            description,
-            publicData: { category },
+            publicData: { ...values },
           }
 
           onSubmit(updateValues)
@@ -70,14 +67,14 @@ const EditListingDescriptionPanel = (props) => {
   )
 }
 
-EditListingDescriptionPanel.defaultProps = {
+EditListingAboutYouPanel.defaultProps = {
   className: null,
   rootClassName: null,
   errors: null,
   listing: null,
 }
 
-EditListingDescriptionPanel.propTypes = {
+EditListingAboutYouPanel.propTypes = {
   className: string,
   rootClassName: string,
 
@@ -94,4 +91,4 @@ EditListingDescriptionPanel.propTypes = {
   errors: object.isRequired,
 }
 
-export default EditListingDescriptionPanel
+export default EditListingAboutYouPanel
