@@ -85,10 +85,58 @@ export const filters = [
       // Note: label is not added through the translation files
       // to make filter customizations a bit easier.
       options: [
-        { key: 'smoke', label: 'Smoke' },
-        { key: 'electric', label: 'Electric' },
-        { key: 'wood', label: 'Wood' },
-        { key: 'other', label: 'Other' },
+        { key: 'femaleVocals', label: 'Female Vocals' },
+        { key: 'maleVocals', label: 'Male Vocals' },
+        { key: 'songwriting', label: 'Songwriting' },
+        { key: 'topline', label: 'Topline' },
+        { key: 'acousticGuitar', label: 'Acoustic Guitar' },
+        { key: 'electricGuitar', label: 'Electric Guitar' },
+        { key: 'bass', label: 'Bass' },
+        { key: 'drums', label: 'Drums' },
+        { key: 'piano', label: 'Piano' },
+        { key: 'keys', label: 'Keys' },
+        { key: 'synth', label: 'Synth' },
+        { key: 'organ', label: 'Organ' },
+        { key: 'beatProgramming', label: 'Beat Programming' },
+        { key: 'cello', label: 'Cello' },
+        { key: 'violin', label: 'Violin' },
+        { key: 'fiddle', label: 'Fiddle' },
+        { key: 'fullStringArrangement', label: 'Full String Arrangement' },
+        { key: 'pedalSteel', label: 'Pedal Steel' },
+        { key: 'bango', label: 'Banjo' },
+        { key: 'dobro', label: 'Dobro' },
+        { key: 'lapSteel', label: 'Lap Steel' },
+        { key: 'harmonica', label: 'Harmonica' },
+        { key: 'trumpet', label: 'Trumpet' },
+        { key: 'trombone', label: 'Trombone' },
+        { key: 'saxophone', label: 'Saxophone' },
+        { key: 'hornSection', label: 'Horn Section' },
+        { key: 'mixing', label: 'Mixing' },
+        { key: 'mastering', label: 'Mastering' },
+        { key: 'produce', label: 'Produce Your Entire Song' }
+      ],
+    },
+  },
+  {
+    id: "termsOfUse",
+    label: "Terms Of Use",
+    type: "SelectMultipleFilter",
+    group: "secondary",
+    queryParamNames: ['pub_termsOfUse'],
+    config: {
+      // Optional modes: 'has_all', 'has_any'
+      // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
+      searchMode: 'has_all',
+
+      // "key" is the option you see in Flex Console.
+      // "label" is set here for this web app's UI only.
+      // Note: label is not added through the translation files
+      // to make filter customizations a bit easier.
+      options: [
+        {
+          key: 'agree',
+          label: 'I agree to Terms of Use',
+        }
       ],
     },
   },

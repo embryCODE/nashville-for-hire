@@ -1,20 +1,19 @@
-import React, { useContext } from 'react'
+import React  from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { FormattedMessage } from '../../util/reactIntl'
 import { LISTING_STATE_DRAFT } from '../../util/types'
 import { ListingLink } from '../../components'
-import { EditListingPricingForm } from '../../forms'
+import { EditListingPaymentForm } from '../../forms'
 import { ensureOwnListing } from '../../util/data'
 import { types as sdkTypes } from '../../util/sdkLoader'
 import config from '../../config'
-import { ServiceTypeContext } from '../../context/ServiceTypeProvider'
 
-import css from './EditListingPricingPanel.css'
+import css from './EditListingPaymentPanel.css'
 
 const { Money } = sdkTypes
 
-const EditListingPricingPanel = (props) => {
+const EditListingPaymentPanel = (props) => {
   const {
     className,
     rootClassName,
@@ -29,9 +28,6 @@ const EditListingPricingPanel = (props) => {
     errors,
   } = props
 
-  // eslint-disable-next-line
-  const [serviceType, setServiceType] = useContext(ServiceTypeContext)
-
   const classes = classNames(rootClassName || css.root, className)
   const currentListing = ensureOwnListing(listing)
   const { price } = currentListing.attributes
@@ -39,17 +35,16 @@ const EditListingPricingPanel = (props) => {
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
   const panelTitle = isPublished ? (
     <FormattedMessage
-      id="EditListingPricingPanel.title"
+      id="EditListingPaymentPanel.title"
       values={{ listingTitle: <ListingLink listing={listing} /> }}
     />
   ) : (
-    <FormattedMessage id="EditListingPricingPanel.createListingTitle" />
+    <FormattedMessage id="EditListingPaymentPanel.createListingTitle" />
   )
 
   const priceCurrencyValid = price instanceof Money ? price.currency === config.currency : true
   const form = priceCurrencyValid ? (
-    <EditListingPricingForm
-      serviceType={serviceType}
+    <EditListingPaymentForm
       className={css.form}
       initialValues={{ price }}
       onSubmit={onSubmit}
@@ -63,14 +58,13 @@ const EditListingPricingPanel = (props) => {
     />
   ) : (
     <div className={css.priceCurrencyInvalid}>
-      <FormattedMessage id="EditListingPricingPanel.listingPriceCurrencyInvalid" />
+      <FormattedMessage id="EditListingPaymentPanel.listingPriceCurrencyInvalid" />
     </div>
   )
 
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
-      <p style={{fontSize: 14}}><em>If you have additional prices, you can add them in the “About This Service” section by requesting a custom order from the buyer.</em></p>
       {form}
     </div>
   )
@@ -78,13 +72,13 @@ const EditListingPricingPanel = (props) => {
 
 const { func, object, string, bool } = PropTypes
 
-EditListingPricingPanel.defaultProps = {
+EditListingPaymentPanel.defaultProps = {
   className: null,
   rootClassName: null,
   listing: null,
 }
 
-EditListingPricingPanel.propTypes = {
+EditListingPaymentPanel.propTypes = {
   className: string,
   rootClassName: string,
 
@@ -101,4 +95,4 @@ EditListingPricingPanel.propTypes = {
   errors: object.isRequired,
 }
 
-export default EditListingPricingPanel
+export default EditListingPaymentPanel

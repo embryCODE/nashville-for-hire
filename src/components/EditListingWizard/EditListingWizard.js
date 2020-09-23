@@ -19,31 +19,34 @@ import { Modal, NamedRedirect, Tabs, StripeConnectAccountStatusBox } from '../..
 import { StripeConnectAccountForm } from '../../forms'
 
 import EditListingWizardTab, {
+  AUDIO,
   AVAILABILITY,
-  DESCRIPTION,
+  SERVICETYPE,
+  ABOUTYOU,
   FEATURES,
   POLICY,
   PRICING,
   PHOTOS,
+  ABOUTTHISSERVICE,
   INSTRUMENT,
+  PAYMENT,
+  TERMSOFUSE,
 } from './EditListingWizardTab'
 import css from './EditListingWizard.css'
-
-// Show availability calendar only if environment variable availabilityEnabled is true
-const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : []
 
 // You can reorder these panels.
 // Note 1: You need to change save button translations for new listing flow
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
 export const TABS = [
-  DESCRIPTION,
-  FEATURES,
-  POLICY,
+  SERVICETYPE,
   PRICING,
-  ...availabilityMaybe,
+  ABOUTYOU,
+  ABOUTTHISSERVICE,
   PHOTOS,
-  INSTRUMENT,
+  AUDIO,
+  PAYMENT,
+  TERMSOFUSE,
 ]
 
 // Tabs are horizontal in small screens
@@ -54,20 +57,24 @@ const STRIPE_ONBOARDING_RETURN_URL_FAILURE = 'failure'
 
 const tabLabel = (intl, tab) => {
   let key = null
-  if (tab === DESCRIPTION) {
-    key = 'EditListingWizard.tabLabelDescription'
-  } else if (tab === FEATURES) {
-    key = 'EditListingWizard.tabLabelFeatures'
+  if (tab === SERVICETYPE) {
+    key = 'EditListingWizard.tabLabelServiceType'
+  } else if (tab === ABOUTYOU) {
+    key = 'EditListingWizard.tabLabelAboutYou'
+  } else if (tab === ABOUTTHISSERVICE) {
+    key = 'EditListingWizard.tabLabelAboutThisService'
+  } else if (tab === AUDIO) {
+    key = 'EditListingWizard.tabLabelAudio'
   } else if (tab === POLICY) {
     key = 'EditListingWizard.tabLabelPolicy'
   } else if (tab === PRICING) {
     key = 'EditListingWizard.tabLabelPricing'
-  } else if (tab === AVAILABILITY) {
-    key = 'EditListingWizard.tabLabelAvailability'
+  } else if (tab === PAYMENT) {
+    key = 'EditListingWizard.tabLabelPayment'
   } else if (tab === PHOTOS) {
     key = 'EditListingWizard.tabLabelPhotos'
-  } else if (tab === INSTRUMENT) {
-    key = 'EditListingWizard.tabLabelInstrument'
+  } else if (tab === TERMSOFUSE) {
+    key = 'EditListingWizard.tabLabelTermsOfUse'
   }
 
   return intl.formatMessage({ id: key })
@@ -82,18 +89,33 @@ const tabLabel = (intl, tab) => {
  * @return true if tab / step is completed.
  */
 const tabCompleted = (tab, listing) => {
-  const { availabilityPlan, description, price, title, publicData } = listing.attributes
+  const { availabilityPlan, price, title, publicData } = listing.attributes // where does this come from?
   const images = listing.images
 
   switch (tab) {
-    case DESCRIPTION:
-      return !!(description && title)
+    case SERVICETYPE:
+      return !!(title)
+    case PRICING:
+      return !!price
+    case AUDIO:
+    // TODO: Write validation
+      return true
+    case ABOUTYOU:
+      const { whyAreYouTheRightFit, primaryGenres, experience } = publicData
+      return !!whyAreYouTheRightFit && !!primaryGenres && !!experience
+    case ABOUTTHISSERVICE:
+      const { averageTurnAroundTime, explainMore } = publicData
+      return !!averageTurnAroundTime && !!explainMore
+    case PAYMENT:
+      const { payPalEmail, phoneNumber } = publicData
+      return !!payPalEmail && !!phoneNumber
+    case TERMSOFUSE:
+    // TODO: Write validation
+      return true
     case FEATURES:
       return !!(publicData && publicData.amenities)
     case POLICY:
       return !!(publicData && typeof publicData.rules !== 'undefined')
-    case PRICING:
-      return !!price
     case AVAILABILITY:
       return !!availabilityPlan
     case PHOTOS:
