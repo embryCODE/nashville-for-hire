@@ -96,7 +96,13 @@ const tabCompleted = (tab, listing) => {
     case SERVICETYPE:
       return !!(title)
     case PRICING:
-      return !!price
+      let valid = false
+      for (const prop in publicData) {
+        if (prop.match(/price_option/g)) {
+          valid = Boolean(publicData[prop])
+        }
+      }
+      return !!valid
     case AUDIO:
     // TODO: Write validation
       return true

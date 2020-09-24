@@ -20,7 +20,6 @@ const FieldCheckboxRenderer = (props) => {
 
   const classes = classNames(rootClassName || css.root, className)
   const listClasses = twoColumns ? classNames(css.list, css.twoColumns) : css.list
-
   return (
     <fieldset className={classes}>
       {label ? <legend>{label}</legend> : null}

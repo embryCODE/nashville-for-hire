@@ -57,8 +57,8 @@ export const EditListingPaymentFormComponent = (props) => {
             ) : null}
 
             <FieldTextInput
-              id="paypalEMail"
-              name="paypalEMail"
+              id="payPalEmail"
+              name="payPalEmail"
               className={css.title}
               type="text"
               label={questionATitle}

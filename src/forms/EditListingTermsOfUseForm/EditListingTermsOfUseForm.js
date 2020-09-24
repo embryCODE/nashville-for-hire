@@ -7,7 +7,7 @@ import { FormattedMessage } from '../../util/reactIntl'
 import { findOptionsForSelectFilter } from '../../util/search'
 import { propTypes } from '../../util/types'
 import config from '../../config'
-import { Button, FieldCheckboxGroup, Form } from '../../components'
+import { Button, FieldCheckbox, Form } from '../../components'
 
 import css from './EditListingTermsOfUseForm.css'
 
@@ -55,7 +55,7 @@ const EditListingTermsOfUseFormComponent = (props) => (
           {errorMessage}
           {errorMessageShowListing}
 
-          <FieldCheckboxGroup className={css.features} id={name} name={name} options={options} />
+          <FieldCheckbox className={css.features} id={name} name={name} label={'I agree to terms of use'} value={'agree'} />
 
           <Button
             className={css.submitButton}

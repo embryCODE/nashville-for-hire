@@ -121,7 +121,6 @@ const EditListingWizardTab = (props) => {
   }
 
   const onCompleteEditListingWizardTab = (tab, updateValues) => {
-    console.log(tab, updateValues)
     // Normalize images for API call
     const { images: updatedImages, ...otherValues } = updateValues
     const imageProperty =
@@ -132,6 +131,7 @@ const EditListingWizardTab = (props) => {
       const onUpsertListingDraft = isNewURI
         ? (tab, updateValues) => onCreateListingDraft(updateValues)
         : onUpdateListing
+    console.log(onUpsertListingDraft)
 
       const upsertValues = isNewURI
         ? updateValuesWithImages
@@ -267,7 +267,7 @@ const EditListingWizardTab = (props) => {
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={(values) => {
             console.log(values)
-            // onCompleteEditListingWizardTab(tab, values)
+            onCompleteEditListingWizardTab(tab, values)
           }}
         />
       )
