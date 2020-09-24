@@ -47,7 +47,7 @@ const EditListingAboutThisServicePanel = (props) => {
         saveActionMsg={submitButtonText}
         onSubmit={(values) => {
           const updateValues = {
-            publicData: { ...values }
+            publicData: values
           }
           onSubmit(updateValues)
         }}

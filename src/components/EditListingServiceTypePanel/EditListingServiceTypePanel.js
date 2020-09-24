@@ -60,7 +60,7 @@ const EditListingServiceTypePanel = (props) => {
           const { title, category } = values
           const updateValues = {
             title: title.trim(),
-            publicData: { ...values },
+            publicData: values ,
           }
 
           setServiceType(category)

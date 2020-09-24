@@ -1,38 +1,53 @@
 import React, { Component } from 'react'
 import { array, bool, func, shape, string } from 'prop-types'
 import { compose } from 'redux'
-import { Form as FinalForm, Field } from 'react-final-form'
+import { Form as FinalForm } from 'react-final-form'
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl'
 import isEqual from 'lodash/isEqual'
 import classNames from 'classnames'
 import { propTypes } from '../../util/types'
-import { nonEmptyArray, composeValidators } from '../../util/validators'
 import { isUploadImageOverLimitError } from '../../util/errors'
-import { AddImages, Button, Form, ValidationError } from '../../components'
+import { Button, Form } from '../../components'
+import ReactS3Uploader from 'react-s3-uploader'
 
 import css from './EditListingAudioForm.css'
 
-const ACCEPT_IMAGES = 'image/*'
+const ACCEPT_AUDIO = 'audio/*'
 
 export class EditListingAudioFormComponent extends Component {
   constructor(props) {
     super(props)
-    this.state = { imageUploadRequested: false }
-    this.onImageUploadHandler = this.onImageUploadHandler.bind(this)
-    this.submittedImages = []
+    this.state = { audioUploadRequested: false, currentFileName: '', currentFileProgress: 0  }
+    this.uploader = null
+    this.handleUpload = this.handleUpload.bind(this)
+    this.handleUploadProgress = this.handleUploadProgress.bind(this)
+    // this.onImageUploadHandler = this.onImageUploadHandler.bind(this)
+    this.submittedAudio = []
   }
 
-  onImageUploadHandler(file) {
+  handleUploadProgress({ type, value, fileName }) {
+    if (type === 'fileName') {
+      this.setState({currentFileName: fileName})
+    } else {
+      this.setState({currentFileProgress: value})
+    }
+  }
+
+  handleUpload(fileName) {
+    this.setState({ audioUploadRequested: true })
+    this.submittedAudio = [...this.submittedAudio, fileName]
+  }
+
+  onAudioUploadHandler(file) {
     if (file) {
-      this.setState({ imageUploadRequested: true })
-      this.props
-        .onImageUpload({ id: `${file.name}_${Date.now()}`, file })
-        .then(() => {
-          this.setState({ imageUploadRequested: false })
-        })
-        .catch(() => {
-          this.setState({ imageUploadRequested: false })
-        })
+      // this.props
+      //   .onAudioUpload({ id: `${file.name}_${Date.now()}`, file })
+      //   .then(() => {
+      //     this.setState({ audioUploadRequested: false })
+      //   })
+      //   .catch(() => {
+      //     this.setState({ audioUploadRequested: false })
+      //   })
     }
   }
 
@@ -40,42 +55,26 @@ export class EditListingAudioFormComponent extends Component {
     return (
       <FinalForm
         {...this.props}
-        onImageUploadHandler={this.onImageUploadHandler}
-        imageUploadRequested={this.state.imageUploadRequested}
-        initialValues={{ images: this.props.images }}
+        // onAudioUploadHandler={this.onAudioUploadHandler}
+        audioUploadRequested={this.state.audioUploadRequested}
         render={(formRenderProps) => {
           const {
-            form,
             className,
             fetchErrors,
             handleSubmit,
-            images,
-            imageUploadRequested,
-            intl,
+            audio,
+            audioUploadRequested,
             invalid,
-            onImageUploadHandler,
-            onRemoveImage,
             disabled,
+            bypassHandleSubmit,
             ready,
             saveActionMsg,
             updated,
             updateInProgress,
           } = formRenderProps
 
-          const chooseImageText = (
-            <span className={css.chooseImageText}>
-              <span className={css.chooseImage}>
-                <FormattedMessage id="EditListingAudioForm.chooseImage" />
-              </span>
-              <span className={css.imageTypes}>
-                <FormattedMessage id="EditListingAudioForm.imageTypes" />
-              </span>
-            </span>
-          )
+          console.log(this.state)
 
-          const imageRequiredMessage = intl.formatMessage({
-            id: 'EditListingAudioForm.imageRequired',
-          })
 
           const { publishListingError, showListingsError, updateListingError, uploadImageError } =
             fetchErrors || {}
@@ -86,13 +85,13 @@ export class EditListingAudioFormComponent extends Component {
           if (uploadOverLimit) {
             uploadImageFailed = (
               <p className={css.error}>
-                <FormattedMessage id="EditListingAudioForm.imageUploadFailed.uploadOverLimit" />
+                <FormattedMessage id="EditListingAudioForm.audioUploadFailed.uploadOverLimit" />
               </p>
             )
           } else if (uploadImageError) {
             uploadImageFailed = (
               <p className={css.error}>
-                <FormattedMessage id="EditListingAudioForm.imageUploadFailed.uploadFailed" />
+                <FormattedMessage id="EditListingAudioForm.audioUploadFailed.uploadFailed" />
               </p>
             )
           }
@@ -111,28 +110,40 @@ export class EditListingAudioFormComponent extends Component {
             </p>
           ) : null
 
-          const submittedOnce = this.submittedImages.length > 0
-          // imgs can contain added images (with temp ids) and submitted images with uniq ids.
-          const arrayOfImgIds = (imgs) =>
-            imgs.map((i) => (typeof i.id === 'string' ? i.imageId : i.id))
-          const imageIdsFromProps = arrayOfImgIds(images)
-          const imageIdsFromPreviousSubmit = arrayOfImgIds(this.submittedImages)
-          const imageArrayHasSameImages = isEqual(imageIdsFromProps, imageIdsFromPreviousSubmit)
-          const pristineSinceLastSubmit = submittedOnce && imageArrayHasSameImages
+          const submittedOnce = this.submittedAudio.length > 0
+          // audio can contain added audios (with temp ids) and submitted audios with uniq ids.
+          const arrayOfAudioIds = (audio) =>
+            audio.map((i) => (typeof i.id === 'string' ? i.audioId : i.id))
+          const audioIdsFromProps = arrayOfAudioIds(audio)
+          const audioIdsFromPreviousSubmit = arrayOfAudioIds(this.submittedAudio)
+          const audioArrayHasSameImages = isEqual(audioIdsFromProps, audioIdsFromPreviousSubmit)
+          const pristineSinceLastSubmit = submittedOnce && audioArrayHasSameImages
 
           const submitReady = (updated && pristineSinceLastSubmit) || ready
           const submitInProgress = updateInProgress
           const submitDisabled =
-            invalid || disabled || submitInProgress || imageUploadRequested || ready
+            invalid || disabled || submitInProgress || audioUploadRequested || ready
 
           const classes = classNames(css.root, className)
+
+          const listAudio = this.submittedAudio.length > 0 ?
+            (<ul>
+              { this.submittedAudio.map((fileName, index) =>
+                <li key={fileName + index}>
+                  {fileName}
+                  { this.state.currentFileName === fileName ? <div style={{width: 200, height: 15, border: '1px solid red'}}>
+                    <div style={{width: this.state.currentFileProgress * 2, height: 15, background:'green'}}></div>
+                  </div>:<div style={{width: 200, height: 15, background:'green'}}></div>}
+                </li>)
+              }
+            </ul>) : <></>
 
           return (
             <Form
               className={classes}
               onSubmit={(e) => {
-                this.submittedImages = images
-                handleSubmit(e)
+                bypassHandleSubmit({ audio: this.submittedAudio})
+                e.preventDefault()
               }}
             >
               {updateListingError ? (
@@ -140,68 +151,41 @@ export class EditListingAudioFormComponent extends Component {
                   <FormattedMessage id="EditListingAudioForm.updateFailed" />
                 </p>
               ) : null}
-              <AddImages
-                className={css.imagesField}
-                images={images}
-                thumbnailClassName={css.thumbnail}
-                savedImageAltText={intl.formatMessage({
-                  id: 'EditListingAudioForm.savedImageAltText',
-                })}
-                onRemoveImage={onRemoveImage}
-              >
-                <Field
-                  id="addImage"
-                  name="addImage"
-                  accept={ACCEPT_IMAGES}
-                  form={null}
-                  label={chooseImageText}
-                  type="file"
-                  disabled={imageUploadRequested}
-                >
-                  {(fieldprops) => {
-                    const { accept, input, label, disabled: fieldDisabled } = fieldprops
-                    const { name, type } = input
-                    const onChange = (e) => {
-                      const file = e.target.files[0]
-                      form.change(`addImage`, file)
-                      form.blur(`addImage`)
-                      onImageUploadHandler(file)
-                    }
-                    const inputProps = { accept, id: name, name, onChange, type }
-                    return (
-                      <div className={css.addImageWrapper}>
-                        <div className={css.aspectRatioWrapper}>
-                          {fieldDisabled ? null : (
-                            <input {...inputProps} className={css.addImageInput} />
-                          )}
-                          <label htmlFor={name} className={css.addImage}>
-                            {label}
-                          </label>
-                        </div>
-                      </div>
-                    )
-                  }}
-                </Field>
 
-                <Field
-                  component={(props) => {
-                    const { input, meta } = props
-                    return (
-                      <div className={css.imageRequiredWrapper}>
-                        <input {...input} />
-                        <ValidationError fieldMeta={meta} />
-                      </div>
-                    )
-                  }}
-                  name="images"
-                  type="hidden"
-                  validate={composeValidators(nonEmptyArray(imageRequiredMessage))}
-                />
-              </AddImages>
+              { listAudio }
+
+              <ReactS3Uploader
+                signingUrl="/s3/sign"
+                signingUrlMethod="GET"
+                accept={ACCEPT_AUDIO}
+                // preprocess={(thing)=> console.log({thing})}
+                onSignedUrl={(res) => {
+                  this.handleUploadProgress({ type: 'fileName', fileName: res.filename })
+                  this.handleUpload(res.filename)
+                }}
+                onProgress={ (value) => {
+                  this.handleUploadProgress({ type: 'value', value })
+                }}
+                onError={ (err) => {
+                  console.log({ onError: err })
+                }}
+                onFinish={thing=> {
+                  this.setState({ audioUploadRequested: false })
+                  this.handleUploadProgress({ type: 'fileName', fileName: '' })
+                  this.handleUploadProgress({ type: 'value', value: 0 })
+                }} // save to publicData as array of ['filename']
+                uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}  // this is the default
+                contentDisposition="auto"
+                scrubFilename={(filename) => filename.replace(/[^\w\d_\-.]+/ig, '')}
+                server="http://localhost:9000"
+                inputRef={cmp => this.uploadInput = cmp}
+                autoUpload={true}
+              />
+
               {uploadImageFailed}
 
               <p className={css.tip}>
-                <FormattedMessage id="EditListingAudioForm.addImagesTip" />
+                <FormattedMessage id="EditListingAudioForm.addAudioTip" />
               </p>
               {publishListingFailed}
               {showListingFailed}
@@ -223,7 +207,7 @@ export class EditListingAudioFormComponent extends Component {
   }
 }
 
-EditListingAudioFormComponent.defaultProps = { fetchErrors: null, images: [] }
+EditListingAudioFormComponent.defaultProps = { fetchErrors: null, audio: [] }
 
 EditListingAudioFormComponent.propTypes = {
   fetchErrors: shape({
@@ -232,7 +216,7 @@ EditListingAudioFormComponent.propTypes = {
     uploadImageError: propTypes.error,
     updateListingError: propTypes.error,
   }),
-  images: array,
+  audio: array,
   intl: intlShape.isRequired,
   onImageUpload: func.isRequired,
   onUpdateImageOrder: func.isRequired,
