@@ -23,6 +23,30 @@ const PROVIDER_COMMISSION_PERCENTAGE = -10
  * @param {Object} bookingData
  * @returns {Array} lineItems
  */
+
+const resolveDynamicPriceOptions = (listing) => {
+  const publicData = listing.attributes.publicData
+
+  const customFees = []
+
+  for (const prop in publicData) {
+    if (prop.match(/price_option/g)) {
+      const priceOption = publicData[prop]
+      console.log(priceOption)
+      if (priceOption.amount && priceOption.currency) {
+        customFees.push(new Money(priceOption.amount, priceOption.currency))
+      }
+    }
+  }
+
+  if (customFees.length > 0) {
+    console.log('sending custom fees')
+    return customFees
+  }
+
+  return null
+}
+
 exports.transactionLineItems = (listing, bookingData) => {
   const unitPrice = listing.attributes.price
   const { startDate, endDate } = bookingData
@@ -34,14 +58,28 @@ exports.transactionLineItems = (listing, bookingData) => {
     includeFor: ['customer', 'provider'],
   }
 
+  console.log(listing)
+
+  const customFeesPrice = resolveDynamicPriceOptions(listing) // [Money, Money, Money, Money, Money ]
+  const customFees = customFeesPrice
+    ? customFeesPrice.map((customFee) => {
+        return {
+          code: `line-item/price_option_${index}`,
+          unitPrice: customFee, // { amount: 900, currency: 'USD' }
+          quantity: 1,
+          includeFor: ['customer', 'provider'],
+        }
+      })
+    : []
+
   const providerCommission = {
     code: 'line-item/provider-commission',
-    unitPrice: calculateTotalFromLineItems([booking]),
+    unitPrice: calculateTotalFromLineItems([booking, ...customFees]),
     percentage: PROVIDER_COMMISSION_PERCENTAGE,
     includeFor: ['provider'],
   }
 
-  const lineItems = [booking, providerCommission]
+  const lineItems = [booking, ...customFees, providerCommission]
 
   return lineItems
 }

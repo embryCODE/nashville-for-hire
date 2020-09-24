@@ -83,16 +83,6 @@ export const EditListingPricingFormComponent = (props) => {
 
         const priceOptionFields = pricingOptions[serviceType]
 
-        const checkBeforeSubmit = val => {
-          val.persist()
-          const prices = {
-            test: '299.99',
-            testy: '399.22'
-          }
-          console.log(val)
-          handleSubmit(prices)
-        }
-
         return (
           <Form onSubmit={handleSubmit} className={classes}>
             {updateListingError ? (
@@ -108,16 +98,14 @@ export const EditListingPricingFormComponent = (props) => {
             {priceOptionFields && priceOptionFields.map(({label, placeholder}, index) => {
               return <FieldCurrencyInput
                 key={label}
-                // id={`price_option_${index}`} // it doesn't like this because it assumes one listing = one price
-                id="price"
-                name="price"
-                // name={`price_option_${index}`}
+                id={`price_option_${index}`}
+                name={`price_option_${index}`}
                 className={css.priceInput}
                 autoFocus
                 label={label}
                 placeholder={placeholder}
                 currencyConfig={config.currencyConfig}
-                validate={priceValidators}
+                // validate={priceValidators}
               />
             })}
             <Button
