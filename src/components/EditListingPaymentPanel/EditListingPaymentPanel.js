@@ -30,7 +30,7 @@ const EditListingPaymentPanel = (props) => {
 
   const classes = classNames(rootClassName || css.root, className)
   const currentListing = ensureOwnListing(listing)
-  const { price } = currentListing.attributes
+  const { publicData } = currentListing.attributes
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
   const panelTitle = isPublished ? (
@@ -42,12 +42,13 @@ const EditListingPaymentPanel = (props) => {
     <FormattedMessage id="EditListingPaymentPanel.createListingTitle" />
   )
 
-  const priceCurrencyValid = price instanceof Money ? price.currency === config.currency : true
-  const form = priceCurrencyValid ? (
-    <EditListingPaymentForm
+  const form = <EditListingPaymentForm
       className={css.form}
-      initialValues={{ price }}
-      onSubmit={onSubmit}
+      initialValues={{ }}
+      onSubmit={(e)=> {
+        console.log(e)
+        onSubmit({ publicData: e})
+      }}
       onChange={onChange}
       saveActionMsg={submitButtonText}
       disabled={disabled}
@@ -56,11 +57,7 @@ const EditListingPaymentPanel = (props) => {
       updateInProgress={updateInProgress}
       fetchErrors={errors}
     />
-  ) : (
-    <div className={css.priceCurrencyInvalid}>
-      <FormattedMessage id="EditListingPaymentPanel.listingPriceCurrencyInvalid" />
-    </div>
-  )
+
 
   return (
     <div className={classes}>
