@@ -5,7 +5,7 @@ import { Form as FinalForm } from 'react-final-form'
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl'
 import classNames from 'classnames'
 import config from '../../config'
-import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../util/types'
+import { propTypes } from '../../util/types'
 import * as validators from '../../util/validators'
 import { formatMoney } from '../../util/currency'
 import { types as sdkTypes } from '../../util/sdkLoader'
@@ -35,24 +35,6 @@ export const EditListingPricingFormComponent = (props) => {
           updateInProgress,
           fetchErrors,
         } = formRenderProps
-
-        const unitType = config.bookingUnitType
-        const isNightly = unitType === LINE_ITEM_NIGHT
-        const isDaily = unitType === LINE_ITEM_DAY
-
-        const translationKey = isNightly
-          ? 'EditListingPricingForm.pricePerNight'
-          : isDaily
-            ? 'EditListingPricingForm.pricePerDay'
-            : 'EditListingPricingForm.pricePerUnit'
-
-        const pricePerUnitMessage = intl.formatMessage({
-          id: translationKey,
-        })
-
-        const pricePlaceholderMessage = intl.formatMessage({
-          id: 'EditListingPricingForm.priceInputPlaceholder',
-        })
 
         const priceRequired = validators.required(
           intl.formatMessage({
@@ -105,7 +87,7 @@ export const EditListingPricingFormComponent = (props) => {
                 label={label}
                 placeholder={placeholder}
                 currencyConfig={config.currencyConfig}
-                // validate={priceValidators}
+                validate={priceValidators}
               />
             })}
             <Button

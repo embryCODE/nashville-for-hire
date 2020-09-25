@@ -131,7 +131,6 @@ const EditListingWizardTab = (props) => {
       const onUpsertListingDraft = isNewURI
         ? (tab, updateValues) => onCreateListingDraft(updateValues)
         : onUpdateListing
-    console.log(onUpsertListingDraft)
 
       const upsertValues = isNewURI
         ? updateValuesWithImages
@@ -181,7 +180,6 @@ const EditListingWizardTab = (props) => {
           {...panelProps(PAYMENT)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={(values) => {
-            console.log(values)
             onCompleteEditListingWizardTab(tab, values)
           }}
         />
@@ -266,7 +264,6 @@ const EditListingWizardTab = (props) => {
           {...panelProps(TERMSOFUSE)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={(values) => {
-            console.log(values)
             onCompleteEditListingWizardTab(tab, values)
           }}
         />
@@ -281,7 +278,6 @@ const EditListingWizardTab = (props) => {
           {...panelProps(PRICING)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           onSubmit={(values) => {
-            console.log(values)
             onCompleteEditListingWizardTab(tab, values)
           }}
         />
@@ -330,13 +326,10 @@ const EditListingWizardTab = (props) => {
         <EditListingAudioPanel
           {...panelProps(AUDIO)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
-          images={images}
           bypassHandleSubmit={(value) => {
             onCompleteEditListingWizardTab(tab, value)
           }}
           onSubmit={() => null}
-          onRemoveImage={onRemoveImage}
-          onUpdateImageOrder={onUpdateImageOrder}
         />
       )
     }

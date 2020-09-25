@@ -89,7 +89,7 @@ const tabLabel = (intl, tab) => {
  * @return true if tab / step is completed.
  */
 const tabCompleted = (tab, listing) => {
-  const { availabilityPlan, price, title, publicData } = listing.attributes // where does this come from?
+  const { availabilityPlan, title, publicData } = listing.attributes
   const images = listing.images
 
   switch (tab) {
@@ -97,6 +97,7 @@ const tabCompleted = (tab, listing) => {
       return !!(title)
     case PRICING:
       let valid = false
+      // eslint-disable-next-line
       for (const prop in publicData) {
         if (prop.match(/price_option/g)) {
           valid = Boolean(publicData[prop])
