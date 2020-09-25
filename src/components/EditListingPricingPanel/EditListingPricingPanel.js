@@ -36,15 +36,15 @@ const EditListingPricingPanel = (props) => {
   const classes = classNames(rootClassName || css.root, className)
   const currentListing = ensureOwnListing(listing)
 
-  const { price, publicData } = currentListing.attributes
+  const { price } = currentListing.attributes
 
   const priceOptionFields = pricingOptions[serviceType]
 
   const priceOptionsForInitialValues = {}
 
+  // eslint-disable-next-line
   for (const prop in priceOptionFields) {
     const optionId = `price_option_${prop}`
-    const option = publicData && publicData[optionId] ? publicData[optionId] : null
     priceOptionsForInitialValues[optionId] = new Money(0, 'USD')
   }
 
@@ -72,6 +72,7 @@ const EditListingPricingPanel = (props) => {
           publicData: {},
         }
 
+        // eslint-disable-next-line
         for (const prop in values) {
           if (prop.match(/price_option/g)) {
             const priceOptionToBasicObject = {
@@ -82,7 +83,6 @@ const EditListingPricingPanel = (props) => {
           }
         }
 
-        console.log(updatedValues)
         onSubmit(updatedValues)
       }}
       onChange={onChange}
