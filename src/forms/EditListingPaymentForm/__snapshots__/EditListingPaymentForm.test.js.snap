@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditListingPaymentForm matches snapshot 1`] = `
+<form
+  action="/"
+  className=""
+  method="post"
+  onSubmit={[Function]}
+>
+  <div
+    className=""
+  >
+    <label
+      htmlFor="payPalEmail"
+    >
+      EditListingPaymentForm.questionATitle
+    </label>
+    <input
+      autoFocus={true}
+      className=""
+      id="payPalEmail"
+      name="payPalEmail"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder="EditListingPaymentForm.questionATitlePlaceholder"
+      type="text"
+      value=""
+    />
+  </div>
+  <div
+    className=""
+  >
+    <label
+      htmlFor="phoneNumber"
+    >
+      EditListingPaymentForm.questionBTitle
+    </label>
+    <input
+      autoFocus={true}
+      className=""
+      id="phoneNumber"
+      name="phoneNumber"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder="EditListingPaymentForm.questionBTitlePlaceholder"
+      type="text"
+      value=""
+    />
+  </div>
+  <button
+    className=""
+    disabled={false}
+    type="submit"
+  >
+    Save price
+  </button>
+</form>
+`;

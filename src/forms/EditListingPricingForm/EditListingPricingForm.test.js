@@ -17,6 +17,7 @@ describe('EditListingPricingForm', () => {
         updateInProgress={false}
         disabled={false}
         ready={false}
+        serviceType="Keys"
       />,
     )
     expect(tree).toMatchSnapshot()

@@ -30,8 +30,7 @@ const EditListingPricingPanel = (props) => {
     errors,
   } = props
 
-  // eslint-disable-next-line
-  const [serviceType, setServiceType] = useContext(ServiceTypeContext)
+  const [serviceType] = useContext(ServiceTypeContext)
 
   const classes = classNames(rootClassName || css.root, className)
   const currentListing = ensureOwnListing(listing)
@@ -44,8 +43,10 @@ const EditListingPricingPanel = (props) => {
 
   // eslint-disable-next-line
   for (const prop in priceOptionFields) {
-    const optionId = `price_option_${prop}`
-    priceOptionsForInitialValues[optionId] = new Money(0, 'USD')
+    if (priceOptionFields.hasOwnProperty(prop)) {
+      const optionId = `price_option_${prop}`
+      priceOptionsForInitialValues[optionId] = new Money(0, 'USD')
+    }
   }
 
   const initialValues = { price, ...priceOptionsForInitialValues }
@@ -74,7 +75,7 @@ const EditListingPricingPanel = (props) => {
 
         // eslint-disable-next-line
         for (const prop in values) {
-          if (prop.match(/price_option/g)) {
+          if (values.hasOwnProperty(prop) && prop.match(/price_option/g)) {
             const priceOptionToBasicObject = {
               amount: values[prop].amount,
               currency: values[prop].currency,

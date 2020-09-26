@@ -3,11 +3,9 @@
  */
 
 import React from 'react'
-import ReactDOM from 'react-dom'
 import ReactDOMServer from 'react-dom/server'
-import { Helmet } from 'react-helmet-async'
 import forEach from 'lodash/forEach'
-import { ClientApp, ServerApp } from './app'
+import { ServerApp } from './app'
 import configureStore from './store'
 
 const render = (url, context) => {
@@ -47,7 +45,7 @@ describe('Application - node environment', () => {
     }
     forEach(urlTitles, (title, url) => {
       const context = {}
-      const { head, body } = render(url, context)
+      const { head } = render(url, context)
 
       expect(head.title.toString()).toContain(title)
 
@@ -80,7 +78,7 @@ describe('Application - node environment', () => {
     }
     forEach(urlRedirects, (redirectPath, url) => {
       const context = {}
-      const { body } = render(url, context)
+      render(url, context)
       expect(context.url).toEqual(redirectPath)
     })
   })
@@ -89,7 +87,7 @@ describe('Application - node environment', () => {
     const urlRedirects = { '/l': '/', '/u': '/' }
     forEach(urlRedirects, (redirectPath, url) => {
       const context = {}
-      const { body } = render(url, context)
+      render(url, context)
       expect(context.url).toEqual(redirectPath)
     })
   })

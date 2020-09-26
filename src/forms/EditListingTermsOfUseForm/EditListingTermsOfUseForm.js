@@ -4,7 +4,6 @@ import classNames from 'classnames'
 import { Form as FinalForm } from 'react-final-form'
 import arrayMutators from 'final-form-arrays'
 import { FormattedMessage } from '../../util/reactIntl'
-import { findOptionsForSelectFilter } from '../../util/search'
 import { propTypes } from '../../util/types'
 import config from '../../config'
 import { Button, FieldCheckbox, Form } from '../../components'
@@ -28,7 +27,6 @@ const EditListingTermsOfUseFormComponent = (props) => (
         updated,
         updateInProgress,
         fetchErrors,
-        filterConfig,
       } = formRenderProps
 
       const classes = classNames(rootClassName || css.root, className)
@@ -49,13 +47,18 @@ const EditListingTermsOfUseFormComponent = (props) => (
         </p>
       ) : null
 
-      const options = findOptionsForSelectFilter('termsOfUse', filterConfig)
       return (
         <Form className={classes} onSubmit={handleSubmit}>
           {errorMessage}
           {errorMessageShowListing}
 
-          <FieldCheckbox className={css.features} id={name} name={name} label={'I agree to terms of use'} value={'agree'} />
+          <FieldCheckbox
+            className={css.features}
+            id={name}
+            name={name}
+            label={'I agree to terms of use'}
+            value={'agree'}
+          />
 
           <Button
             className={css.submitButton}

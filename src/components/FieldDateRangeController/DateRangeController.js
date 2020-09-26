@@ -141,6 +141,7 @@ class DateRangeController extends Component {
       meta,
       children,
       render,
+      checked, // This needs to NOT be sent to DayPickerRangeController
       ...controllerProps
     } = this.props
 

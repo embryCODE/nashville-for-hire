@@ -64,20 +64,120 @@ exports[`SearchPageComponent matches snapshot 1`] = `
             "config": Object {
               "options": Array [
                 Object {
-                  "key": "smoke",
-                  "label": "Smoke",
+                  "key": "femaleVocals",
+                  "label": "Female Vocals",
                 },
                 Object {
-                  "key": "electric",
-                  "label": "Electric",
+                  "key": "maleVocals",
+                  "label": "Male Vocals",
                 },
                 Object {
-                  "key": "wood",
-                  "label": "Wood",
+                  "key": "songwriting",
+                  "label": "Songwriting",
                 },
                 Object {
-                  "key": "other",
-                  "label": "Other",
+                  "key": "topline",
+                  "label": "Topline",
+                },
+                Object {
+                  "key": "acousticGuitar",
+                  "label": "Acoustic Guitar",
+                },
+                Object {
+                  "key": "electricGuitar",
+                  "label": "Electric Guitar",
+                },
+                Object {
+                  "key": "bass",
+                  "label": "Bass",
+                },
+                Object {
+                  "key": "drums",
+                  "label": "Drums",
+                },
+                Object {
+                  "key": "piano",
+                  "label": "Piano",
+                },
+                Object {
+                  "key": "keys",
+                  "label": "Keys",
+                },
+                Object {
+                  "key": "synth",
+                  "label": "Synth",
+                },
+                Object {
+                  "key": "organ",
+                  "label": "Organ",
+                },
+                Object {
+                  "key": "beatProgramming",
+                  "label": "Beat Programming",
+                },
+                Object {
+                  "key": "cello",
+                  "label": "Cello",
+                },
+                Object {
+                  "key": "violin",
+                  "label": "Violin",
+                },
+                Object {
+                  "key": "fiddle",
+                  "label": "Fiddle",
+                },
+                Object {
+                  "key": "fullStringArrangement",
+                  "label": "Full String Arrangement",
+                },
+                Object {
+                  "key": "pedalSteel",
+                  "label": "Pedal Steel",
+                },
+                Object {
+                  "key": "bango",
+                  "label": "Banjo",
+                },
+                Object {
+                  "key": "dobro",
+                  "label": "Dobro",
+                },
+                Object {
+                  "key": "lapSteel",
+                  "label": "Lap Steel",
+                },
+                Object {
+                  "key": "harmonica",
+                  "label": "Harmonica",
+                },
+                Object {
+                  "key": "trumpet",
+                  "label": "Trumpet",
+                },
+                Object {
+                  "key": "trombone",
+                  "label": "Trombone",
+                },
+                Object {
+                  "key": "saxophone",
+                  "label": "Saxophone",
+                },
+                Object {
+                  "key": "hornSection",
+                  "label": "Horn Section",
+                },
+                Object {
+                  "key": "mixing",
+                  "label": "Mixing",
+                },
+                Object {
+                  "key": "mastering",
+                  "label": "Mastering",
+                },
+                Object {
+                  "key": "produce",
+                  "label": "Produce Your Entire Song",
                 },
               ],
             },
@@ -88,6 +188,24 @@ exports[`SearchPageComponent matches snapshot 1`] = `
               "pub_category",
             ],
             "type": "SelectSingleFilter",
+          },
+          Object {
+            "config": Object {
+              "options": Array [
+                Object {
+                  "key": "agree",
+                  "label": "I agree to Terms of Use",
+                },
+              ],
+              "searchMode": "has_all",
+            },
+            "group": "secondary",
+            "id": "termsOfUse",
+            "label": "Terms Of Use",
+            "queryParamNames": Array [
+              "pub_termsOfUse",
+            ],
+            "type": "SelectMultipleFilter",
           },
           Object {
             "config": Object {

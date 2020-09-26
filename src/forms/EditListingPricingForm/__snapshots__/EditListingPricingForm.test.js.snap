@@ -7,29 +7,9 @@ exports[`EditListingPricingForm matches snapshot 1`] = `
   method="post"
   onSubmit={[Function]}
 >
-  <div
-    className=""
-  >
-    <label
-      htmlFor="price"
-    >
-      EditListingPricingForm.pricePerNight
-    </label>
-    <input
-      autoFocus={true}
-      className=""
-      id="price"
-      onBlur={[Function]}
-      onChange={[Function]}
-      onFocus={[Function]}
-      placeholder="EditListingPricingForm.priceInputPlaceholder"
-      type="text"
-      value=""
-    />
-  </div>
   <button
     className=""
-    disabled={true}
+    disabled={false}
     type="submit"
   >
     Save price
