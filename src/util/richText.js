@@ -68,7 +68,6 @@ export const linkifyOrWrapLinkSplit = (word, key, options = {}) => {
   }
   const { linkify, linkClass } = options
 
-  // TODO This can't handle links that contain parenthesis:
   // '(http://example.org/path_(etc))'
   // Currently extracts:
   // '(<a href=\"http://example.org/path_\" ...>http://example.org/path_</a>(etc))'

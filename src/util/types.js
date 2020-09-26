@@ -473,7 +473,6 @@ const ERROR_CODES = [
 ]
 
 // API error
-// TODO this is likely to change soonish
 propTypes.apiError = shape({
   id: propTypes.uuid.isRequired,
   status: number.isRequired,

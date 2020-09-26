@@ -46,7 +46,6 @@ const mergeCurrentUser = (oldCurrentUser, newCurrentUser) => {
 
   // Passing null will remove currentUser entity.
   // Only relationships are merged.
-  // TODO figure out if sparse fields handling needs a better handling.
   return newCurrentUser === null
     ? null
     : oldCurrentUser === null

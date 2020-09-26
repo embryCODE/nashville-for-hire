@@ -94,7 +94,7 @@ const tabCompleted = (tab, listing) => {
 
   switch (tab) {
     case SERVICETYPE:
-      return !!(title)
+      return !!title
     case PRICING:
       let valid = false
       // eslint-disable-next-line
@@ -105,7 +105,7 @@ const tabCompleted = (tab, listing) => {
       }
       return !!valid
     case AUDIO:
-    // TODO: Write validation
+      // TODO: Write validation
       return true
     case ABOUTYOU:
       const { whyAreYouTheRightFit, primaryGenres, experience } = publicData
@@ -117,7 +117,7 @@ const tabCompleted = (tab, listing) => {
       const { payPalEmail, phoneNumber } = publicData
       return !!payPalEmail && !!phoneNumber
     case TERMSOFUSE:
-    // TODO: Write validation
+      // TODO: Write validation
       return true
     case FEATURES:
       return !!(publicData && publicData.amenities)
@@ -128,7 +128,8 @@ const tabCompleted = (tab, listing) => {
     case PHOTOS:
       return images && images.length > 0
     case INSTRUMENT:
-      return true // TODO
+      // TODO: Write validation
+      return true
     default:
       return false
   }

@@ -77,7 +77,6 @@ export const createImage = (id) => ({
   type: 'image',
   attributes: {
     variants: {
-      // TODO: add all possible variants here
       square: {
         name: 'square',
         height: 408,

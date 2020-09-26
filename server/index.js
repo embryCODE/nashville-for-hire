@@ -221,7 +221,6 @@ app.get('*', (req, res) => {
         } else {
           // If the token is associated with other than public-read scopes, we
           // assume that client can handle the situation
-          // TODO: improve by checking if the token is valid (needs an API call)
           res.status(200).send(html)
         }
       } else if (context.forbidden) {

@@ -65,7 +65,6 @@ class CurrencyInputComponent extends Component {
     const hasInitialValue = typeof initialValue === 'number' && !isNaN(initialValue)
 
     // We need to handle number format - some locales use dots and some commas as decimal separator
-    // TODO Figure out if this could be digged from React-Intl directly somehow
     const testSubUnitFormat = intl.formatNumber('1.1', currencyConfig)
     const usesComma = testSubUnitFormat.indexOf(',') >= 0
 

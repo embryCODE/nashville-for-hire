@@ -174,7 +174,6 @@
   margin: 28px 0 0 0;
 
   @media (--viewportLarge) {
-    /* TODO this is ugly overwrite to fix unconsistent font styles */
     font-size: 14px;
     padding: 0;
   }

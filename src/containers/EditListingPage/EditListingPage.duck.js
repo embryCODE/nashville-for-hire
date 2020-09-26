@@ -42,7 +42,7 @@ const addException = (exception, calendar) => {
   // When using time-based process, you might want to deal with local dates using monthIdString
   const monthId = monthIdStringInUTC(start)
 
-  // TODO: API doesn't support "availability_exceptions/update" yet
+  // API doesn't support "availability_exceptions/update" yet
   // So, when user wants to create an exception we need to ensure
   // that possible existing exception is removed first.
   const cleanCalendar = removeException(exception, calendar)

@@ -1,4 +1,4 @@
-import React  from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { FormattedMessage } from '../../util/reactIntl'
@@ -37,12 +37,12 @@ const EditListingPaymentPanel = (props) => {
     <FormattedMessage id="EditListingPaymentPanel.createListingTitle" />
   )
 
-  const form = <EditListingPaymentForm
+  const form = (
+    <EditListingPaymentForm
       className={css.form}
-      initialValues={{ }}
-      onSubmit={(e)=> {
-        console.log(e)
-        onSubmit({ publicData: e})
+      initialValues={{}}
+      onSubmit={(e) => {
+        onSubmit({ publicData: e })
       }}
       onChange={onChange}
       saveActionMsg={submitButtonText}
@@ -52,7 +52,7 @@ const EditListingPaymentPanel = (props) => {
       updateInProgress={updateInProgress}
       fetchErrors={errors}
     />
-
+  )
 
   return (
     <div className={classes}>

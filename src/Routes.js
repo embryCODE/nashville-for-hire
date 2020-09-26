@@ -56,7 +56,6 @@ const setPageScrollPosition = (location) => {
       // seem work work properly when refreshing the page, at least
       // not in Chrome.
       //
-      // TODO: investigate why the scrolling fails on refresh
       el.scrollIntoView({
         block: 'start',
         behavior: 'smooth',

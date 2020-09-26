@@ -159,7 +159,6 @@ exports.convertMoneyToNumber = (value) => {
   let amount
 
   if (isGoogleMathLong(value.amount)) {
-    // TODO: temporarily also handle goog.math.Long values created by
     // the Transit tooling in the Sharetribe JS SDK. This should be
     // removed when the value.amount will be a proper Decimal type.
 

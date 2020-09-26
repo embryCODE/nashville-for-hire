@@ -338,7 +338,6 @@ class StripePaymentForm extends Component {
       [css.cardError]: hasCardError,
     })
 
-    // TODO: handleCardPayment can create all kinds of errors.
     // Currently, we provide translation support for one:
     // https://stripe.com/docs/error-codes
     const piAuthenticationFailure = 'payment_intent_authentication_failure'

@@ -37,7 +37,6 @@ export const sanitizeUser = (entity) => {
   const { bio, displayName, abbreviatedName, publicData } = profile || {}
 
   const sanitizePublicData = (publicData) => {
-    // TODO: If you add public data, you should probably sanitize it here.
     return publicData ? { publicData } : {}
   }
 
@@ -74,7 +73,6 @@ export const sanitizeListing = (entity) => {
 
   const sanitizePublicData = (publicData) => {
     // Here's an example how you could sanitize location and rules from publicData:
-    // TODO: If you add public data, you should probably sanitize it here.
     const { location, rules, ...restPublicData } = publicData || {}
     const locationMaybe = location ? { location: sanitizeLocation(location) } : {}
     const rulesMaybe = rules ? { rules: sanitizeText(rules) } : {}

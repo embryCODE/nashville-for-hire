@@ -165,10 +165,6 @@
     font-size: 18px;
     line-height: 24px;
     letter-spacing: -0.3px;
-
-    @media (--viewportMedium) {
-      /* TODO: Make sure button text aligns with the baseline */
-    }
   }
   --marketplaceButtonStyles {
     @apply --marketplaceButtonFontStyles;
