@@ -92,14 +92,16 @@ const tabCompleted = (tab, listing) => {
   const { availabilityPlan, title, publicData } = listing.attributes
   const images = listing.images
 
+  // TODO: Maybe remove this
+  if (process.env.NODE_ENV === 'development') return true
+
   switch (tab) {
     case SERVICETYPE:
       return !!title
     case PRICING:
       let valid = false
-      // eslint-disable-next-line
       for (const prop in publicData) {
-        if (prop.match(/price_option/g)) {
+        if (publicData.hasOwnProperty(prop) && prop.match(/price_option/g)) {
           valid = Boolean(publicData[prop])
         }
       }
