@@ -9,6 +9,7 @@ import { ensureOwnListing } from '../../util/data'
 import { types as sdkTypes } from '../../util/sdkLoader'
 import config from '../../config'
 import { ServiceTypeContext } from '../../context/ServiceTypeProvider'
+import pricingOptions from '../../util/pricingOptions'
 
 import css from './EditListingPricingPanel.css'
 
@@ -34,7 +35,20 @@ const EditListingPricingPanel = (props) => {
 
   const classes = classNames(rootClassName || css.root, className)
   const currentListing = ensureOwnListing(listing)
+
   const { price } = currentListing.attributes
+
+  const priceOptionFields = pricingOptions[serviceType]
+
+  const priceOptionsForInitialValues = {}
+
+  // eslint-disable-next-line
+  for (const prop in priceOptionFields) {
+    const optionId = `price_option_${prop}`
+    priceOptionsForInitialValues[optionId] = new Money(0, 'USD')
+  }
+
+  const initialValues = { price, ...priceOptionsForInitialValues }
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
   const panelTitle = isPublished ? (
@@ -51,8 +65,26 @@ const EditListingPricingPanel = (props) => {
     <EditListingPricingForm
       serviceType={serviceType}
       className={css.form}
-      initialValues={{ price }}
-      onSubmit={onSubmit}
+      initialValues={initialValues}
+      onSubmit={(values) => {
+        const updatedValues = {
+          price: values.price,
+          publicData: {},
+        }
+
+        // eslint-disable-next-line
+        for (const prop in values) {
+          if (prop.match(/price_option/g)) {
+            const priceOptionToBasicObject = {
+              amount: values[prop].amount,
+              currency: values[prop].currency,
+            }
+            updatedValues.publicData[prop] = priceOptionToBasicObject
+          }
+        }
+
+        onSubmit(updatedValues)
+      }}
       onChange={onChange}
       saveActionMsg={submitButtonText}
       disabled={disabled}
@@ -70,7 +102,12 @@ const EditListingPricingPanel = (props) => {
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
-      <p style={{fontSize: 14}}><em>If you have additional prices, you can add them in the “About This Service” section by requesting a custom order from the buyer.</em></p>
+      <p style={{ fontSize: 14 }}>
+        <em>
+          If you have additional prices, you can add them in the “About This Service” section by
+          requesting a custom order from the buyer.
+        </em>
+      </p>
       {form}
     </div>
   )
