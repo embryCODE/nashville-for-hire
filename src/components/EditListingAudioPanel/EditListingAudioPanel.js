@@ -24,7 +24,7 @@ class EditListingAudioPanel extends Component {
       panelUpdated,
       updateInProgress,
       onChange,
-      onSubmit,
+      // onSubmit,
       onRemoveImage,
     } = this.props
 
@@ -57,7 +57,7 @@ class EditListingAudioPanel extends Component {
           fetchErrors={errors}
           initialValues={{ publicData }}
           audio={[]}
-          onSubmit={() => null}
+          onSubmit={()=>null}
           bypassHandleSubmit={({ audio }) => bypassHandleSubmit({ publicData: {...publicData, audio}})}
           onChange={onChange}
           onUpdateImageOrder={onUpdateImageOrder}
@@ -90,14 +90,11 @@ EditListingAudioPanel.propTypes = {
   // We cannot use propTypes.listing since the listing might be a draft.
   listing: object,
 
-  onImageUpload: func.isRequired,
-  onUpdateImageOrder: func.isRequired,
   onSubmit: func.isRequired,
   onChange: func.isRequired,
   submitButtonText: string.isRequired,
   panelUpdated: bool.isRequired,
   updateInProgress: bool.isRequired,
-  onRemoveImage: func.isRequired,
 }
 
 export default EditListingAudioPanel

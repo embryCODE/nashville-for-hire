@@ -6,12 +6,8 @@ import { LISTING_STATE_DRAFT } from '../../util/types'
 import { ListingLink } from '../../components'
 import { EditListingPaymentForm } from '../../forms'
 import { ensureOwnListing } from '../../util/data'
-import { types as sdkTypes } from '../../util/sdkLoader'
-import config from '../../config'
 
 import css from './EditListingPaymentPanel.css'
-
-const { Money } = sdkTypes
 
 const EditListingPaymentPanel = (props) => {
   const {
@@ -30,7 +26,6 @@ const EditListingPaymentPanel = (props) => {
 
   const classes = classNames(rootClassName || css.root, className)
   const currentListing = ensureOwnListing(listing)
-  const { publicData } = currentListing.attributes
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
   const panelTitle = isPublished ? (
