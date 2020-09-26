@@ -313,7 +313,6 @@
 .edit {
   @apply --marketplaceButtonStylesSecondary;
 
-  /* TODO: Odd font-size */
   font-size: 14px;
 
   /* Reset min-height from button styles */

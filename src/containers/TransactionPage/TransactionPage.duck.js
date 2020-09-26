@@ -392,7 +392,6 @@ const fetchMessages = (txId, page) => (dispatch, getState, sdk) => {
 
       // Check if totalItems has changed between fetched pagination pages
       // if totalItems has changed, fetch first page again to include new incoming messages.
-      // TODO if there're more than 100 incoming messages,
       // this should loop through most recent pages instead of fetching just the first one.
       if (totalItems > totalMessages && page > 1) {
         dispatch(fetchMessages(txId, 1))
@@ -432,7 +431,6 @@ export const sendMessage = (txId, message) => (dispatch, getState, sdk) => {
 
       // We fetch the first page again to add sent message to the page data
       // and update possible incoming messages too.
-      // TODO if there're more than 100 incoming messages,
       // this should loop through most recent pages instead of fetching just the first one.
       return dispatch(fetchMessages(txId, 1))
         .then(() => {

@@ -168,7 +168,6 @@ const examplesFor = (examples, group, componentName, exampleName) => {
 }
 
 const StyleguidePage = (props) => {
-  // TODO: importing all the examples will affect the module bundling
   // since examples call routeConfiguration without function wrapping
   // Furthermore, it would be nice to exclude styleguide away from actual app
   let allExamples = []

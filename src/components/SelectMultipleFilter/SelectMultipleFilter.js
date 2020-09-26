@@ -9,8 +9,8 @@ import { FilterPopup, FilterPlain } from '../../components'
 import css from './SelectMultipleFilter.css'
 
 // SelectMultipleFilter doesn't need array mutators since it doesn't require validation.
-// TODO: Live edit didn't work with FieldCheckboxGroup
-//       There's a mutation problem: formstate.dirty is not reliable with it.
+// Live edit didn't work with FieldCheckboxGroup
+// There's a mutation problem: formstate.dirty is not reliable with it.
 const GroupOfFieldCheckboxes = (props) => {
   const { id, className, name, options } = props
   return (

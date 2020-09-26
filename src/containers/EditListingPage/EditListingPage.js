@@ -144,7 +144,7 @@ export const EditListingPageComponent = (props) => {
       uploadImageError,
       createStripeAccountError,
     }
-    // TODO: is this dead code? (shouldRedirect is checked before)
+
     const newListingPublished =
       isDraftURI && currentListing && currentListingState !== LISTING_STATE_DRAFT
 

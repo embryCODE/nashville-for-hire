@@ -3,7 +3,6 @@ import { string, shape, number, object } from 'prop-types'
 // This MultiTouch lib is used for 2-finger panning.
 // which prevents user to experience map-scroll trap, while scrolling the page.
 // https://github.com/mapbox/mapbox-gl-js/issues/2618
-// TODO: we should add an overlay with text "use two fingers to pan".
 import MultiTouch from 'mapbox-gl-multitouch'
 import uniqueId from 'lodash/uniqueId'
 import { circlePolyline } from '../../util/maps'

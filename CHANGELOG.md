@@ -1076,7 +1076,6 @@ There was also a couple of bug fixes you should check carefully:
 - [change] Change lodash import syntax to reduce bundle size (-15.14 KB)
   [#839](https://github.com/sharetribe/flex-template-web/pull/839)
 - [fix] Use https instead of git to access SDK repo for Heroku build (now that the repo is public).
-  TODO: create SDK releases instead of using direct refs to single commit.
   [#841](https://github.com/sharetribe/flex-template-web/pull/841)
 - [fix] Typo fix for background-color
   [#842](https://github.com/sharetribe/flex-template-web/pull/842)

@@ -124,7 +124,6 @@ export const isTransactionInitiateAmountTooLowError = (error) => {
     let isAmountTooLow = false
 
     try {
-      // TODO: This is a temporary solution until a proper error code
       // for this specific error is received in the response.
       const msg = apiError.meta.stripeMessage
       isAmountTooLow =
