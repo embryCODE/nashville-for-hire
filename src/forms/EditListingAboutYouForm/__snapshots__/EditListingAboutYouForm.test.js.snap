@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EditListingAboutYouForm matches snapshot 1`] = `
+<form
+  action="/"
+  className=""
+  method="post"
+  onSubmit={[Function]}
+>
+  <div
+    className=""
+  >
+    <label
+      htmlFor="whyAreYouTheRightFit"
+    >
+      EditListingAboutYouForm.questionATitle
+    </label>
+    <input
+      autoFocus={true}
+      className=""
+      id="whyAreYouTheRightFit"
+      maxLength={60}
+      name="whyAreYouTheRightFit"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder="EditListingAboutYouForm.questionATitlePlaceholder"
+      type="text"
+      value=""
+    />
+  </div>
+  <div
+    className=""
+  >
+    <label
+      htmlFor="primaryGenres"
+    >
+      EditListingAboutYouForm.questionBTitle
+    </label>
+    <input
+      autoFocus={true}
+      className=""
+      id="primaryGenres"
+      maxLength={60}
+      name="primaryGenres"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder="EditListingAboutYouForm.questionBTitlePlaceholder"
+      type="text"
+      value=""
+    />
+  </div>
+  <div
+    className=""
+  >
+    <label
+      htmlFor="experience"
+    >
+      EditListingAboutYouForm.questionCTitle
+    </label>
+    <input
+      autoFocus={true}
+      className=""
+      id="experience"
+      maxLength={60}
+      name="experience"
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder="EditListingAboutYouForm.questionCTitlePlaceholder"
+      type="text"
+      value=""
+    />
+  </div>
+  <button
+    className=""
+    disabled={true}
+    type="submit"
+  >
+    Save description
+  </button>
+</form>
+`;

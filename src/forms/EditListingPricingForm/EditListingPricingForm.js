@@ -16,10 +16,9 @@ import pricingOptions from '../../util/pricingOptions'
 const { Money } = sdkTypes
 
 export const EditListingPricingFormComponent = (props) => {
-  return (< FinalForm
-      {...
-        props
-      }
+  return (
+    <FinalForm
+      {...props}
       render={(formRenderProps) => {
         const {
           serviceType,
@@ -69,27 +68,30 @@ export const EditListingPricingFormComponent = (props) => {
           <Form onSubmit={handleSubmit} className={classes}>
             {updateListingError ? (
               <p className={css.error}>
-                <FormattedMessage id="EditListingPricingForm.updateFailed"/>
+                <FormattedMessage id="EditListingPricingForm.updateFailed" />
               </p>
             ) : null}
             {showListingsError ? (
               <p className={css.error}>
-                <FormattedMessage id="EditListingPricingForm.showListingFailed"/>
+                <FormattedMessage id="EditListingPricingForm.showListingFailed" />
               </p>
             ) : null}
-            {priceOptionFields && priceOptionFields.map(({label, placeholder}, index) => {
-              return <FieldCurrencyInput
-                key={label}
-                id={`price_option_${index}`}
-                name={`price_option_${index}`}
-                className={css.priceInput}
-                autoFocus
-                label={label}
-                placeholder={placeholder}
-                currencyConfig={config.currencyConfig}
-                validate={priceValidators}
-              />
-            })}
+            {priceOptionFields &&
+              priceOptionFields.map(({ label, placeholder }, index) => {
+                return (
+                  <FieldCurrencyInput
+                    key={label}
+                    id={`price_option_${index}`}
+                    name={`price_option_${index}`}
+                    className={css.priceInput}
+                    autoFocus
+                    label={label}
+                    placeholder={placeholder}
+                    currencyConfig={config.currencyConfig}
+                    validate={priceValidators}
+                  />
+                )
+              })}
             <Button
               className={css.submitButton}
               type="submit"
@@ -101,8 +103,7 @@ export const EditListingPricingFormComponent = (props) => {
             </Button>
           </Form>
         )
-      }
-      }
+      }}
     />
   )
 }

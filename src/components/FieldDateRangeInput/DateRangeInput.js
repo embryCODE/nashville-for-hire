@@ -216,6 +216,7 @@ class DateRangeInputComponent extends Component {
       children,
       render,
       timeSlots,
+      checked, // This also needs to NOT be sent to DateRangePicker
       ...datePickerProps
     } = this.props
     /* eslint-enable no-unused-vars */

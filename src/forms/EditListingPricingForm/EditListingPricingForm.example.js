@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import EditListingPricingForm from './EditListingPricingForm'
 
 export const Empty = {
@@ -12,6 +11,7 @@ export const Empty = {
     updateInProgress: false,
     disabled: false,
     ready: false,
+    serviceType: '',
   },
   group: 'forms',
 }

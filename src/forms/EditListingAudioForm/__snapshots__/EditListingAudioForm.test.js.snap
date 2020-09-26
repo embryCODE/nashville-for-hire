@@ -1,14 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EditListingPhotosForm matches snapshot 1`] = `
+exports[`EditListingAudioForm matches snapshot 1`] = `
 <ReactFinalForm
+  audio={Array []}
+  audioUploadRequested={false}
   disabled={false}
   dispatch={[Function]}
   fetchErrors={null}
-  imageUploadRequested={false}
-  images={Array []}
   initialValues={
     Object {
+      "country": "US",
       "images": Array [],
     }
   }
@@ -25,7 +26,6 @@ exports[`EditListingPhotosForm matches snapshot 1`] = `
     }
   }
   onImageUpload={[Function]}
-  onImageUploadHandler={[Function]}
   onRemoveImage={[Function]}
   onSubmit={[Function]}
   onUpdateImageOrder={[Function]}

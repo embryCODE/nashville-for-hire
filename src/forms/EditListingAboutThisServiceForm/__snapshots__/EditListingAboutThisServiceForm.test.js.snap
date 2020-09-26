@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EditListingAboutYouForm matches snapshot 1`] = `
+exports[`EditListingAboutThisServiceForm matches snapshot 1`] = `
 <form
   action="/"
   className=""
@@ -11,20 +11,20 @@ exports[`EditListingAboutYouForm matches snapshot 1`] = `
     className=""
   >
     <label
-      htmlFor="title"
+      htmlFor="averageTurnAroundTime"
     >
-      EditListingAboutYouForm.title
+      EditListingAboutThisServiceForm.questionATitle
     </label>
     <input
       autoFocus={true}
       className=""
-      id="title"
+      id="averageTurnAroundTime"
       maxLength={60}
-      name="title"
+      name="averageTurnAroundTime"
       onBlur={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
-      placeholder="EditListingAboutYouForm.titlePlaceholder"
+      placeholder="EditListingAboutThisServiceForm.questionATitlePlaceholder"
       type="text"
       value=""
     />
@@ -33,38 +33,23 @@ exports[`EditListingAboutYouForm matches snapshot 1`] = `
     className=""
   >
     <label
-      htmlFor="category"
+      htmlFor="explainMore"
     >
-      EditListingAboutYouForm.categoryLabel
+      EditListingAboutThisServiceForm.questionBTitle
     </label>
-    <select
+    <input
+      autoFocus={true}
       className=""
-      id="category"
-      name="category"
+      id="explainMore"
+      maxLength={60}
+      name="explainMore"
       onBlur={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
+      placeholder="EditListingAboutThisServiceForm.questionBTitlePlaceholder"
+      type="text"
       value=""
-    >
-      <option
-        disabled={true}
-        value=""
-      >
-        EditListingAboutYouForm.categoryPlaceholder
-      </option>
-      <option
-        key="cat1"
-        value="cat1"
-      >
-        Cat 1
-      </option>
-      <option
-        key="cat2"
-        value="cat2"
-      >
-        Cat 2
-      </option>
-    </select>
+    />
   </div>
   <button
     className=""

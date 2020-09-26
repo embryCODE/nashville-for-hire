@@ -84,7 +84,7 @@ exports[`TopbarDesktop data matches snapshot 1`] = `
     </span>
   </a>
   <div
-    className="TopbarDesktop___StyledDiv-sc-1u53qzj-0 kVfoqQ"
+    className="TopbarDesktop___StyledDiv-sc-1u53qzj-0 calBgj"
   >
     <button
       className="sc-AxjAm hnTiyA"
