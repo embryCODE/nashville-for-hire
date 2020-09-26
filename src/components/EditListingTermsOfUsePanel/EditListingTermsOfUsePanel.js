@@ -89,7 +89,16 @@ const EditListingTermsOfUsePanel = (props) => {
         listingId={currentListing.id}
         initialValues={false}
         name={'agree'}
-        onSubmit={onSubmit}
+        onSubmit={(values) => {
+          const updateValues = {
+            // I really don't understand what Final Form is doing with the checkbox.
+            publicData: {
+              agreeToTermsOfUse: Array.isArray(values.agree) && values.agree[0] === 'agree',
+            },
+          }
+
+          onSubmit(updateValues)
+        }}
         onChange={onChange}
         saveActionMsg={submitButtonText}
         disabled={disabled}

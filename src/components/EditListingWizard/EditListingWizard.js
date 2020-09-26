@@ -100,6 +100,7 @@ const tabCompleted = (tab, listing) => {
       return !!title
     case PRICING:
       let valid = false
+      // eslint-disable-next-line
       for (const prop in publicData) {
         if (publicData.hasOwnProperty(prop) && prop.match(/price_option/g)) {
           valid = Boolean(publicData[prop])
