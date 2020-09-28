@@ -114,8 +114,8 @@ const tabCompleted = (tab, listing) => {
       const { whyAreYouTheRightFit, primaryGenres, experience } = publicData
       return !!whyAreYouTheRightFit && !!primaryGenres && !!experience
     case ABOUTTHISSERVICE:
-      const { averageTurnAroundTime, explainMore } = publicData
-      return !!averageTurnAroundTime && !!explainMore
+      const { averageTurnaroundTime, explainMore } = publicData
+      return !!averageTurnaroundTime && !!explainMore
     case PAYMENT:
       const { payPalEmail, phoneNumber } = publicData
       return !!payPalEmail && !!phoneNumber
