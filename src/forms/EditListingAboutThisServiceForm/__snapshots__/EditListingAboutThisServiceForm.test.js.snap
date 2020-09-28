@@ -11,16 +11,16 @@ exports[`EditListingAboutThisServiceForm matches snapshot 1`] = `
     className=""
   >
     <label
-      htmlFor="averageTurnAroundTime"
+      htmlFor="averageTurnaroundTime"
     >
       EditListingAboutThisServiceForm.questionATitle
     </label>
     <input
       autoFocus={true}
       className=""
-      id="averageTurnAroundTime"
+      id="averageTurnaroundTime"
       maxLength={60}
-      name="averageTurnAroundTime"
+      name="averageTurnaroundTime"
       onBlur={[Function]}
       onChange={[Function]}
       onFocus={[Function]}

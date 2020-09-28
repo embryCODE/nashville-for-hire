@@ -145,7 +145,7 @@ const TopbarDesktop = (props) => {
       </NamedLink>
       {search}
       <NamedLink className={css.createListingLink} name="NewListingPage">
-        <span className={css.createListing}>
+        <span className={css.createListing} data-testid="Become a seller link">
           <FormattedMessage id="TopbarDesktop.createListing" />
         </span>
       </NamedLink>
