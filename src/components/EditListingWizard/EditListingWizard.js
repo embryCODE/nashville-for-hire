@@ -29,7 +29,7 @@ import EditListingWizardTab, {
   PHOTOS,
   ABOUTTHISSERVICE,
   INSTRUMENT,
-  PAYMENT,
+  CONTACT,
   TERMSOFUSE,
 } from './EditListingWizardTab'
 import css from './EditListingWizard.css'
@@ -45,7 +45,7 @@ export const TABS = [
   ABOUTTHISSERVICE,
   PHOTOS,
   AUDIO,
-  PAYMENT,
+  CONTACT,
   TERMSOFUSE,
 ]
 
@@ -69,8 +69,8 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelPolicy'
   } else if (tab === PRICING) {
     key = 'EditListingWizard.tabLabelPricing'
-  } else if (tab === PAYMENT) {
-    key = 'EditListingWizard.tabLabelPayment'
+  } else if (tab === CONTACT) {
+    key = 'EditListingWizard.tabLabelContact'
   } else if (tab === PHOTOS) {
     key = 'EditListingWizard.tabLabelPhotos'
   } else if (tab === TERMSOFUSE) {
@@ -116,9 +116,9 @@ const tabCompleted = (tab, listing) => {
     case ABOUTTHISSERVICE:
       const { averageTurnAroundTime, explainMore } = publicData
       return !!averageTurnAroundTime && !!explainMore
-    case PAYMENT:
-      const { payPalEmail, phoneNumber } = publicData
-      return !!payPalEmail && !!phoneNumber
+    case CONTACT:
+      const { phoneNumber } = publicData
+      return !!phoneNumber
     case TERMSOFUSE:
       // TODO: Write validation
       return true

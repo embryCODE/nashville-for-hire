@@ -1,6 +1,6 @@
 export { default as BookingDatesForm } from './BookingDatesForm/BookingDatesForm';
 export { default as ContactDetailsForm } from './ContactDetailsForm/ContactDetailsForm';
-export { default as EditListingPaymentForm } from './EditListingPaymentForm/EditListingPaymentForm';
+export { default as EditListingContactForm } from './EditListingContactForm/EditListingContactForm';
 export { default as EditListingAudioForm } from './EditListingAudioForm/EditListingAudioForm';
 export { default as EditListingAvailabilityForm } from './EditListingAvailabilityForm/EditListingAvailabilityForm';
 export { default as EditListingServiceTypeForm } from './EditListingServiceTypeForm/EditListingServiceTypeForm';
