@@ -13,6 +13,9 @@
     "REACT_APP_STRIPE_PUBLISHABLE_KEY": {
       "description": "Stripe publishable API key for generating tokens with Stripe API. Use test key (prefix pktest) for development."
     },
+    "REACT_APP_STRIPE_PAYOUT_KEY": {
+      "description": "Stripe secret API key for sending payout methods with Stripe API. Use test key (prefix sktest) for development."
+    },
     "REACT_APP_SHARETRIBE_MARKETPLACE_CURRENCY": {
       "description": "The currency used in the Marketplace as ISO 4217 currency code. For example: USD, EUR, CAD, AUD, etc.",
       "value": "USD"

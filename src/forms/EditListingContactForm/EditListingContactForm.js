@@ -6,9 +6,9 @@ import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl'
 import classNames from 'classnames'
 import { propTypes } from '../../util/types'
 import { Button, Form, FieldTextInput } from '../../components'
-import css from './EditListingPaymentForm.css'
+import css from './EditListingContactForm.css'
 
-export const EditListingPaymentFormComponent = (props) => {
+export const EditListingContactFormComponent = (props) => {
   return (< FinalForm
       {...
         props
@@ -34,37 +34,23 @@ export const EditListingPaymentFormComponent = (props) => {
         const submitDisabled = invalid || disabled || submitInProgress
         const { updateListingError, showListingsError } = fetchErrors || {}
 
-        const questionATitle = intl.formatMessage({ id: 'EditListingPaymentForm.questionATitle' })
-        const questionATitlePlaceholderMessage = intl.formatMessage({
-          id: 'EditListingPaymentForm.questionATitlePlaceholder',
-        })
-        const questionBTitle = intl.formatMessage({ id: 'EditListingPaymentForm.questionBTitle' })
+        const questionBTitle = intl.formatMessage({ id: 'EditListingContactForm.questionBTitle' })
         const questionBTitlePlaceholderMessage = intl.formatMessage({
-          id: 'EditListingPaymentForm.questionBTitlePlaceholder',
+          id: 'EditListingContactForm.questionBTitlePlaceholder',
         })
 
         return (
           <Form onSubmit={handleSubmit} className={classes}>
             {updateListingError ? (
               <p className={css.error}>
-                <FormattedMessage id="EditListingPaymentForm.updateFailed"/>
+                <FormattedMessage id="EditListingContactForm.updateFailed"/>
               </p>
             ) : null}
             {showListingsError ? (
               <p className={css.error}>
-                <FormattedMessage id="EditListingPaymentForm.showListingFailed"/>
+                <FormattedMessage id="EditListingContactForm.showListingFailed"/>
               </p>
             ) : null}
-
-            <FieldTextInput
-              id="payPalEmail"
-              name="payPalEmail"
-              className={css.title}
-              type="text"
-              label={questionATitle}
-              placeholder={questionATitlePlaceholderMessage}
-              autoFocus
-            />
 
             <FieldTextInput
               id="phoneNumber"
@@ -91,9 +77,9 @@ export const EditListingPaymentFormComponent = (props) => {
     />
   )
 }
-EditListingPaymentFormComponent.defaultProps = { fetchErrors: null }
+EditListingContactFormComponent.defaultProps = { fetchErrors: null }
 
-EditListingPaymentFormComponent.propTypes = {
+EditListingContactFormComponent.propTypes = {
   intl: intlShape.isRequired,
   onSubmit: func.isRequired,
   saveActionMsg: string.isRequired,
@@ -107,4 +93,4 @@ EditListingPaymentFormComponent.propTypes = {
   }),
 }
 
-export default compose(injectIntl)(EditListingPaymentFormComponent)
+export default compose(injectIntl)(EditListingContactFormComponent)

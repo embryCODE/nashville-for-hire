@@ -4,12 +4,12 @@ import classNames from 'classnames'
 import { FormattedMessage } from '../../util/reactIntl'
 import { LISTING_STATE_DRAFT } from '../../util/types'
 import { ListingLink } from '../../components'
-import { EditListingPaymentForm } from '../../forms'
+import { EditListingContactForm } from '../../forms'
 import { ensureOwnListing } from '../../util/data'
 
-import css from './EditListingPaymentPanel.css'
+import css from './EditListingContactPanel.css'
 
-const EditListingPaymentPanel = (props) => {
+const EditListingContactPanel = (props) => {
   const {
     className,
     rootClassName,
@@ -30,15 +30,15 @@ const EditListingPaymentPanel = (props) => {
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
   const panelTitle = isPublished ? (
     <FormattedMessage
-      id="EditListingPaymentPanel.title"
+      id="EditListingContactPanel.title"
       values={{ listingTitle: <ListingLink listing={listing} /> }}
     />
   ) : (
-    <FormattedMessage id="EditListingPaymentPanel.createListingTitle" />
+    <FormattedMessage id="EditListingContactPanel.createListingTitle" />
   )
 
   const form = (
-    <EditListingPaymentForm
+    <EditListingContactForm
       className={css.form}
       initialValues={{}}
       onSubmit={(e) => {
@@ -64,13 +64,13 @@ const EditListingPaymentPanel = (props) => {
 
 const { func, object, string, bool } = PropTypes
 
-EditListingPaymentPanel.defaultProps = {
+EditListingContactPanel.defaultProps = {
   className: null,
   rootClassName: null,
   listing: null,
 }
 
-EditListingPaymentPanel.propTypes = {
+EditListingContactPanel.propTypes = {
   className: string,
   rootClassName: string,
 
@@ -87,4 +87,4 @@ EditListingPaymentPanel.propTypes = {
   errors: object.isRequired,
 }
 
-export default EditListingPaymentPanel
+export default EditListingContactPanel
