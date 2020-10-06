@@ -144,7 +144,6 @@ export class EditListingAudioFormComponent extends Component {
                 type="submit"
                 inProgress={submitInProgress}
                 disabled={!submitDisabled}
-                // ready={submitReady}
               >
                 {saveActionMsg}
               </Button>
