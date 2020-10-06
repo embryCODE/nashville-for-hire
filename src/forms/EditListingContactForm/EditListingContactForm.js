@@ -54,7 +54,7 @@ export const EditListingContactFormComponent = (props) => {
           },
         )
 
-        const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH)
+        const maxLength15Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH)
 
         return (
           <Form onSubmit={handleSubmit} className={classes}>
@@ -80,7 +80,7 @@ export const EditListingContactFormComponent = (props) => {
               label={questionBTitle}
               placeholder={questionBTitlePlaceholderMessage}
               maxLength={TITLE_MAX_LENGTH}
-              validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
+              validate={composeValidators(required(titleRequiredMessage), maxLength15Message)}
               autoFocus
             />
             <Button
