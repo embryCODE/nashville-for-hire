@@ -100,8 +100,6 @@ const EditListingAboutThisServiceFormComponent = (props) => (
             label={questionBTitle}
             placeholder={questionBTitlePlaceholderMessage}
             maxLength={TITLE_MAX_LENGTH}
-            validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
-            autoFocus
           />
 
           <Button

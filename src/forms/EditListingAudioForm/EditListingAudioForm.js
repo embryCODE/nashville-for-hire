@@ -3,7 +3,6 @@ import { array, bool, func, shape, string } from 'prop-types'
 import { compose } from 'redux'
 import { Form as FinalForm } from 'react-final-form'
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl'
-import isEqual from 'lodash/isEqual'
 import classNames from 'classnames'
 import { propTypes } from '../../util/types'
 import { Button, Form } from '../../components'
@@ -16,18 +15,18 @@ const ACCEPT_AUDIO = 'audio/*'
 export class EditListingAudioFormComponent extends Component {
   constructor(props) {
     super(props)
-    this.state = { audioUploadRequested: false, currentFileName: '', currentFileProgress: 0  }
+    this.state = { audioUploadRequested: false, currentFileName: '', currentFileProgress: 0 }
     this.uploader = null
     this.handleUpload = this.handleUpload.bind(this)
     this.handleUploadProgress = this.handleUploadProgress.bind(this)
-    this.submittedAudio = []
+    this.submittedAudio = props.audio
   }
 
   handleUploadProgress({ type, value, fileName }) {
     if (type === 'fileName') {
-      this.setState({currentFileName: fileName})
+      this.setState({ currentFileName: fileName })
     } else {
-      this.setState({currentFileProgress: value})
+      this.setState({ currentFileProgress: value })
     }
   }
 
@@ -46,18 +45,11 @@ export class EditListingAudioFormComponent extends Component {
             className,
             fetchErrors,
             audio,
-            audioUploadRequested,
-            invalid,
-            disabled,
             bypassHandleSubmit,
-            ready,
             saveActionMsg,
-            updated,
-            updateInProgress,
           } = formRenderProps
 
-          const { updateListingError } =
-            fetchErrors || {}
+          const { updateListingError } = fetchErrors || {}
 
           const submittedOnce = this.submittedAudio.length > 0
           // audio can contain added audios (with temp ids) and submitted audios with uniq ids.
@@ -65,34 +57,46 @@ export class EditListingAudioFormComponent extends Component {
             audio.map((i) => (typeof i.id === 'string' ? i.audioId : i.id))
           const audioIdsFromProps = arrayOfAudioIds(audio)
           const audioIdsFromPreviousSubmit = arrayOfAudioIds(this.submittedAudio)
-          const audioArrayHasSameImages = isEqual(audioIdsFromProps, audioIdsFromPreviousSubmit)
-          const pristineSinceLastSubmit = submittedOnce && audioArrayHasSameImages
 
-          const submitReady = (updated && pristineSinceLastSubmit) || ready
-          const submitInProgress = updateInProgress
-          const submitDisabled =
-            invalid || disabled || submitInProgress || audioUploadRequested || ready
+          const submitInProgress =
+            this.state.audioUploadRequested && this.state.currentFileProgress !== 100
+          const submitDisabled = submittedOnce
 
           const classes = classNames(css.root, className)
 
-          const listAudio = this.submittedAudio.length > 0 ?
-            (<ul>
-              { this.submittedAudio.map((fileName, index) =>
-                <li key={fileName + index}>
-                  {fileName}
-                  { this.state.currentFileName === fileName ? <div style={{width: 200, height: 15, border: '1px solid red'}}>
-                    <div style={{ width: this.state.currentFileProgress * 2, height: 15, background: 'green' }}/>
-                  </div>:<div style={{ width: 200, height: 15, background: 'green' }}/>}
-                </li>)
-              }
-            </ul>) : <></>
+          const listAudio =
+            this.submittedAudio.length > 0 ? (
+              <ul>
+                {this.submittedAudio.map((fileName, index) => (
+                  <li key={fileName + index}>
+                    {fileName}
+                    {this.state.currentFileName === fileName ? (
+                      <div style={{ width: 200, height: 15, border: '1px solid red' }}>
+                        <div
+                          style={{
+                            width: this.state.currentFileProgress * 2,
+                            height: 15,
+                            background: 'green',
+                          }}
+                        />
+                      </div>
+                    ) : (
+                      <div style={{ width: 200, height: 15, background: 'green' }} />
+                    )}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <></>
+            )
 
           return (
             <Form
               className={classes}
               onSubmit={(e) => {
-                bypassHandleSubmit({ audio: this.submittedAudio})
                 e.preventDefault()
+                bypassHandleSubmit({ audio: this.submittedAudio })
+                console.log({ audio: this.submittedAudio })
               }}
             >
               {updateListingError ? (
@@ -101,7 +105,7 @@ export class EditListingAudioFormComponent extends Component {
                 </p>
               ) : null}
 
-              { listAudio }
+              {listAudio}
 
               <ReactS3Uploader
                 signingUrl="/s3/sign"
@@ -112,22 +116,22 @@ export class EditListingAudioFormComponent extends Component {
                   this.handleUploadProgress({ type: 'fileName', fileName: res.filename })
                   this.handleUpload(res.filename)
                 }}
-                onProgress={ (value) => {
+                onProgress={(value) => {
                   this.handleUploadProgress({ type: 'value', value })
                 }}
-                onError={ (err) => {
+                onError={(err) => {
                   console.log({ onError: err })
                 }}
-                onFinish={()=> {
+                onFinish={() => {
                   this.setState({ audioUploadRequested: false })
                   this.handleUploadProgress({ type: 'fileName', fileName: '' })
                   this.handleUploadProgress({ type: 'value', value: 0 })
                 }} // save to publicData as array of ['filename']
-                uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}  // this is the default
+                uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }} // this is the default
                 contentDisposition="auto"
-                scrubFilename={(filename) => filename.replace(/[^\w\d_\-.]+/ig, '')}
+                scrubFilename={(filename) => filename.replace(/[^\w\d_\-.]+/gi, '')}
                 server="http://localhost:9000"
-                inputRef={cmp => this.uploadInput = cmp}
+                inputRef={(cmp) => (this.uploadInput = cmp)}
                 autoUpload={true}
               />
 
@@ -139,8 +143,8 @@ export class EditListingAudioFormComponent extends Component {
                 className={css.submitButton}
                 type="submit"
                 inProgress={submitInProgress}
-                disabled={submitDisabled}
-                ready={submitReady}
+                disabled={!submitDisabled}
+                // ready={submitReady}
               >
                 {saveActionMsg}
               </Button>
