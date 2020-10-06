@@ -136,9 +136,6 @@ const EditListingWizardTab = (props) => {
         ? updateValuesWithImages
         : { ...updateValuesWithImages, id: currentListing.id }
 
-      console.log('upsertValues:')
-      console.table(upsertValues)
-
       onUpsertListingDraft(tab, upsertValues)
         .then((r) => {
           if (tab !== marketplaceTabs[marketplaceTabs.length - 1]) {
