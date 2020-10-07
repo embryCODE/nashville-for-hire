@@ -103,7 +103,8 @@ const tabCompleted = (tab, listing) => {
       }
       return !!valid
     case AUDIO:
-      return true
+      const { audio } = publicData
+      return audio && audio.length > 0
     case ABOUTYOU:
       const { whyAreYouTheRightFit, primaryGenres, experience } = publicData
       return !!whyAreYouTheRightFit && !!primaryGenres && !!experience
