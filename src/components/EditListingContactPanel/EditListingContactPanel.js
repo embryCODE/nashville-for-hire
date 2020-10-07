@@ -26,6 +26,7 @@ const EditListingContactPanel = (props) => {
 
   const classes = classNames(rootClassName || css.root, className)
   const currentListing = ensureOwnListing(listing)
+  const { publicData } = currentListing.attributes
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
   const panelTitle = isPublished ? (
@@ -40,7 +41,7 @@ const EditListingContactPanel = (props) => {
   const form = (
     <EditListingContactForm
       className={css.form}
-      initialValues={{}}
+      initialValues={publicData}
       onSubmit={(e) => {
         onSubmit({ publicData: e })
       }}
