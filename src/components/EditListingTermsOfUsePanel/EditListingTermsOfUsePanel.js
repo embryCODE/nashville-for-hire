@@ -27,7 +27,6 @@ const EditListingTermsOfUsePanel = (props) => {
   const classes = classNames(rootClassName || css.root, className)
   const currentListing = ensureOwnListing(listing)
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
-  console.log(currentListing.attributes.publicData)
   return (
     <div className={classes}>
       <h1 className={css.title}>
