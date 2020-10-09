@@ -7,7 +7,6 @@ import css from './FieldCheckbox.css'
 
 const IconCheckbox = (props) => {
   const { className, checkedClassName, boxClassName } = props
-  console.log(props)
   return (
     <svg className={className} width="14" height="14" xmlns="http://www.w3.org/2000/svg">
       <g fill="none" fillRule="evenodd">
