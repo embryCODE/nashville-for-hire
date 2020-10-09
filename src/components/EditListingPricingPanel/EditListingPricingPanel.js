@@ -35,17 +35,25 @@ const EditListingPricingPanel = (props) => {
   const classes = classNames(rootClassName || css.root, className)
   const currentListing = ensureOwnListing(listing)
 
-  const { price } = currentListing.attributes
+  const { price, publicData } = currentListing.attributes
 
-  const priceOptionFields = pricingOptions[serviceType]
+  const getServiceTypeByAnyMeans = serviceType ? serviceType : publicData.category
+
+  const priceOptionFields = pricingOptions[getServiceTypeByAnyMeans]
+  const priceOptionContactFields = priceOptionFields.map(option => `${option}_contact`)
 
   const priceOptionsForInitialValues = {}
 
   // eslint-disable-next-line
-  for (const prop in priceOptionFields) {
+  for (const prop in [...priceOptionFields]) {
     if (priceOptionFields.hasOwnProperty(prop)) {
       const optionId = `price_option_${prop}`
-      priceOptionsForInitialValues[optionId] = new Money(0, 'USD')
+      const contact = `${optionId}_contact`
+      priceOptionsForInitialValues[optionId] = new Money(
+        (publicData[optionId] && parseInt(publicData[optionId].amount.replace(/[$.]/g, ''))) || 0,
+        'USD',
+      )
+      priceOptionsForInitialValues[contact] = publicData[contact]
     }
   }
 
@@ -64,7 +72,7 @@ const EditListingPricingPanel = (props) => {
   const priceCurrencyValid = price instanceof Money ? price.currency === config.currency : true
   const form = priceCurrencyValid ? (
     <EditListingPricingForm
-      serviceType={serviceType}
+      serviceType={getServiceTypeByAnyMeans}
       className={css.form}
       initialValues={initialValues}
       onSubmit={(values) => {
@@ -75,12 +83,14 @@ const EditListingPricingPanel = (props) => {
 
         // eslint-disable-next-line
         for (const prop in values) {
-          if (values.hasOwnProperty(prop) && prop.match(/price_option/g)) {
+          if (!prop.match(/contact/g)) {
             const priceOptionToBasicObject = {
               amount: values[prop].amount,
               currency: values[prop].currency,
             }
             updatedValues.publicData[prop] = priceOptionToBasicObject
+          } else {
+            updatedValues.publicData[prop] = values[prop]
           }
         }
 
