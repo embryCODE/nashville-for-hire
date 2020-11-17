@@ -30,11 +30,15 @@ const EditListingAboutThisServiceFormComponent = (props) => (
         fetchErrors,
       } = formRenderProps
 
-      const questionATitle = intl.formatMessage({ id: 'EditListingAboutThisServiceForm.questionATitle' })
+      const questionATitle = intl.formatMessage({
+        id: 'EditListingAboutThisServiceForm.questionATitle',
+      })
       const questionATitlePlaceholderMessage = intl.formatMessage({
         id: 'EditListingAboutThisServiceForm.questionATitlePlaceholder',
       })
-      const questionBTitle = intl.formatMessage({ id: 'EditListingAboutThisServiceForm.questionBTitle' })
+      const questionBTitle = intl.formatMessage({
+        id: 'EditListingAboutThisServiceForm.questionBTitle',
+      })
       const questionBTitlePlaceholderMessage = intl.formatMessage({
         id: 'EditListingAboutThisServiceForm.questionBTitlePlaceholder',
       })
@@ -81,8 +85,8 @@ const EditListingAboutThisServiceFormComponent = (props) => (
           {errorMessageUpdateListing}
           {errorMessageShowListing}
           <FieldTextInput
-            id="averageTurnAroundTime"
-            name="averageTurnAroundTime"
+            id="averageTurnaroundTime"
+            name="averageTurnaroundTime"
             className={css.title}
             type="text"
             label={questionATitle}
