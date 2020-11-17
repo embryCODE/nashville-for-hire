@@ -5,7 +5,7 @@ import { Form as FinalForm } from 'react-final-form'
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl'
 import classNames from 'classnames'
 import { propTypes } from '../../util/types'
-import { Button, Form, FieldTextInput } from '../../components'
+import { Button, Form } from '../../components'
 import css from './EditListingContactForm.css'
 import { composeValidators, maxLength, required } from '../../util/validators'
 import FieldPhoneNumberInput from '../../components/FieldPhoneNumberInput/FieldPhoneNumberInput'
@@ -14,13 +14,11 @@ import * as normalizePhoneNumberUS from '../PayoutDetailsForm/normalizePhoneNumb
 const TITLE_MAX_LENGTH = 15
 
 export const EditListingContactFormComponent = (props) => {
-  return (< FinalForm
-      {...
-        props
-      }
+  return (
+    <FinalForm
+      {...props}
       render={(formRenderProps) => {
         const {
-          initialValues,
           className,
           disabled,
           ready,
@@ -61,19 +59,18 @@ export const EditListingContactFormComponent = (props) => {
           <Form onSubmit={handleSubmit} className={classes}>
             {updateListingError ? (
               <p className={css.error}>
-                <FormattedMessage id="EditListingContactForm.updateFailed"/>
+                <FormattedMessage id="EditListingContactForm.updateFailed" />
               </p>
             ) : null}
             {showListingsError ? (
               <p className={css.error}>
-                <FormattedMessage id="EditListingContactForm.showListingFailed"/>
+                <FormattedMessage id="EditListingContactForm.showListingFailed" />
               </p>
             ) : null}
 
             <FieldPhoneNumberInput
               id="phoneNumber"
               name="phoneNumber"
-              className={css.title}
               type="tel"
               autoComplete="tel-national"
               format={normalizePhoneNumberUS.format}
@@ -95,8 +92,7 @@ export const EditListingContactFormComponent = (props) => {
             </Button>
           </Form>
         )
-      }
-      }
+      }}
     />
   )
 }

@@ -39,17 +39,19 @@ export const EditListingPricingFormComponent = (props) => {
       }
       return onSubmit(values)
     }
-  }, [priceErrors])
+  }, [priceErrors, form, isValid, onSubmit])
 
   useEffect(() => {
+    // eslint bug
+    // eslint-disable-next-line
     for (const prop in initialValues) {
-      if (prop.includes('contact')) {
+      if (initialValues.hasOwnProperty(prop) && prop.includes('contact')) {
         if (initialValues[prop] && initialValues[prop].checked) {
           setHidePriceInput([...hidePriceInput, prop.replace('_contact', '')])
         }
       }
     }
-  }, [])
+  }, [hidePriceInput, initialValues])
 
   return (
     <FinalForm
@@ -126,6 +128,8 @@ export const EditListingPricingFormComponent = (props) => {
           // we will say is the error list length === price options length
           const errorsOn = []
 
+          // eslint bug
+          // eslint-disable-next-line
           for (const prop in priceOptionValues) {
             const price =
               !prop.includes(`_contact`) &&

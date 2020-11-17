@@ -40,7 +40,6 @@ const EditListingPricingPanel = (props) => {
   const getServiceTypeByAnyMeans = serviceType ? serviceType : publicData.category
 
   const priceOptionFields = pricingOptions[getServiceTypeByAnyMeans]
-  const priceOptionContactFields = priceOptionFields.map(option => `${option}_contact`)
 
   const priceOptionsForInitialValues = {}
 
@@ -83,11 +82,12 @@ const EditListingPricingPanel = (props) => {
 
         // eslint-disable-next-line
         for (const prop in values) {
-          if (!prop.match(/contact/g)) {
+          if (values.hasOwnProperty(prop) && !prop.match(/contact/g)) {
             const priceOptionToBasicObject = {
               amount: values[prop].amount,
               currency: values[prop].currency,
             }
+
             updatedValues.publicData[prop] = priceOptionToBasicObject
           } else {
             updatedValues.publicData[prop] = values[prop]

@@ -5,13 +5,10 @@ import { Form as FinalForm } from 'react-final-form'
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl'
 import classNames from 'classnames'
 import { propTypes } from '../../util/types'
-import { maxLength, required, composeValidators } from '../../util/validators'
 import { Form, Button, FieldTextInput } from '../../components'
 import CustomCategorySelectFieldMaybe from './CustomCategorySelectFieldMaybe'
 
 import css from './EditListingServiceTypeForm.css'
-
-const TITLE_MAX_LENGTH = 60
 
 const EditListingServiceTypeFormComponent = (props) => (
   <FinalForm
@@ -36,17 +33,6 @@ const EditListingServiceTypeFormComponent = (props) => (
       const titlePlaceholderMessage = intl.formatMessage({
         id: 'EditListingServiceTypeForm.titlePlaceholder',
       })
-      const titleRequiredMessage = intl.formatMessage({
-        id: 'EditListingServiceTypeForm.titleRequired',
-      })
-      const maxLengthMessage = intl.formatMessage(
-        { id: 'EditListingServiceTypeForm.maxLength' },
-        {
-          maxLength: TITLE_MAX_LENGTH,
-        },
-      )
-
-      const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH)
 
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {}
       const errorMessageUpdateListing = updateListingError ? (

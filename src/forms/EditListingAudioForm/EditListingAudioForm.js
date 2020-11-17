@@ -41,22 +41,11 @@ export class EditListingAudioFormComponent extends Component {
         {...this.props}
         audioUploadRequested={this.state.audioUploadRequested}
         render={(formRenderProps) => {
-          const {
-            className,
-            fetchErrors,
-            audio,
-            bypassHandleSubmit,
-            saveActionMsg,
-          } = formRenderProps
+          const { className, fetchErrors, bypassHandleSubmit, saveActionMsg } = formRenderProps
 
           const { updateListingError } = fetchErrors || {}
 
           const submittedOnce = this.submittedAudio.length > 0
-          // audio can contain added audios (with temp ids) and submitted audios with uniq ids.
-          const arrayOfAudioIds = (audio) =>
-            audio.map((i) => (typeof i.id === 'string' ? i.audioId : i.id))
-          const audioIdsFromProps = arrayOfAudioIds(audio)
-          const audioIdsFromPreviousSubmit = arrayOfAudioIds(this.submittedAudio)
 
           const submitInProgress =
             this.state.audioUploadRequested && this.state.currentFileProgress !== 100
