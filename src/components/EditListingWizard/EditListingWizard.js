@@ -20,15 +20,12 @@ import { StripeConnectAccountForm } from '../../forms'
 
 import EditListingWizardTab, {
   AUDIO,
-  AVAILABILITY,
   SERVICETYPE,
   ABOUTYOU,
-  FEATURES,
   POLICY,
   PRICING,
   PHOTOS,
   ABOUTTHISSERVICE,
-  INSTRUMENT,
   CONTACT,
   TERMSOFUSE,
 } from './EditListingWizardTab'
@@ -89,15 +86,13 @@ const tabLabel = (intl, tab) => {
  * @return true if tab / step is completed.
  */
 const tabCompleted = (tab, listing) => {
-  const { availabilityPlan, title, publicData } = listing.attributes
+  const { publicData } = listing.attributes
   const images = listing.images
-
-  // TODO: Maybe remove this
-  if (process.env.NODE_ENV === 'development') return true
 
   switch (tab) {
     case SERVICETYPE:
-      return !!title
+      const { category } = publicData
+      return !!category
     case PRICING:
       let valid = false
       // eslint-disable-next-line
@@ -108,31 +103,18 @@ const tabCompleted = (tab, listing) => {
       }
       return !!valid
     case AUDIO:
-      // TODO: Write validation
       return true
     case ABOUTYOU:
       const { whyAreYouTheRightFit, primaryGenres, experience } = publicData
       return !!whyAreYouTheRightFit && !!primaryGenres && !!experience
     case ABOUTTHISSERVICE:
-      const { averageTurnAroundTime, explainMore } = publicData
-      return !!averageTurnAroundTime && !!explainMore
+      const { averageTurnAroundTime } = publicData
+      return !!averageTurnAroundTime
     case CONTACT:
       const { phoneNumber } = publicData
       return !!phoneNumber
-    case TERMSOFUSE:
-      // TODO: Write validation
-      return true
-    case FEATURES:
-      return !!(publicData && publicData.amenities)
-    case POLICY:
-      return !!(publicData && typeof publicData.rules !== 'undefined')
-    case AVAILABILITY:
-      return !!availabilityPlan
     case PHOTOS:
       return images && images.length > 0
-    case INSTRUMENT:
-      // TODO: Write validation
-      return true
     default:
       return false
   }

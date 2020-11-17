@@ -24,7 +24,6 @@ class EditListingAudioPanel extends Component {
       panelUpdated,
       updateInProgress,
       onChange,
-      // onSubmit,
       onRemoveImage,
     } = this.props
 
@@ -33,6 +32,7 @@ class EditListingAudioPanel extends Component {
     const currentListing = ensureOwnListing(listing)
 
     const { publicData } = currentListing.attributes
+    const { audio = [] } = publicData
 
     const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
     const panelTitle = isPublished ? (
@@ -56,7 +56,7 @@ class EditListingAudioPanel extends Component {
           ready={ready}
           fetchErrors={errors}
           initialValues={{ publicData }}
-          audio={[]}
+          audio={audio}
           onSubmit={()=>null}
           bypassHandleSubmit={({ audio }) => bypassHandleSubmit({ publicData: {...publicData, audio}})}
           onChange={onChange}
@@ -90,7 +90,7 @@ EditListingAudioPanel.propTypes = {
   // We cannot use propTypes.listing since the listing might be a draft.
   listing: object,
 
-  onSubmit: func.isRequired,
+  bypassHandleSubmit: func.isRequired,
   onChange: func.isRequired,
   submitButtonText: string.isRequired,
   panelUpdated: bool.isRequired,

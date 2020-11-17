@@ -85,8 +85,6 @@ const EditListingServiceTypeFormComponent = (props) => (
             type="text"
             label={titleMessage}
             placeholder={titlePlaceholderMessage}
-            maxLength={TITLE_MAX_LENGTH}
-            validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
             autoFocus
           />
 

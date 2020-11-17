@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { bool, func, shape, string } from 'prop-types'
 import classNames from 'classnames'
 import { Form as FinalForm } from 'react-final-form'
@@ -10,70 +10,77 @@ import { Button, FieldCheckbox, Form } from '../../components'
 
 import css from './EditListingTermsOfUseForm.css'
 
-const EditListingTermsOfUseFormComponent = (props) => (
-  <FinalForm
-    {...props}
-    mutators={{ ...arrayMutators }}
-    render={(formRenderProps) => {
-      const {
-        disabled,
-        ready,
-        rootClassName,
-        className,
-        name,
-        handleSubmit,
-        pristine,
-        saveActionMsg,
-        updated,
-        updateInProgress,
-        fetchErrors,
-      } = formRenderProps
+const EditListingTermsOfUseFormComponent = (props) => {
+  const { initialValues } = props
+  const { agreeToTermsOfUse } = initialValues
+  const [submitDisabled, setSubmitDisabled] = useState(!agreeToTermsOfUse)
 
-      const classes = classNames(rootClassName || css.root, className)
-      const submitReady = (updated && pristine) || ready
-      const submitInProgress = updateInProgress
-      const submitDisabled = disabled || submitInProgress
+  return (<FinalForm
+      {...props}
+      mutators={{ ...arrayMutators }}
+      render={(formRenderProps) => {
+        const {
+          ready,
+          rootClassName,
+          className,
+          name,
+          handleSubmit,
+          pristine,
+          saveActionMsg,
+          updated,
+          updateInProgress,
+          fetchErrors,
+        } = formRenderProps
 
-      const { updateListingError, showListingsError } = fetchErrors || {}
-      const errorMessage = updateListingError ? (
-        <p className={css.error}>
-          <FormattedMessage id="EditListingTermsOfUseForm.updateFailed" />
-        </p>
-      ) : null
+        const classes = classNames(rootClassName || css.root, className)
+        const submitReady = (updated && pristine) || ready
+        const submitInProgress = updateInProgress
 
-      const errorMessageShowListing = showListingsError ? (
-        <p className={css.error}>
-          <FormattedMessage id="EditListingTermsOfUseForm.showListingFailed" />
-        </p>
-      ) : null
+        const { updateListingError, showListingsError } = fetchErrors || {}
+        const errorMessage = updateListingError ? (
+          <p className={css.error}>
+            <FormattedMessage id="EditListingTermsOfUseForm.updateFailed" />
+          </p>
+        ) : null
 
-      return (
-        <Form className={classes} onSubmit={handleSubmit}>
-          {errorMessage}
-          {errorMessageShowListing}
+        const errorMessageShowListing = showListingsError ? (
+          <p className={css.error}>
+            <FormattedMessage id="EditListingTermsOfUseForm.showListingFailed" />
+          </p>
+        ) : null
 
-          <FieldCheckbox
-            className={css.features}
-            id={name}
-            name={name}
-            label={'I agree to terms of use'}
-            value={'agree'}
-          />
+        return (
+          <Form className={classes} onSubmit={handleSubmit}>
+            {errorMessage}
+            {errorMessageShowListing}
 
-          <Button
-            className={css.submitButton}
-            type="submit"
-            inProgress={submitInProgress}
-            disabled={submitDisabled}
-            ready={submitReady}
-          >
-            {saveActionMsg}
-          </Button>
-        </Form>
-      )
-    }}
-  />
-)
+            <FieldCheckbox
+              className={css.features}
+              id={name}
+              name={name}
+              label={'I agree to terms of use'}
+              value={'agree'}
+              onClick={(val) => {
+                val.persist()
+                setSubmitDisabled(!submitDisabled)
+              }}
+            />
+
+            <Button
+              className={css.submitButton}
+              type="submit"
+              inProgress={submitInProgress}
+              disabled={submitDisabled}
+              ready={submitReady}
+            >
+              {saveActionMsg}
+            </Button>
+          </Form>
+        )
+      }}
+    />
+  )
+}
 
 EditListingTermsOfUseFormComponent.defaultProps = {
   rootClassName: null,

@@ -7,6 +7,11 @@ import classNames from 'classnames'
 import { propTypes } from '../../util/types'
 import { Button, Form, FieldTextInput } from '../../components'
 import css from './EditListingContactForm.css'
+import { composeValidators, maxLength, required } from '../../util/validators'
+import FieldPhoneNumberInput from '../../components/FieldPhoneNumberInput/FieldPhoneNumberInput'
+import * as normalizePhoneNumberUS from '../PayoutDetailsForm/normalizePhoneNumberUS'
+
+const TITLE_MAX_LENGTH = 15
 
 export const EditListingContactFormComponent = (props) => {
   return (< FinalForm
@@ -39,6 +44,18 @@ export const EditListingContactFormComponent = (props) => {
           id: 'EditListingContactForm.questionBTitlePlaceholder',
         })
 
+        const titleRequiredMessage = intl.formatMessage({
+          id: 'EditListingContactForm.phoneNumberRequired',
+        })
+        const maxLengthMessage = intl.formatMessage(
+          { id: 'EditListingServiceTypeForm.maxLength' },
+          {
+            maxLength: TITLE_MAX_LENGTH,
+          },
+        )
+
+        const maxLength15Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH)
+
         return (
           <Form onSubmit={handleSubmit} className={classes}>
             {updateListingError ? (
@@ -52,13 +69,18 @@ export const EditListingContactFormComponent = (props) => {
               </p>
             ) : null}
 
-            <FieldTextInput
+            <FieldPhoneNumberInput
               id="phoneNumber"
               name="phoneNumber"
               className={css.title}
-              type="text"
+              type="tel"
+              autoComplete="tel-national"
+              format={normalizePhoneNumberUS.format}
+              parse={normalizePhoneNumberUS.parse}
               label={questionBTitle}
               placeholder={questionBTitlePlaceholderMessage}
+              maxLength={TITLE_MAX_LENGTH}
+              validate={composeValidators(required(titleRequiredMessage), maxLength15Message)}
               autoFocus
             />
             <Button
