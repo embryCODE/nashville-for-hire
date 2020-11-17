@@ -20,6 +20,7 @@ export const EditListingContactFormComponent = (props) => {
       }
       render={(formRenderProps) => {
         const {
+          initialValues,
           className,
           disabled,
           ready,
@@ -39,9 +40,9 @@ export const EditListingContactFormComponent = (props) => {
         const submitDisabled = invalid || disabled || submitInProgress
         const { updateListingError, showListingsError } = fetchErrors || {}
 
-        const questionBTitle = intl.formatMessage({ id: 'EditListingContactForm.questionBTitle' })
-        const questionBTitlePlaceholderMessage = intl.formatMessage({
-          id: 'EditListingContactForm.questionBTitlePlaceholder',
+        const phoneNumber = intl.formatMessage({ id: 'EditListingContactForm.phoneNumber' })
+        const phoneNumberPlaceholderMessage = intl.formatMessage({
+          id: 'EditListingContactForm.phoneNumberPlaceholder',
         })
 
         const titleRequiredMessage = intl.formatMessage({
@@ -77,8 +78,8 @@ export const EditListingContactFormComponent = (props) => {
               autoComplete="tel-national"
               format={normalizePhoneNumberUS.format}
               parse={normalizePhoneNumberUS.parse}
-              label={questionBTitle}
-              placeholder={questionBTitlePlaceholderMessage}
+              label={phoneNumber}
+              placeholder={phoneNumberPlaceholderMessage}
               maxLength={TITLE_MAX_LENGTH}
               validate={composeValidators(required(titleRequiredMessage), maxLength15Message)}
               autoFocus
