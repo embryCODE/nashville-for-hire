@@ -121,6 +121,7 @@ const EditListingWizardTab = (props) => {
   }
 
   const onCompleteEditListingWizardTab = (tab, updateValues) => {
+    console.log({tab, updateValues})
     // Normalize images for API call
     const { images: updatedImages, ...otherValues } = updateValues
     const imageProperty =
