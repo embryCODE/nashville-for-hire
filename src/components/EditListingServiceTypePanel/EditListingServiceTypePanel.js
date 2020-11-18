@@ -40,7 +40,6 @@ const EditListingServiceTypePanel = (props) => {
     <FormattedMessage id="EditListingServiceTypePanel.createListingTitle" />
   )
 
-  // TODO: Extract this similar to <FormattedMessage />
   const panelInformation = (
     <p style={{ fontSize: 14 }}>
       <em>

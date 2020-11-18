@@ -13,7 +13,7 @@ describe('Happy paths', () => {
 describe.only('Create new seller', () => {
   it('should visit the seller creation page', function () {
     cy.server()
-    cy.route('POST','**/api/own_listings/update').as('updateListing')
+    cy.route('POST', '**/api/own_listings/update').as('updateListing')
 
     login()
 
@@ -51,6 +51,6 @@ describe.only('Create new seller', () => {
     cy.wait('@updateListing')
     cy.contains('Upload Your High Quality Photos')
 
-    // TODO: Figure out ingenious way to upload photos with Cypress and Final Form
+    // SOMEDAY: Figure out ingenious way to upload photos with Cypress and Final Form
   })
 })
