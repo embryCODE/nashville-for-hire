@@ -17,7 +17,6 @@ class EditListingAudioPanel extends Component {
       errors,
       disabled,
       ready,
-      bypassHandleSubmit,
       listing,
       onUpdateImageOrder,
       submitButtonText,
@@ -25,6 +24,7 @@ class EditListingAudioPanel extends Component {
       updateInProgress,
       onChange,
       onRemoveImage,
+      onSubmit,
     } = this.props
 
     const rootClass = rootClassName || css.root
@@ -44,21 +44,33 @@ class EditListingAudioPanel extends Component {
       <FormattedMessage id="EditListingAudioPanel.createListingTitle" />
     )
 
-    const panelInformation = (<p style={{fontSize: 14}}><em>Upload 1-4 audio samples that show what you can do.</em></p>)
+    const panelInformation = (
+      <p style={{ fontSize: 14 }}>
+        <em>Upload 1-4 audio samples that show what you can do.</em>
+      </p>
+    )
 
     return (
       <div className={classes}>
         <h1 className={css.title}>{panelTitle}</h1>
+
         {panelInformation}
+
         <EditListingAudioForm
           className={css.form}
           disabled={disabled}
           ready={ready}
           fetchErrors={errors}
-          initialValues={{ publicData }}
+          initialValues={publicData.audio || []}
           audio={audio}
-          onSubmit={()=>null}
-          bypassHandleSubmit={({ audio }) => bypassHandleSubmit({ publicData: {...publicData, audio}})}
+          bypassDefaultSubmit={(audio) => {
+            const updateValues = {
+              publicData: { audio },
+            }
+
+            onSubmit(updateValues)
+          }}
+          onSubmit={() => {}}
           onChange={onChange}
           onUpdateImageOrder={onUpdateImageOrder}
           onRemoveImage={onRemoveImage}
@@ -90,7 +102,6 @@ EditListingAudioPanel.propTypes = {
   // We cannot use propTypes.listing since the listing might be a draft.
   listing: object,
 
-  bypassHandleSubmit: func.isRequired,
   onChange: func.isRequired,
   submitButtonText: string.isRequired,
   panelUpdated: bool.isRequired,

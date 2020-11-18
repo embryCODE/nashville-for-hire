@@ -326,10 +326,9 @@ const EditListingWizardTab = (props) => {
         <EditListingAudioPanel
           {...panelProps(AUDIO)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
-          bypassHandleSubmit={(value) => {
+          onSubmit={(value) => {
             onCompleteEditListingWizardTab(tab, value)
           }}
-          onSubmit={() => null}
         />
       )
     }

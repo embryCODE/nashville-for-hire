@@ -42,8 +42,8 @@ const EditListingContactPanel = (props) => {
     <EditListingContactForm
       className={css.form}
       initialValues={publicData}
-      onSubmit={(e) => {
-        onSubmit({ publicData: e })
+      onSubmit={(publicData) => {
+        onSubmit({ publicData })
       }}
       onChange={onChange}
       saveActionMsg={submitButtonText}

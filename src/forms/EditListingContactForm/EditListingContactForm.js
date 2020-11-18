@@ -7,11 +7,8 @@ import classNames from 'classnames'
 import { propTypes } from '../../util/types'
 import { Button, Form } from '../../components'
 import css from './EditListingContactForm.css'
-import { composeValidators, maxLength, required } from '../../util/validators'
 import FieldPhoneNumberInput from '../../components/FieldPhoneNumberInput/FieldPhoneNumberInput'
 import * as normalizePhoneNumberUS from '../PayoutDetailsForm/normalizePhoneNumberUS'
-
-const TITLE_MAX_LENGTH = 15
 
 export const EditListingContactFormComponent = (props) => {
   return (
@@ -43,18 +40,6 @@ export const EditListingContactFormComponent = (props) => {
           id: 'EditListingContactForm.phoneNumberPlaceholder',
         })
 
-        const titleRequiredMessage = intl.formatMessage({
-          id: 'EditListingContactForm.phoneNumberRequired',
-        })
-        const maxLengthMessage = intl.formatMessage(
-          { id: 'EditListingServiceTypeForm.maxLength' },
-          {
-            maxLength: TITLE_MAX_LENGTH,
-          },
-        )
-
-        const maxLength15Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH)
-
         return (
           <Form onSubmit={handleSubmit} className={classes}>
             {updateListingError ? (
@@ -77,8 +62,6 @@ export const EditListingContactFormComponent = (props) => {
               parse={normalizePhoneNumberUS.parse}
               label={phoneNumber}
               placeholder={phoneNumberPlaceholderMessage}
-              maxLength={TITLE_MAX_LENGTH}
-              validate={composeValidators(required(titleRequiredMessage), maxLength15Message)}
               autoFocus
             />
             <Button

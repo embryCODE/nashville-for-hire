@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { bool, func, shape, string } from 'prop-types'
 import classNames from 'classnames'
 import { Form as FinalForm } from 'react-final-form'
@@ -11,13 +11,19 @@ import { Button, FieldCheckbox, Form } from '../../components'
 import css from './EditListingTermsOfUseForm.css'
 
 const EditListingTermsOfUseFormComponent = (props) => {
-  const { initialValues } = props
-  const { agreeToTermsOfUse } = initialValues
-  const [submitDisabled, setSubmitDisabled] = useState(!agreeToTermsOfUse)
-
-  return (<FinalForm
+  return (
+    <FinalForm
       {...props}
       mutators={{ ...arrayMutators }}
+      validate={(values) => {
+        const errors = {}
+
+        if (values.agreeToTermsOfUse !== true) {
+          errors.agreeToTermsOfUse = 'You must agree to the terms of use'
+        }
+
+        return errors
+      }}
       render={(formRenderProps) => {
         const {
           ready,
@@ -30,11 +36,14 @@ const EditListingTermsOfUseFormComponent = (props) => {
           updated,
           updateInProgress,
           fetchErrors,
+          invalid,
+          disabled,
         } = formRenderProps
 
         const classes = classNames(rootClassName || css.root, className)
         const submitReady = (updated && pristine) || ready
         const submitInProgress = updateInProgress
+        const submitDisabled = invalid || disabled || submitInProgress
 
         const { updateListingError, showListingsError } = fetchErrors || {}
         const errorMessage = updateListingError ? (
@@ -59,11 +68,6 @@ const EditListingTermsOfUseFormComponent = (props) => {
               id={name}
               name={name}
               label={'I agree to terms of use'}
-              value={'agree'}
-              onClick={(val) => {
-                val.persist()
-                setSubmitDisabled(!submitDisabled)
-              }}
             />
 
             <Button
