@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import { bool, func, object, string } from 'prop-types'
 import classNames from 'classnames'
 import { FormattedMessage } from '../../util/reactIntl'
@@ -8,7 +8,6 @@ import { LISTING_STATE_DRAFT } from '../../util/types'
 import { ListingLink } from '../../components'
 import { EditListingServiceTypeForm } from '../../forms'
 import config from '../../config'
-import { ServiceTypeContext } from '../../context/ServiceTypeProvider'
 
 import css from './EditListingServiceTypePanel.css'
 
@@ -27,9 +26,6 @@ const EditListingServiceTypePanel = (props) => {
     errors,
   } = props
 
-  // eslint-disable-next-line
-  const [serviceType, setServiceType] = useContext(ServiceTypeContext)
-
   const classes = classNames(rootClassName || css.root, className)
   const currentListing = ensureOwnListing(listing)
   const { description, title, publicData } = currentListing.attributes
@@ -45,25 +41,32 @@ const EditListingServiceTypePanel = (props) => {
   )
 
   // TODO: Extract this similar to <FormattedMessage />
-  const panelInformation = (<p style={{fontSize: 14}}><em>Please choose only one Service Type for this listing. If you have been approved to list multiple services on the site, you can complete a separate listing for the other services.</em></p>)
+  const panelInformation = (
+    <p style={{ fontSize: 14 }}>
+      <em>
+        Please choose only one Service Type for this listing. If you have been approved to list
+        multiple services on the site, you can complete a separate listing for the other services.
+      </em>
+    </p>
+  )
 
   const categoryOptions = findOptionsForSelectFilter('category', config.custom.filters)
+
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
+
       {panelInformation}
+
       <EditListingServiceTypeForm
         className={css.form}
         initialValues={{ title, description, ...publicData }}
         saveActionMsg={submitButtonText}
-        onSubmit={(values) => {
-          const { title = 'N/A', category } = values
+        onSubmit={({ title, serviceType }) => {
           const updateValues = {
             title: title.trim(),
-            publicData: values ,
+            publicData: { serviceType },
           }
-
-          setServiceType(category)
 
           onSubmit(updateValues)
         }}

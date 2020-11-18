@@ -43,12 +43,13 @@ const EditListingAboutThisServicePanel = (props) => {
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingAboutThisServiceForm
         className={css.form}
-        initialValues={{ title, description, ...publicData }}
+        initialValues={publicData}
         saveActionMsg={submitButtonText}
         onSubmit={(values) => {
           const updateValues = {
-            publicData: values
+            publicData: values,
           }
+
           onSubmit(updateValues)
         }}
         onChange={onChange}

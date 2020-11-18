@@ -46,7 +46,7 @@ const EditListingAboutYouPanel = (props) => {
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingAboutYouForm
         className={css.form}
-        initialValues={{ title, description, ...publicData }}
+        initialValues={publicData}
         saveActionMsg={submitButtonText}
         onSubmit={(values) => {
           const updateValues = {

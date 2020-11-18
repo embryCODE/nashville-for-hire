@@ -19,7 +19,6 @@ exports[`EditListingServiceTypeForm matches snapshot 1`] = `
       autoFocus={true}
       className=""
       id="title"
-      maxLength={60}
       name="title"
       onBlur={[Function]}
       onChange={[Function]}

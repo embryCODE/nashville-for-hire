@@ -38,7 +38,6 @@ exports[`EditListingAboutThisServiceForm matches snapshot 1`] = `
       EditListingAboutThisServiceForm.questionBTitle
     </label>
     <input
-      autoFocus={true}
       className=""
       id="explainMore"
       maxLength={60}

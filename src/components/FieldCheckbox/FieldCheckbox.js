@@ -97,7 +97,7 @@ FieldCheckboxComponent.propTypes = {
   name: string.isRequired,
 
   // Checkbox needs a value that is passed forward when user checks the checkbox
-  value: string.isRequired,
+  value: string,
 }
 
 export default FieldCheckboxComponent

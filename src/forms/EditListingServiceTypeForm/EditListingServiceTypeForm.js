@@ -75,8 +75,8 @@ const EditListingServiceTypeFormComponent = (props) => (
           />
 
           <CustomCategorySelectFieldMaybe
-            id="category"
-            name="category"
+            id="serviceType"
+            name="serviceType"
             categories={categories}
             intl={intl}
           />

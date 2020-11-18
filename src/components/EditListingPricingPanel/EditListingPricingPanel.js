@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 import { FormattedMessage } from '../../util/reactIntl'
@@ -7,13 +7,34 @@ import { ListingLink } from '../../components'
 import { EditListingPricingForm } from '../../forms'
 import { ensureOwnListing } from '../../util/data'
 import { types as sdkTypes } from '../../util/sdkLoader'
-import config from '../../config'
-import { ServiceTypeContext } from '../../context/ServiceTypeProvider'
 import pricingOptions from '../../util/pricingOptions'
 
 import css from './EditListingPricingPanel.css'
 
 const { Money } = sdkTypes
+
+const generatePrices = (pricingOptions) => {
+  return Object.entries(pricingOptions).reduce((acc, [currKey, currVal]) => {
+    acc[currKey] = {
+      ...currVal,
+      price: new Money(0, 'USD'),
+      shouldContactForPrice: false,
+    }
+    return acc
+  }, {})
+}
+
+const formatInitialValues = (prices, pricingOptionsForThisServiceType) => {
+  return prices
+    ? Object.entries(prices).reduce((acc, [currKey, currVal]) => {
+        acc[currKey] = {
+          ...currVal,
+          price: new Money(currVal.price.amount, currVal.price.currency),
+        }
+        return acc
+      }, {})
+    : generatePrices(pricingOptionsForThisServiceType)
+}
 
 const EditListingPricingPanel = (props) => {
   const {
@@ -30,33 +51,14 @@ const EditListingPricingPanel = (props) => {
     errors,
   } = props
 
-  const [serviceType] = useContext(ServiceTypeContext)
-
   const classes = classNames(rootClassName || css.root, className)
   const currentListing = ensureOwnListing(listing)
 
-  const { price, publicData } = currentListing.attributes
-
-  const getServiceTypeByAnyMeans = serviceType ? serviceType : publicData.category
-
-  const priceOptionFields = pricingOptions[getServiceTypeByAnyMeans]
-
-  const priceOptionsForInitialValues = {}
-
-  // eslint-disable-next-line
-  for (const prop in [...priceOptionFields]) {
-    if (priceOptionFields.hasOwnProperty(prop)) {
-      const optionId = `price_option_${prop}`
-      const contact = `${optionId}_contact`
-      priceOptionsForInitialValues[optionId] = new Money(
-        (publicData[optionId] && parseInt(publicData[optionId].amount.replace(/[$.]/g, ''))) || 0,
-        'USD',
-      )
-      priceOptionsForInitialValues[contact] = publicData[contact]
-    }
-  }
-
-  const initialValues = { price, ...priceOptionsForInitialValues }
+  const {
+    publicData: { serviceType, prices },
+  } = currentListing.attributes
+  const pricingOptionsForThisServiceType = pricingOptions[serviceType] || []
+  const initialValues = formatInitialValues(prices, pricingOptionsForThisServiceType)
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
   const panelTitle = isPublished ? (
@@ -68,33 +70,35 @@ const EditListingPricingPanel = (props) => {
     <FormattedMessage id="EditListingPricingPanel.createListingTitle" />
   )
 
-  const priceCurrencyValid = price instanceof Money ? price.currency === config.currency : true
-  const form = priceCurrencyValid ? (
+  const form = (
     <EditListingPricingForm
-      serviceType={getServiceTypeByAnyMeans}
+      serviceType={serviceType}
       className={css.form}
       initialValues={initialValues}
       onSubmit={(values) => {
-        const updatedValues = {
-          price: values.price,
-          publicData: {},
-        }
+        const v = { ...values }
 
+        // eslint bug
         // eslint-disable-next-line
-        for (const prop in values) {
-          if (values.hasOwnProperty(prop) && !prop.match(/contact/g)) {
-            const priceOptionToBasicObject = {
-              amount: values[prop].amount,
-              currency: values[prop].currency,
-            }
+        for (let key in v) {
+          if (v.hasOwnProperty(key)) {
+            const thisItem = v[key]
+            const priceAsMoney = v[key].price
 
-            updatedValues.publicData[prop] = priceOptionToBasicObject
-          } else {
-            updatedValues.publicData[prop] = values[prop]
+            v[key] = {
+              ...thisItem,
+              price: { amount: priceAsMoney.amount, currency: priceAsMoney.currency },
+            }
           }
         }
 
-        onSubmit(updatedValues)
+        const updateValue = {
+          publicData: {
+            prices: v,
+          },
+        }
+
+        onSubmit(updateValue)
       }}
       onChange={onChange}
       saveActionMsg={submitButtonText}
@@ -104,10 +108,6 @@ const EditListingPricingPanel = (props) => {
       updateInProgress={updateInProgress}
       fetchErrors={errors}
     />
-  ) : (
-    <div className={css.priceCurrencyInvalid}>
-      <FormattedMessage id="EditListingPricingPanel.listingPriceCurrencyInvalid" />
-    </div>
   )
 
   return (

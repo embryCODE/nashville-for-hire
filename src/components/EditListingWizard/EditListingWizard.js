@@ -86,36 +86,29 @@ const tabLabel = (intl, tab) => {
  * @return true if tab / step is completed.
  */
 const tabCompleted = (tab, listing) => {
-  const { publicData } = listing.attributes
+  const { publicData, title } = listing.attributes
   const images = listing.images
 
   switch (tab) {
     case SERVICETYPE:
-      const { category } = publicData
-      return !!category
+      return !!title && !!publicData.serviceType
     case PRICING:
-      let valid = false
-      // eslint-disable-next-line
-      for (const prop in publicData) {
-        if (publicData.hasOwnProperty(prop) && prop.match(/price_option/g)) {
-          valid = Boolean(publicData[prop])
-        }
-      }
-      return !!valid
-    case AUDIO:
-      const { audio } = publicData
-      return audio && audio.length > 0
+      // TODO: Proper validation
+      return true
     case ABOUTYOU:
       const { whyAreYouTheRightFit, primaryGenres, experience } = publicData
       return !!whyAreYouTheRightFit && !!primaryGenres && !!experience
     case ABOUTTHISSERVICE:
-      const { averageTurnAroundTime } = publicData
-      return !!averageTurnAroundTime
+      const { averageTurnaroundTime } = publicData
+      return !!averageTurnaroundTime
+    case PHOTOS:
+      return images && images.length > 0
+    case AUDIO:
+      const { audio } = publicData
+      return audio && audio.length > 0
     case CONTACT:
       const { phoneNumber } = publicData
       return !!phoneNumber
-    case PHOTOS:
-      return images && images.length > 0
     default:
       return false
   }
@@ -286,6 +279,10 @@ class EditListingWizard extends Component {
       currentUser,
       ...rest
     } = this.props
+
+    console.groupCollapsed('Listing')
+    console.log(listing)
+    console.groupEnd()
 
     const selectedTab = params.tab
     const isNewListingFlow = [LISTING_PAGE_PARAM_TYPE_NEW, LISTING_PAGE_PARAM_TYPE_DRAFT].includes(
