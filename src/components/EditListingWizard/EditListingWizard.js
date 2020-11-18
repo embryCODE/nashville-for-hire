@@ -93,8 +93,9 @@ const tabCompleted = (tab, listing) => {
     case SERVICETYPE:
       return !!title && !!publicData.serviceType
     case PRICING:
-      // TODO: Proper validation
-      return true
+      return Object.values(publicData.prices || {}).some((option) => {
+        return (option.price && option.price.amount > 0) || option.shouldContactForPrice === true
+      })
     case ABOUTYOU:
       const { whyAreYouTheRightFit, primaryGenres, experience } = publicData
       return !!whyAreYouTheRightFit && !!primaryGenres && !!experience
@@ -279,10 +280,6 @@ class EditListingWizard extends Component {
       currentUser,
       ...rest
     } = this.props
-
-    console.groupCollapsed('Listing')
-    console.log(listing)
-    console.groupEnd()
 
     const selectedTab = params.tab
     const isNewListingFlow = [LISTING_PAGE_PARAM_TYPE_NEW, LISTING_PAGE_PARAM_TYPE_DRAFT].includes(
