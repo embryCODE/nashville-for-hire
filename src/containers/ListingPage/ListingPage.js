@@ -234,6 +234,9 @@ export class ListingPageComponent extends Component {
       publicData,
     } = currentListing.attributes
 
+    // TODO: Remove
+    const formattedPublicData = JSON.stringify(currentListing.attributes.publicData, null, 2)
+
     const richTitle = (
       <span>
         {richText(title, {
@@ -464,6 +467,20 @@ export class ListingPageComponent extends Component {
                 />
               </div>
             </div>
+
+            {/* TODO: Remove this */}
+            <div
+              style={{
+                backgroundColor: 'white',
+                padding: '16px 32px',
+                overflow: 'auto',
+                maxHeight: 500,
+              }}
+            >
+              <h2>Public data:</h2>
+              <pre style={{ fontSize: 12 }}>{formattedPublicData}</pre>
+            </div>
+            {/* END: Remove this */}
           </LayoutWrapperMain>
           <LayoutWrapperFooter>
             <Footer />

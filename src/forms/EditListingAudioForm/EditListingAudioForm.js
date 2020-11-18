@@ -71,15 +71,22 @@ export class EditListingAudioFormComponent extends Component {
 
               <ul>
                 {this.state.audio.map(({ fileName }, index) => (
-                  <li key={fileName + index}>
+                  <li key={fileName + index} style={{ marginBottom: 12 }}>
                     {fileName}
 
                     {this.state.currentFileName === fileName ? (
-                      <div style={{ width: 200, height: 15, border: '1px solid red' }}>
+                      <div
+                        style={{
+                          width: 200,
+                          height: 15,
+                          border: '2px solid red',
+                          boxSizing: 'unset',
+                        }}
+                      >
                         <div
                           style={{
                             width: this.state.currentFileProgress * 2,
-                            height: 15,
+                            height: '100%',
                             background: 'green',
                           }}
                         />

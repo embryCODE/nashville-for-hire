@@ -93,9 +93,7 @@ const EditListingTermsOfUsePanel = (props) => {
             publicData,
           }
 
-          console.log(updateValues)
-
-          // onSubmit(updateValues)
+          onSubmit(updateValues)
         }}
         onChange={onChange}
         saveActionMsg={submitButtonText}

@@ -84,6 +84,7 @@ const EditListingAboutYouFormComponent = (props) => (
           {errorMessageCreateListingDraft}
           {errorMessageUpdateListing}
           {errorMessageShowListing}
+
           <FieldTextInput
             id="whyAreYouTheRightFit"
             name="whyAreYouTheRightFit"
@@ -105,7 +106,6 @@ const EditListingAboutYouFormComponent = (props) => (
             placeholder={questionBTitlePlaceholderMessage}
             maxLength={TITLE_MAX_LENGTH}
             validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
-            autoFocus
           />
 
           <FieldTextInput
@@ -117,7 +117,6 @@ const EditListingAboutYouFormComponent = (props) => (
             placeholder={questionCTitlePlaceholderMessage}
             maxLength={TITLE_MAX_LENGTH}
             validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
-            autoFocus
           />
 
           <Button

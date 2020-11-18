@@ -6,24 +6,31 @@ import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl'
 import classNames from 'classnames'
 import config from '../../config'
 import { propTypes } from '../../util/types'
-import * as validators from '../../util/validators'
-import { formatMoney } from '../../util/currency'
-import { types as sdkTypes } from '../../util/sdkLoader'
 import { Button, Form, FieldCurrencyInput, FieldCheckbox } from '../../components'
 import css from './EditListingPricingForm.css'
-
-const { Money } = sdkTypes
 
 export const EditListingPricingFormComponent = (props) => {
   return (
     <FinalForm
       {...props}
+      validate={(values) => {
+        const errors = {}
+
+        const isValid = Object.values(values).some((option) => {
+          return (option.price && option.price.amount > 0) || option.shouldContactForPrice === true
+        })
+
+        if (!isValid) {
+          errors.price = 'At least one price must be selected'
+        }
+
+        return errors
+      }}
       render={(formRenderProps) => {
         const {
           className,
           disabled,
           ready,
-          intl,
           invalid,
           pristine,
           saveActionMsg,
@@ -32,36 +39,12 @@ export const EditListingPricingFormComponent = (props) => {
           fetchErrors,
           initialValues,
           handleSubmit,
+          values,
         } = formRenderProps
-
-        const priceRequired = validators.required(
-          intl.formatMessage({
-            id: 'EditListingPricingForm.priceRequired',
-          }),
-        )
-
-        const minPrice = new Money(config.listingMinimumPriceSubUnits, config.currency)
-
-        const minPriceRequired = validators.moneySubUnitAmountAtLeast(
-          intl.formatMessage(
-            {
-              id: 'EditListingPricingForm.priceTooLow',
-            },
-            {
-              minPrice: formatMoney(intl, minPrice),
-            },
-          ),
-          config.listingMinimumPriceSubUnits,
-        )
-
-        const priceValidators = config.listingMinimumPriceSubUnits
-          ? validators.composeValidators(priceRequired, minPriceRequired)
-          : priceRequired
 
         const classes = classNames(css.root, className)
         const submitReady = (updated && pristine) || ready
-        const submitInProgress = updateInProgress
-        const submitDisabled = invalid || disabled || submitInProgress
+        const submitDisabled = invalid || disabled || updateInProgress
         const { updateListingError, showListingsError } = fetchErrors || {}
 
         return (
@@ -78,23 +61,37 @@ export const EditListingPricingFormComponent = (props) => {
               </p>
             ) : null}
 
-            {Object.entries(initialValues).map(([priceKey, priceValue]) => {
+            {Object.entries(initialValues).map(([priceKey, priceValue], index) => {
               const { label, placeholder } = priceValue
 
               return (
                 <Fragment key={priceKey}>
-                  <FieldCurrencyInput
-                    id={label}
-                    name={`${priceKey}.price`}
-                    className={css.priceInput}
-                    autoFocus
-                    label={label}
-                    placeholder={placeholder}
-                    currencyConfig={config.currencyConfig}
-                    validate={(thing) => {
-                      return priceValidators(thing)
-                    }}
-                  />
+                  {!values[priceKey].shouldContactForPrice && (
+                    <FieldCurrencyInput
+                      id={label}
+                      name={`${priceKey}.price`}
+                      className={css.priceInput}
+                      autoFocus={index === 0}
+                      label={label}
+                      placeholder={placeholder}
+                      currencyConfig={config.currencyConfig}
+                    />
+                  )}
+
+                  {values[priceKey].shouldContactForPrice && (
+                    <label
+                      // Judge not, lest ye be judged
+                      style={{
+                        fontWeight: 600,
+                        marginTop: 0,
+                        marginBottom: 0,
+                        paddingTop: 6,
+                        paddingBottom: 2,
+                      }}
+                    >
+                      {label}
+                    </label>
+                  )}
 
                   <FieldCheckbox
                     id={`${label}-shouldContactForPrice`}
@@ -110,7 +107,7 @@ export const EditListingPricingFormComponent = (props) => {
             <Button
               className={css.submitButton}
               type="submit"
-              inProgress={submitInProgress}
+              inProgress={updateInProgress}
               disabled={submitDisabled}
               ready={submitReady}
             >

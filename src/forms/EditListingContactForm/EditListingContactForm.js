@@ -10,6 +10,11 @@ import css from './EditListingContactForm.css'
 import FieldPhoneNumberInput from '../../components/FieldPhoneNumberInput/FieldPhoneNumberInput'
 import * as normalizePhoneNumberUS from '../PayoutDetailsForm/normalizePhoneNumberUS'
 
+function validatePhoneNumber(num = '') {
+  // For example, 123-456-7890
+  return num.length === 12 ? undefined : 'A valid 10-digit phone number is required'
+}
+
 export const EditListingContactFormComponent = (props) => {
   return (
     <FinalForm
@@ -47,6 +52,7 @@ export const EditListingContactFormComponent = (props) => {
                 <FormattedMessage id="EditListingContactForm.updateFailed" />
               </p>
             ) : null}
+
             {showListingsError ? (
               <p className={css.error}>
                 <FormattedMessage id="EditListingContactForm.showListingFailed" />
@@ -63,6 +69,7 @@ export const EditListingContactFormComponent = (props) => {
               label={phoneNumber}
               placeholder={phoneNumberPlaceholderMessage}
               autoFocus
+              validate={validatePhoneNumber}
             />
             <Button
               className={css.submitButton}
