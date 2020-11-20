@@ -32,7 +32,6 @@ class EditListingAudioPanel extends Component {
     const currentListing = ensureOwnListing(listing)
 
     const { publicData } = currentListing.attributes
-    const { audio = [] } = publicData
 
     const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
     const panelTitle = isPublished ? (
@@ -57,12 +56,12 @@ class EditListingAudioPanel extends Component {
         {panelInformation}
 
         <EditListingAudioForm
+          listingId={currentListing.id}
+          audio={publicData.audio}
           className={css.form}
           disabled={disabled}
           ready={ready}
           fetchErrors={errors}
-          initialValues={publicData.audio || []}
-          audio={audio}
           bypassDefaultSubmit={(audio) => {
             const updateValues = {
               publicData: { audio },
