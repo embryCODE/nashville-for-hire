@@ -77,8 +77,7 @@ export class EditListingPhotosFormComponent extends Component {
             id: 'EditListingPhotosForm.imageRequired',
           })
 
-          const { publishListingError, showListingsError, updateListingError, uploadImageError } =
-            fetchErrors || {}
+          const { updateListingError, uploadImageError } = fetchErrors || {}
           const uploadOverLimit = isUploadImageOverLimitError(uploadImageError)
 
           let uploadImageFailed = null
@@ -96,20 +95,6 @@ export class EditListingPhotosFormComponent extends Component {
               </p>
             )
           }
-
-          // NOTE: These error messages are here since Photos panel is the last visible panel
-          // before creating a new listing. If that order is changed, these should be changed too.
-          // Create and show listing errors are shown above submit button
-          const publishListingFailed = publishListingError ? (
-            <p className={css.error}>
-              <FormattedMessage id="EditListingPhotosForm.publishListingFailed" />
-            </p>
-          ) : null
-          const showListingFailed = showListingsError ? (
-            <p className={css.error}>
-              <FormattedMessage id="EditListingPhotosForm.showListingFailed" />
-            </p>
-          ) : null
 
           const submittedOnce = this.submittedImages.length > 0
           // imgs can contain added images (with temp ids) and submitted images with uniq ids.
@@ -198,13 +183,12 @@ export class EditListingPhotosFormComponent extends Component {
                   validate={composeValidators(nonEmptyArray(imageRequiredMessage))}
                 />
               </AddImages>
+
               {uploadImageFailed}
 
               <p className={css.tip}>
                 <FormattedMessage id="EditListingPhotosForm.addImagesTip" />
               </p>
-              {publishListingFailed}
-              {showListingFailed}
 
               <Button
                 className={css.submitButton}

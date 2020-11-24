@@ -45,7 +45,7 @@ const EditListingTermsOfUseFormComponent = (props) => {
         const submitInProgress = updateInProgress
         const submitDisabled = invalid || disabled || submitInProgress
 
-        const { updateListingError, showListingsError } = fetchErrors || {}
+        const { updateListingError, showListingsError, publishListingError } = fetchErrors || {}
         const errorMessage = updateListingError ? (
           <p className={css.error}>
             <FormattedMessage id="EditListingTermsOfUseForm.updateFailed" />
@@ -55,6 +55,17 @@ const EditListingTermsOfUseFormComponent = (props) => {
         const errorMessageShowListing = showListingsError ? (
           <p className={css.error}>
             <FormattedMessage id="EditListingTermsOfUseForm.showListingFailed" />
+          </p>
+        ) : null
+
+        const publishListingFailed = publishListingError ? (
+          <p className={css.error}>
+            <FormattedMessage id="EditListingPhotosForm.publishListingFailed" />
+          </p>
+        ) : null
+        const showListingFailed = showListingsError ? (
+          <p className={css.error}>
+            <FormattedMessage id="EditListingPhotosForm.showListingFailed" />
           </p>
         ) : null
 
@@ -69,6 +80,9 @@ const EditListingTermsOfUseFormComponent = (props) => {
               name={name}
               label={'I agree to terms of use'}
             />
+
+            {publishListingFailed}
+            {showListingFailed}
 
             <Button
               className={css.submitButton}

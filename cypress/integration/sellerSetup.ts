@@ -45,6 +45,6 @@ describe('Create new seller', () => {
     cy.contains('Upload Your High Quality Photos')
     cy.wait(1000)
 
-    // SOMEDAY: Figure out ingenious way to upload photos with Cypress and Final Form
+    // SOMEDAY: Figure out ingenious way to upload photos and audio with Cypress and Final Form
   })
 })
