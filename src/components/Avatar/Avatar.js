@@ -95,7 +95,9 @@ export const AvatarComponent = (props) => {
     // Placeholder avatar (initials)
     return (
       <NamedLink {...rootProps} {...linkProps}>
-        <span className={css.initials}>{abbreviatedName}</span>
+        <span className={css.initials} data-test="avatarInitials">
+          {abbreviatedName}
+        </span>
       </NamedLink>
     )
   } else {

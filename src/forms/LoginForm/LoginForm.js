@@ -72,6 +72,7 @@ const LoginFormComponent = (props) => (
               label={emailLabel}
               placeholder={emailPlaceholder}
               validate={validators.composeValidators(emailRequired, emailValid)}
+              data-test="emailInput"
             />
             <FieldTextInput
               className={css.password}
@@ -82,6 +83,7 @@ const LoginFormComponent = (props) => (
               label={passwordLabel}
               placeholder={passwordPlaceholder}
               validate={passwordRequired}
+              data-test="passwordInput"
             />
           </div>
           <div className={css.bottomWrapper}>

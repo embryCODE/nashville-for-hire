@@ -128,7 +128,7 @@ const TopbarDesktop = (props) => {
 
   const loginLink = isAuthenticatedOrJustHydrated ? null : (
     <NamedLink name="LoginPage" className={css.loginLink}>
-      <span className={css.login}>
+      <span className={css.login} data-test="login">
         <FormattedMessage id="TopbarDesktop.login" />
       </span>
     </NamedLink>

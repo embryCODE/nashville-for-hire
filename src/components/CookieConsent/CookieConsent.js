@@ -58,7 +58,11 @@ class CookieConsent extends Component {
           <div className={css.message}>
             <FormattedMessage id="CookieConsent.message" values={{ cookieLink }} />
           </div>
-          <button className={css.continueBtn} onClick={this.onAcceptCookies}>
+          <button
+            className={css.continueBtn}
+            onClick={this.onAcceptCookies}
+            data-test="cookieConsent"
+          >
             <FormattedMessage id="CookieConsent.continue" />
           </button>
         </div>

@@ -48,7 +48,12 @@ class Button extends Component {
     const buttonDisabled = this.state.mounted ? disabled : true
 
     return (
-      <button className={classes} {...rest} disabled={buttonDisabled}>
+      <button
+        className={classes}
+        {...rest}
+        disabled={buttonDisabled}
+        data-test={`${content}-button`}
+      >
         {content}
       </button>
     )

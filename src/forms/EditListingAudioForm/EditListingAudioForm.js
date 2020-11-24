@@ -7,12 +7,10 @@ import classNames from 'classnames'
 import { propTypes } from '../../util/types'
 import { Button, Form } from '../../components'
 import ReactS3Uploader from 'react-s3-uploader'
-
 import css from './EditListingAudioForm.css'
+import { s3UrlSigningServer, s3UrlSigningUrl } from '../../config'
 
 const ACCEPT_AUDIO = 'audio/*'
-const S3_URL_SIGNING_SERVER = 'https://kwk9zvlg29.execute-api.us-east-2.amazonaws.com/nonprod'
-const S3_URL_SIGNING_SERVER_URL = '/nfh-s3-url-signer'
 
 export class EditListingAudioFormComponent extends Component {
   constructor(props) {
@@ -102,7 +100,7 @@ export class EditListingAudioFormComponent extends Component {
               </ul>
 
               <ReactS3Uploader
-                signingUrl={S3_URL_SIGNING_SERVER_URL}
+                signingUrl={s3UrlSigningUrl}
                 signingUrlQueryParams={{
                   namespace: 'listing-id-' + this.state.listingId.uuid,
                 }}
@@ -127,7 +125,7 @@ export class EditListingAudioFormComponent extends Component {
                 uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
                 contentDisposition="auto"
                 scrubFilename={(filename) => filename.replace(/[^\w\d_\-.]+/gi, '')}
-                server={S3_URL_SIGNING_SERVER}
+                server={s3UrlSigningServer}
                 inputRef={(cmp) => (this.uploadInput = cmp)}
                 autoUpload={true}
               />

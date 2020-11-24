@@ -75,6 +75,7 @@ export const EditListingPricingFormComponent = (props) => {
                       label={label}
                       placeholder={placeholder}
                       currencyConfig={config.currencyConfig}
+                      data-test={`${priceKey}-input`}
                     />
                   )}
 
