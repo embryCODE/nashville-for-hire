@@ -18,7 +18,7 @@ const Prices: React.FC<PriceProps> = ({ prices }) => {
 
       <tbody>
         {Object.values(prices).map((price) => (
-          <tr>
+          <tr key={price.label}>
             <td>{price.label}</td>
             <td>
               {price.shouldContactForPrice

@@ -1,6 +1,9 @@
-table {
-  td, th {
-    border: solid 1px #5d576d;
-    padding: 8px 12px;
+.audioWrapper {
+  div {
+    margin-bottom: 4px;
+
+    &:not(first-child) {
+      margin-top: 0.5rem;
+    }
   }
 }

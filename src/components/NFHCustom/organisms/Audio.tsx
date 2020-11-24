@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Audio as AudioType } from '../types'
 import audioCss from './Audio.scss'
+
+const S3_BUCKET_PATH = 'https://nfh-nonprod-audio.s3.us-east-2.amazonaws.com/'
 
 interface AudioProps {
   audio: AudioType[]
@@ -8,23 +10,14 @@ interface AudioProps {
 
 const Audio: React.FC<AudioProps> = ({ audio }) => {
   return (
-    <table className={audioCss.table}>
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>File name</th>
-        </tr>
-      </thead>
-
-      <tbody>
-        {audio.map((audio) => (
-          <tr>
-            <td>{audio.title}</td>
-            <td>{audio.fileName}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className={audioCss.audioWrapper}>
+      {audio.map((audio) => (
+        <Fragment key={audio.fileName}>
+          <div>{audio.fileName.split('/')[1]}</div>
+          <audio controls src={`${S3_BUCKET_PATH}${audio.fileName}`} key={audio.fileName} />
+        </Fragment>
+      ))}
+    </div>
   )
 }
 
