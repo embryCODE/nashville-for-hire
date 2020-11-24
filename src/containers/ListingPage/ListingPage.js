@@ -46,13 +46,10 @@ import { sendEnquiry, loadData, setInitialValues } from './ListingPage.duck'
 import SectionImages from './SectionImages'
 import SectionAvatar from './SectionAvatar'
 import SectionHeading from './SectionHeading'
-import SectionDescriptionMaybe from './SectionDescriptionMaybe'
-import SectionFeaturesMaybe from './SectionFeaturesMaybe'
 import SectionReviews from './SectionReviews'
 import SectionHostMaybe from './SectionHostMaybe'
-import SectionRulesMaybe from './SectionRulesMaybe'
-import SectionMapMaybe from './SectionMapMaybe'
 import css from './ListingPage.css'
+import { Listing } from '../../components/NFHCustom/pages/Listing'
 
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16
 
@@ -228,7 +225,7 @@ export class ListingPageComponent extends Component {
 
     const {
       description = '',
-      geolocation = null,
+      // geolocation = null,
       price = null,
       title = '',
       publicData,
@@ -368,7 +365,7 @@ export class ListingPageComponent extends Component {
       </NamedLink>
     )
 
-    const amenityOptions = findOptionsForSelectFilter('amenities', filterConfig)
+    // const amenityOptions = findOptionsForSelectFilter('amenities', filterConfig)
     const categoryOptions = findOptionsForSelectFilter('category', filterConfig)
     const category =
       publicData && publicData.category ? (
@@ -397,6 +394,7 @@ export class ListingPageComponent extends Component {
       >
         <LayoutSingleColumn className={css.pageRoot}>
           <LayoutWrapperTopbar>{topbar}</LayoutWrapperTopbar>
+
           <LayoutWrapperMain>
             <div>
               <SectionImages
@@ -414,8 +412,10 @@ export class ListingPageComponent extends Component {
                 handleViewPhotosClick={handleViewPhotosClick}
                 onManageDisableScrolling={onManageDisableScrolling}
               />
+
               <div className={css.contentContainer}>
                 <SectionAvatar user={currentAuthor} params={params} />
+
                 <div className={css.mainContent}>
                   <SectionHeading
                     priceTitle={priceTitle}
@@ -426,15 +426,20 @@ export class ListingPageComponent extends Component {
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
                   />
-                  <SectionDescriptionMaybe description={description} />
-                  <SectionFeaturesMaybe options={amenityOptions} publicData={publicData} />
-                  <SectionRulesMaybe publicData={publicData} />
-                  <SectionMapMaybe
-                    geolocation={geolocation}
-                    publicData={publicData}
-                    listingId={currentListing.id}
-                  />
+
+                  <Listing listingAttributes={currentListing.attributes} />
+
+                  {/*<SectionDescriptionMaybe description={description} />*/}
+                  {/*<SectionFeaturesMaybe options={amenityOptions} publicData={publicData} />*/}
+                  {/*<SectionRulesMaybe publicData={publicData} />*/}
+                  {/*<SectionMapMaybe*/}
+                  {/*  geolocation={geolocation}*/}
+                  {/*  publicData={publicData}*/}
+                  {/*  listingId={currentListing.id}*/}
+                  {/*/>*/}
+
                   <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
+
                   <SectionHostMaybe
                     title={title}
                     listing={currentListing}
@@ -449,6 +454,7 @@ export class ListingPageComponent extends Component {
                     onManageDisableScrolling={onManageDisableScrolling}
                   />
                 </div>
+
                 <BookingPanel
                   className={css.bookingPanel}
                   listing={currentListing}
@@ -464,23 +470,8 @@ export class ListingPageComponent extends Component {
                 />
               </div>
             </div>
-
-            {/* TODO: Remove this */}
-            <div
-              style={{
-                backgroundColor: 'white',
-                padding: '16px 32px',
-                overflow: 'auto',
-                maxHeight: 500,
-              }}
-            >
-              <h2>Public data:</h2>
-              <pre style={{ fontSize: 12 }}>
-                {JSON.stringify(currentListing.attributes.publicData, null, 2)}
-              </pre>
-            </div>
-            {/* END: Remove this */}
           </LayoutWrapperMain>
+
           <LayoutWrapperFooter>
             <Footer />
           </LayoutWrapperFooter>
