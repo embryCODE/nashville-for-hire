@@ -17,7 +17,6 @@ export interface PublicData {
   averageTurnaroundTime: string
   experience: string
   explainMore: string
-  phoneNumber: string
   prices: Record<string, Price>
   primaryGenres: string
   serviceType: string
@@ -32,7 +31,7 @@ export interface Audio {
 export interface Price {
   label: string
   placeholder: string
-  price: {
+  price: null | {
     amount: number
     currency: string
   }

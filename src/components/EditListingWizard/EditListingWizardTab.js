@@ -11,7 +11,6 @@ import { ensureListing } from '../../util/data'
 import { createResourceLocatorString } from '../../util/routes'
 import {
   EditListingAudioPanel,
-  EditListingContactPanel,
   EditListingAboutThisServicePanel,
   EditListingAboutYouPanel,
   EditListingAvailabilityPanel,
@@ -26,7 +25,6 @@ import {
 import css from './EditListingWizard.css'
 
 export const AVAILABILITY = 'availability'
-export const CONTACT = 'contact'
 export const SERVICETYPE = 'serviceType'
 export const FEATURES = 'features'
 export const POLICY = 'policy'
@@ -46,7 +44,6 @@ export const SUPPORTED_TABS = [
   ABOUTTHISSERVICE,
   AUDIO,
   PHOTOS,
-  CONTACT,
   FEATURES,
   POLICY,
   AVAILABILITY,
@@ -171,20 +168,6 @@ const EditListingWizardTab = (props) => {
   }
 
   switch (tab) {
-    case CONTACT: {
-      const submitButtonTranslationKey = isNewListingFlow
-        ? 'EditListingWizard.saveNewContact'
-        : 'EditListingWizard.saveEditContact'
-      return (
-        <EditListingContactPanel
-          {...panelProps(CONTACT)}
-          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
-          onSubmit={(values) => {
-            onCompleteEditListingWizardTab(tab, values)
-          }}
-        />
-      )
-    }
     case ABOUTTHISSERVICE: {
       const submitButtonTranslationKey = isNewListingFlow
         ? 'EditListingWizard.saveNewAboutThisService'

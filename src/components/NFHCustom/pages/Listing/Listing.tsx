@@ -15,7 +15,6 @@ const Listing: React.FC<ListingProps> = ({ listingAttributes }) => {
       averageTurnaroundTime,
       experience,
       explainMore,
-      phoneNumber,
       prices,
       primaryGenres,
       serviceType,
@@ -48,9 +47,6 @@ const Listing: React.FC<ListingProps> = ({ listingAttributes }) => {
 
       <h2>Audio</h2>
       <Audio audio={audio} />
-
-      <h2>Phone number (hide me)</h2>
-      <div>{phoneNumber}</div>
     </section>
   )
 }

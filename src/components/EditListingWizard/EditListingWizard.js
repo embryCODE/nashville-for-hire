@@ -26,7 +26,6 @@ import EditListingWizardTab, {
   PRICING,
   PHOTOS,
   ABOUTTHISSERVICE,
-  CONTACT,
   TERMSOFUSE,
 } from './EditListingWizardTab'
 import css from './EditListingWizard.css'
@@ -35,16 +34,7 @@ import css from './EditListingWizard.css'
 // Note 1: You need to change save button translations for new listing flow
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
-export const TABS = [
-  SERVICETYPE,
-  PRICING,
-  ABOUTYOU,
-  ABOUTTHISSERVICE,
-  PHOTOS,
-  AUDIO,
-  CONTACT,
-  TERMSOFUSE,
-]
+export const TABS = [SERVICETYPE, PRICING, ABOUTYOU, ABOUTTHISSERVICE, PHOTOS, AUDIO, TERMSOFUSE]
 
 // Tabs are horizontal in small screens
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023
@@ -66,8 +56,6 @@ const tabLabel = (intl, tab) => {
     key = 'EditListingWizard.tabLabelPolicy'
   } else if (tab === PRICING) {
     key = 'EditListingWizard.tabLabelPricing'
-  } else if (tab === CONTACT) {
-    key = 'EditListingWizard.tabLabelContact'
   } else if (tab === PHOTOS) {
     key = 'EditListingWizard.tabLabelPhotos'
   } else if (tab === TERMSOFUSE) {
@@ -107,9 +95,6 @@ const tabCompleted = (tab, listing) => {
     case AUDIO:
       const { audio } = publicData
       return audio && audio.length > 0
-    case CONTACT:
-      const { phoneNumber } = publicData
-      return !!phoneNumber
     default:
       return false
   }

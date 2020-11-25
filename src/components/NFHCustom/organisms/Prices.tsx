@@ -17,16 +17,18 @@ const Prices: React.FC<PriceProps> = ({ prices }) => {
       </thead>
 
       <tbody>
-        {Object.values(prices).map((price) => (
-          <tr key={price.label}>
-            <td>{price.label}</td>
-            <td>
-              {price.shouldContactForPrice
-                ? 'Contact for price'
-                : `$${(price.price.amount / 100).toFixed(2)}`}
-            </td>
-          </tr>
-        ))}
+        {Object.values(prices)
+          .filter((price) => price.price !== null || price.shouldContactForPrice)
+          .map((price) => (
+            <tr key={price.label}>
+              <td>{price.label}</td>
+              <td>
+                {price.shouldContactForPrice
+                  ? 'Contact for price'
+                  : `$${(price.price!.amount / 100).toFixed(2)}`}
+              </td>
+            </tr>
+          ))}
       </tbody>
     </table>
   )

@@ -34,8 +34,20 @@ const generatePrices = (pricingOptions) => {
   }, {})
 }
 
+/** Checks if price options don't match price options for this service type. */
+const checkIsServiceTypeMismatched = (prices = {}, pricingOptionsForThisServiceType) => {
+  return Object.keys(prices).every((key) => !!pricingOptionsForThisServiceType[key])
+}
+
 const formatInitialValues = (prices, pricingOptionsForThisServiceType) => {
-  return prices ? formatPrices(prices) : generatePrices(pricingOptionsForThisServiceType)
+  const isServiceTypeMismatched = checkIsServiceTypeMismatched(
+    prices,
+    pricingOptionsForThisServiceType,
+  )
+
+  return isServiceTypeMismatched
+    ? generatePrices(pricingOptionsForThisServiceType)
+    : formatPrices(prices)
 }
 
 const EditListingPricingPanel = (props) => {

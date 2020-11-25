@@ -158,7 +158,6 @@ export { default as ReviewModal } from './ReviewModal/ReviewModal';
 export { default as PrivacyPolicy } from './PrivacyPolicy/PrivacyPolicy';
 export { default as TermsOfService } from './TermsOfService/TermsOfService';
 export { default as EditListingTermsOfUsePanel } from './EditListingTermsOfUsePanel/EditListingTermsOfUsePanel';
-export { default as EditListingContactPanel } from './EditListingContactPanel/EditListingContactPanel';
 export { default as EditListingAvailabilityPanel } from './EditListingAvailabilityPanel/EditListingAvailabilityPanel';
 export { default as EditListingAboutThisServicePanel } from './EditListingAboutThisServicePanel/EditListingAboutThisServicePanel';
 export { default as EditListingAboutYouPanel } from './EditListingAboutYouPanel/EditListingAboutYouPanel';

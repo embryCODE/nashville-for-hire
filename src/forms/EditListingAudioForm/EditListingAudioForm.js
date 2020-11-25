@@ -73,7 +73,7 @@ export class EditListingAudioFormComponent extends Component {
               <ul>
                 {this.state.audio.map(({ fileName }, index) => (
                   <li key={fileName + index} style={{ marginBottom: 12 }}>
-                    {fileName}
+                    {fileName.split('/')[1]}
 
                     {this.state.currentFileName === fileName ? (
                       <div
