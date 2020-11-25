@@ -5,12 +5,10 @@ import { Form as FinalForm } from 'react-final-form'
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl'
 import classNames from 'classnames'
 import { propTypes } from '../../util/types'
-import { maxLength, required, composeValidators } from '../../util/validators'
+import { required, composeValidators } from '../../util/validators'
 import { Form, Button, FieldTextInput } from '../../components'
 
 import css from './EditListingAboutYouForm.css'
-
-const TITLE_MAX_LENGTH = 60
 
 const EditListingAboutYouFormComponent = (props) => (
   <FinalForm
@@ -45,14 +43,6 @@ const EditListingAboutYouFormComponent = (props) => (
       const titleRequiredMessage = intl.formatMessage({
         id: 'EditListingAboutYouForm.titleRequired',
       })
-      const maxLengthMessage = intl.formatMessage(
-        { id: 'EditListingAboutYouForm.maxLength' },
-        {
-          maxLength: TITLE_MAX_LENGTH,
-        },
-      )
-
-      const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH)
 
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {}
       const errorMessageUpdateListing = updateListingError ? (
@@ -89,11 +79,10 @@ const EditListingAboutYouFormComponent = (props) => (
             id="whyAreYouTheRightFit"
             name="whyAreYouTheRightFit"
             className={css.title}
-            type="text"
+            type="textarea"
             label={questionATitle}
             placeholder={questionATitlePlaceholderMessage}
-            maxLength={TITLE_MAX_LENGTH}
-            validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
+            validate={composeValidators(required(titleRequiredMessage))}
             autoFocus
           />
 
@@ -101,22 +90,20 @@ const EditListingAboutYouFormComponent = (props) => (
             id="primaryGenres"
             name="primaryGenres"
             className={css.title}
-            type="text"
+            type="textarea"
             label={questionBTitle}
             placeholder={questionBTitlePlaceholderMessage}
-            maxLength={TITLE_MAX_LENGTH}
-            validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
+            validate={composeValidators(required(titleRequiredMessage))}
           />
 
           <FieldTextInput
             id="experience"
             name="experience"
             className={css.title}
-            type="text"
+            type="textarea"
             label={questionCTitle}
             placeholder={questionCTitlePlaceholderMessage}
-            maxLength={TITLE_MAX_LENGTH}
-            validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
+            validate={composeValidators(required(titleRequiredMessage))}
           />
 
           <Button

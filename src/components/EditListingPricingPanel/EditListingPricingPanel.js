@@ -13,11 +13,21 @@ import css from './EditListingPricingPanel.css'
 
 const { Money } = sdkTypes
 
+const formatPrices = (prices) => {
+  return Object.entries(prices).reduce((acc, [currKey, currVal]) => {
+    acc[currKey] = {
+      ...currVal,
+      price: currVal.price ? new Money(currVal.price.amount, currVal.price.currency) : '',
+    }
+    return acc
+  }, {})
+}
+
 const generatePrices = (pricingOptions) => {
   return Object.entries(pricingOptions).reduce((acc, [currKey, currVal]) => {
     acc[currKey] = {
       ...currVal,
-      price: new Money(0, 'USD'),
+      price: '',
       shouldContactForPrice: false,
     }
     return acc
@@ -25,15 +35,7 @@ const generatePrices = (pricingOptions) => {
 }
 
 const formatInitialValues = (prices, pricingOptionsForThisServiceType) => {
-  return prices
-    ? Object.entries(prices).reduce((acc, [currKey, currVal]) => {
-        acc[currKey] = {
-          ...currVal,
-          price: new Money(currVal.price.amount, currVal.price.currency),
-        }
-        return acc
-      }, {})
-    : generatePrices(pricingOptionsForThisServiceType)
+  return prices ? formatPrices(prices) : generatePrices(pricingOptionsForThisServiceType)
 }
 
 const EditListingPricingPanel = (props) => {
@@ -85,9 +87,14 @@ const EditListingPricingPanel = (props) => {
             const thisItem = v[key]
             const priceAsMoney = v[key].price
 
+            // Price will be null if amount is 0, otherwise it will be this currency object
+            const price = priceAsMoney.amount
+              ? { amount: priceAsMoney.amount, currency: priceAsMoney.currency }
+              : null
+
             v[key] = {
               ...thisItem,
-              price: { amount: priceAsMoney.amount, currency: priceAsMoney.currency },
+              price,
             }
           }
         }
@@ -115,8 +122,8 @@ const EditListingPricingPanel = (props) => {
       <h1 className={css.title}>{panelTitle}</h1>
       <p style={{ fontSize: 14 }}>
         <em>
-          If you have additional prices, you can add them in the “About This Service” section by
-          requesting a custom order from the buyer.
+          Leave price empty if service is not offered. If you have additional prices, you can add
+          them in the “About This Service” section by requesting a custom order from the buyer.
         </em>
       </p>
       {form}

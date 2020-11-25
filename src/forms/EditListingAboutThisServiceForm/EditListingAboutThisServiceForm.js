@@ -5,12 +5,10 @@ import { Form as FinalForm } from 'react-final-form'
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl'
 import classNames from 'classnames'
 import { propTypes } from '../../util/types'
-import { maxLength, required, composeValidators } from '../../util/validators'
+import { required, composeValidators } from '../../util/validators'
 import { Form, Button, FieldTextInput } from '../../components'
 
 import css from './EditListingAboutThisServiceForm.css'
-
-const TITLE_MAX_LENGTH = 60
 
 const EditListingAboutThisServiceFormComponent = (props) => (
   <FinalForm
@@ -45,14 +43,6 @@ const EditListingAboutThisServiceFormComponent = (props) => (
       const titleRequiredMessage = intl.formatMessage({
         id: 'EditListingAboutThisServiceForm.titleRequired',
       })
-      const maxLengthMessage = intl.formatMessage(
-        { id: 'EditListingAboutThisServiceForm.maxLength' },
-        {
-          maxLength: TITLE_MAX_LENGTH,
-        },
-      )
-
-      const maxLength60Message = maxLength(maxLengthMessage, TITLE_MAX_LENGTH)
 
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {}
       const errorMessageUpdateListing = updateListingError ? (
@@ -88,11 +78,10 @@ const EditListingAboutThisServiceFormComponent = (props) => (
             id="averageTurnaroundTime"
             name="averageTurnaroundTime"
             className={css.title}
-            type="text"
+            type="textarea"
             label={questionATitle}
             placeholder={questionATitlePlaceholderMessage}
-            maxLength={TITLE_MAX_LENGTH}
-            validate={composeValidators(required(titleRequiredMessage), maxLength60Message)}
+            validate={composeValidators(required(titleRequiredMessage))}
             autoFocus
           />
 
@@ -100,10 +89,9 @@ const EditListingAboutThisServiceFormComponent = (props) => (
             id="explainMore"
             name="explainMore"
             className={css.title}
-            type="text"
+            type="textarea"
             label={questionBTitle}
             placeholder={questionBTitlePlaceholderMessage}
-            maxLength={TITLE_MAX_LENGTH}
           />
 
           <Button
