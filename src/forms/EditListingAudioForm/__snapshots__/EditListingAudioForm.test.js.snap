@@ -3,7 +3,6 @@
 exports[`EditListingAudioForm matches snapshot 1`] = `
 <ReactFinalForm
   audio={Array []}
-  audioUploadRequested={false}
   disabled={false}
   dispatch={[Function]}
   fetchErrors={null}

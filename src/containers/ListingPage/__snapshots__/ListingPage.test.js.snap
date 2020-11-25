@@ -153,50 +153,26 @@ exports[`ListingPage matches snapshot 1`] = `
               }
               showContactUser={true}
             />
-            <SectionDescriptionMaybe
-              description="listing1 description"
-            />
-            <SectionFeaturesMaybe
-              options={
-                Array [
-                  Object {
-                    "key": "feat1",
-                    "label": "Feat 1",
+            <Listing
+              listingAttributes={
+                Object {
+                  "deleted": false,
+                  "description": "listing1 description",
+                  "geolocation": LatLng {
+                    "_sdkType": "LatLng",
+                    "lat": 40,
+                    "lng": 60,
                   },
-                  Object {
-                    "key": "feat2",
-                    "label": "Feat 2",
+                  "price": Money {
+                    "_sdkType": "Money",
+                    "amount": 5500,
+                    "currency": "USD",
                   },
-                  Object {
-                    "key": "feat3",
-                    "label": "Feat 3",
-                  },
-                ]
-              }
-              publicData={Object {}}
-            />
-            <SectionRulesMaybe
-              className={null}
-              publicData={Object {}}
-              rootClassName={null}
-            />
-            <SectionMapMaybe
-              className={null}
-              geolocation={
-                LatLng {
-                  "_sdkType": "LatLng",
-                  "lat": 40,
-                  "lng": 60,
+                  "publicData": Object {},
+                  "state": "published",
+                  "title": "listing1 title",
                 }
               }
-              listingId={
-                UUID {
-                  "_sdkType": "UUID",
-                  "uuid": "listing1",
-                }
-              }
-              publicData={Object {}}
-              rootClassName={null}
             />
             <SectionReviews
               fetchReviewsError={null}

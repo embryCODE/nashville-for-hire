@@ -21,6 +21,7 @@ describe('Create new seller', () => {
     // Pricing
     cy.contains('What price do you want your services listed at?')
     cy.get('[data-test=option0-input]').clear().type('100')
+    cy.wait(20000) // There is probably an API call I need to be waiting on instead of this
     cy.get('[data-test="Next: About You-button"]').click()
 
     // About You

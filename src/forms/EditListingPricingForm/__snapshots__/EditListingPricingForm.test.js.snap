@@ -9,7 +9,8 @@ exports[`EditListingPricingForm matches snapshot 1`] = `
 >
   <button
     className=""
-    disabled={false}
+    data-test="Save price-button"
+    disabled={true}
     type="submit"
   >
     Save price

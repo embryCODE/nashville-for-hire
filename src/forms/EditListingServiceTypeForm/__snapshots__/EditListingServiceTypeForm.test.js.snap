@@ -32,14 +32,14 @@ exports[`EditListingServiceTypeForm matches snapshot 1`] = `
     className=""
   >
     <label
-      htmlFor="category"
+      htmlFor="serviceType"
     >
       EditListingServiceTypeForm.categoryLabel
     </label>
     <select
       className=""
-      id="category"
-      name="category"
+      id="serviceType"
+      name="serviceType"
       onBlur={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
@@ -67,6 +67,7 @@ exports[`EditListingServiceTypeForm matches snapshot 1`] = `
   </div>
   <button
     className=""
+    data-test="Save description-button"
     disabled={true}
     type="submit"
   >

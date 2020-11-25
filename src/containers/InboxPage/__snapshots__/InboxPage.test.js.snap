@@ -403,7 +403,9 @@ exports[`InboxPage matches snapshot 2`] = `
       style={Object {}}
       title="provider-user-id display name"
     >
-      <span>
+      <span
+        data-test="avatarInitials"
+      >
         TT
       </span>
     </a>
@@ -861,7 +863,9 @@ exports[`InboxPage matches snapshot 4`] = `
       style={Object {}}
       title="customer-user-id display name"
     >
-      <span>
+      <span
+        data-test="avatarInitials"
+      >
         TT
       </span>
     </a>

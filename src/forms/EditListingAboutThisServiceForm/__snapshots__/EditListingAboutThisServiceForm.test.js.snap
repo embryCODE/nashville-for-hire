@@ -15,17 +15,17 @@ exports[`EditListingAboutThisServiceForm matches snapshot 1`] = `
     >
       EditListingAboutThisServiceForm.questionATitle
     </label>
-    <input
+    <textarea
       autoFocus={true}
-      className=""
+      className="undefined"
       id="averageTurnaroundTime"
-      maxLength={60}
+      maxLength={5000}
       name="averageTurnaroundTime"
       onBlur={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
       placeholder="EditListingAboutThisServiceForm.questionATitlePlaceholder"
-      type="text"
+      rows={1}
       value=""
     />
   </div>
@@ -37,21 +37,22 @@ exports[`EditListingAboutThisServiceForm matches snapshot 1`] = `
     >
       EditListingAboutThisServiceForm.questionBTitle
     </label>
-    <input
-      className=""
+    <textarea
+      className="undefined"
       id="explainMore"
-      maxLength={60}
+      maxLength={5000}
       name="explainMore"
       onBlur={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
       placeholder="EditListingAboutThisServiceForm.questionBTitlePlaceholder"
-      type="text"
+      rows={1}
       value=""
     />
   </div>
   <button
     className=""
+    data-test="Save description-button"
     disabled={true}
     type="submit"
   >

@@ -37,7 +37,7 @@ export const EditListingPricingFormComponent = (props) => {
           updated,
           updateInProgress,
           fetchErrors,
-          initialValues,
+          initialValues = {},
           handleSubmit,
           values,
         } = formRenderProps

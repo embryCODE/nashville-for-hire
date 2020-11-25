@@ -105,6 +105,7 @@ exports[`SignupForm matches snapshot 1`] = `
     </p>
     <button
       className=""
+      data-test="[object Object]-button"
       disabled={true}
       type="submit"
     >

@@ -46,7 +46,9 @@ exports[`ActivityFeed matches snapshot 1`] = `
         style={Object {}}
         title="user1 display name"
       >
-        <span>
+        <span
+          data-test="avatarInitials"
+        >
           TT
         </span>
       </a>

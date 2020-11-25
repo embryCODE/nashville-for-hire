@@ -15,17 +15,17 @@ exports[`EditListingAboutYouForm matches snapshot 1`] = `
     >
       EditListingAboutYouForm.questionATitle
     </label>
-    <input
+    <textarea
       autoFocus={true}
-      className=""
+      className="undefined"
       id="whyAreYouTheRightFit"
-      maxLength={60}
+      maxLength={5000}
       name="whyAreYouTheRightFit"
       onBlur={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
       placeholder="EditListingAboutYouForm.questionATitlePlaceholder"
-      type="text"
+      rows={1}
       value=""
     />
   </div>
@@ -37,17 +37,16 @@ exports[`EditListingAboutYouForm matches snapshot 1`] = `
     >
       EditListingAboutYouForm.questionBTitle
     </label>
-    <input
-      autoFocus={true}
-      className=""
+    <textarea
+      className="undefined"
       id="primaryGenres"
-      maxLength={60}
+      maxLength={5000}
       name="primaryGenres"
       onBlur={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
       placeholder="EditListingAboutYouForm.questionBTitlePlaceholder"
-      type="text"
+      rows={1}
       value=""
     />
   </div>
@@ -59,22 +58,22 @@ exports[`EditListingAboutYouForm matches snapshot 1`] = `
     >
       EditListingAboutYouForm.questionCTitle
     </label>
-    <input
-      autoFocus={true}
-      className=""
+    <textarea
+      className="undefined"
       id="experience"
-      maxLength={60}
+      maxLength={5000}
       name="experience"
       onBlur={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
       placeholder="EditListingAboutYouForm.questionCTitlePlaceholder"
-      type="text"
+      rows={1}
       value=""
     />
   </div>
   <button
     className=""
+    data-test="Save description-button"
     disabled={true}
     type="submit"
   >

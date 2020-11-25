@@ -19,6 +19,7 @@ exports[`LoginForm matches snapshot 1`] = `
       <input
         autoComplete="email"
         className=""
+        data-test="emailInput"
         id="email"
         name="email"
         onBlur={[Function]}
@@ -40,6 +41,7 @@ exports[`LoginForm matches snapshot 1`] = `
       <input
         autoComplete="current-password"
         className=""
+        data-test="passwordInput"
         id="password"
         name="password"
         onBlur={[Function]}
@@ -61,6 +63,7 @@ exports[`LoginForm matches snapshot 1`] = `
     </p>
     <button
       className=""
+      data-test="[object Object]-button"
       disabled={true}
       type="submit"
     >

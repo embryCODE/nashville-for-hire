@@ -194,6 +194,7 @@ exports[`TopbarDesktop data matches snapshot 1`] = `
         >
           <button
             className=""
+            data-test="[object Object],[object Object]-button"
             disabled={false}
             onClick={[Function]}
           >
