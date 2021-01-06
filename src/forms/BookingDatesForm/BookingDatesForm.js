@@ -4,17 +4,14 @@ import { compose } from 'redux'
 import { Form as FinalForm } from 'react-final-form'
 import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl'
 import classNames from 'classnames'
-import moment from 'moment'
-import { required, bookingDatesRequired, composeValidators } from '../../util/validators'
 import { START_DATE, END_DATE } from '../../util/dates'
 import { propTypes } from '../../util/types'
-import config from '../../config'
-import { Form, PrimaryButton, FieldDateRangeInput } from '../../components'
+import { Form, PrimaryButton } from '../../components'
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe'
 
 import css from './BookingDatesForm.css'
-
-const identity = (v) => v
+import * as PropTypes from 'prop-types'
+import { Money } from 'sharetribe-flex-sdk/src/types'
 
 export class BookingDatesFormComponent extends Component {
   constructor(props) {
@@ -48,23 +45,16 @@ export class BookingDatesFormComponent extends Component {
   }
 
   render() {
-    const { rootClassName, className, price: unitPrice, ...rest } = this.props
+    const { rootClassName, className, prices, ...rest } = this.props
     const classes = classNames(rootClassName || css.root, className)
+
+    const unitPrice = new Money(prices.option0.price.amount, prices.option0.price.currency)
 
     if (!unitPrice) {
       return (
         <div className={classes}>
           <p className={css.error}>
             <FormattedMessage id="BookingDatesForm.listingPriceMissing" />
-          </p>
-        </div>
-      )
-    }
-    if (unitPrice.currency !== config.currency) {
-      return (
-        <div className={classes}>
-          <p className={css.error}>
-            <FormattedMessage id="BookingDatesForm.listingCurrencyInvalid" />
           </p>
         </div>
       )
@@ -77,54 +67,19 @@ export class BookingDatesFormComponent extends Component {
         onSubmit={this.handleFormSubmit}
         render={(fieldRenderProps) => {
           const {
-            endDatePlaceholder,
-            startDatePlaceholder,
-            formId,
             handleSubmit,
-            intl,
             isOwnListing,
             submitButtonWrapperClassName,
             unitPrice,
             unitType,
-            values,
-            timeSlots,
-            fetchTimeSlotsError,
           } = fieldRenderProps
-          const { startDate, endDate } = values && values.bookingDates ? values.bookingDates : {}
 
-          const bookingStartLabel = intl.formatMessage({
-            id: 'BookingDatesForm.bookingStartTitle',
-          })
-          const bookingEndLabel = intl.formatMessage({ id: 'BookingDatesForm.bookingEndTitle' })
-          const requiredMessage = intl.formatMessage({ id: 'BookingDatesForm.requiredDate' })
-          const startDateErrorMessage = intl.formatMessage({
-            id: 'FieldDateRangeInput.invalidStartDate',
-          })
-          const endDateErrorMessage = intl.formatMessage({
-            id: 'FieldDateRangeInput.invalidEndDate',
-          })
-          const timeSlotsError = fetchTimeSlotsError ? (
-            <p className={css.timeSlotsError}>
-              <FormattedMessage id="BookingDatesForm.timeSlotsError" />
-            </p>
-          ) : null
+          const bookingData = {
+            unitType,
+            unitPrice,
+            quantity: 1,
+          }
 
-          // This is the place to collect breakdown estimation data. See the
-          // EstimatedBreakdownMaybe component to change the calculations
-          // for customized payment processes.
-          const bookingData =
-            startDate && endDate
-              ? {
-                  unitType,
-                  unitPrice,
-                  startDate,
-                  endDate,
-
-                  // NOTE: If unitType is `line-item/units`, a new picker
-                  // for the quantity should be added to the form.
-                  quantity: 1,
-                }
-              : null
           const bookingInfo = bookingData ? (
             <div className={css.priceBreakdownContainer}>
               <h3 className={css.priceBreakdownTitle}>
@@ -134,46 +89,12 @@ export class BookingDatesFormComponent extends Component {
             </div>
           ) : null
 
-          const dateFormatOptions = {
-            weekday: 'short',
-            month: 'short',
-            day: 'numeric',
-          }
-
-          const now = moment()
-          const today = now.startOf('day').toDate()
-          const tomorrow = now.startOf('day').add(1, 'days').toDate()
-          const startDatePlaceholderText =
-            startDatePlaceholder || intl.formatDate(today, dateFormatOptions)
-          const endDatePlaceholderText =
-            endDatePlaceholder || intl.formatDate(tomorrow, dateFormatOptions)
           const submitButtonClasses = classNames(
             submitButtonWrapperClassName || css.submitButtonWrapper,
           )
 
           return (
             <Form onSubmit={handleSubmit} className={classes}>
-              {timeSlotsError}
-              <FieldDateRangeInput
-                className={css.bookingDates}
-                name="bookingDates"
-                unitType={unitType}
-                startDateId={`${formId}.bookingStartDate`}
-                startDateLabel={bookingStartLabel}
-                startDatePlaceholderText={startDatePlaceholderText}
-                endDateId={`${formId}.bookingEndDate`}
-                endDateLabel={bookingEndLabel}
-                endDatePlaceholderText={endDatePlaceholderText}
-                focusedInput={this.state.focusedInput}
-                onFocusedInputChange={this.onFocusedInputChange}
-                format={identity}
-                timeSlots={timeSlots}
-                useMobileMargins
-                validate={composeValidators(
-                  required(requiredMessage),
-                  bookingDatesRequired(startDateErrorMessage, endDateErrorMessage),
-                )}
-              />
               {bookingInfo}
               <p className={css.smallPrint}>
                 <FormattedMessage
@@ -201,7 +122,7 @@ BookingDatesFormComponent.defaultProps = {
   rootClassName: null,
   className: null,
   submitButtonWrapperClassName: null,
-  price: null,
+  prices: [],
   isOwnListing: false,
   startDatePlaceholder: null,
   endDatePlaceholder: null,
@@ -214,7 +135,7 @@ BookingDatesFormComponent.propTypes = {
   submitButtonWrapperClassName: string,
 
   unitType: propTypes.bookingUnitType.isRequired,
-  price: propTypes.money,
+  prices: PropTypes.object,
   isOwnListing: bool,
   timeSlots: arrayOf(propTypes.timeSlot),
 

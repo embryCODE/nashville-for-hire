@@ -112,6 +112,9 @@ const estimatedTransaction = (unitType, bookingStart, bookingEnd, unitPrice, qua
 
 const EstimatedBreakdownMaybe = (props) => {
   const { unitType, unitPrice, startDate, endDate, quantity } = props.bookingData
+
+  console.log('Mason log:\n', 'unitPrice:', unitPrice)
+
   const isUnits = unitType === LINE_ITEM_UNITS
   const quantityIfUsingUnits = !isUnits || Number.isInteger(quantity)
   const canEstimatePrice = startDate && endDate && unitPrice && quantityIfUsingUnits

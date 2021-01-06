@@ -319,7 +319,7 @@ export class ListingPageComponent extends Component {
     // banned or deleted display names for the function
     const authorDisplayName = userDisplayNameAsString(ensuredAuthor, '')
 
-    const { formattedPrice, priceTitle } = priceData(price, intl)
+    const { formattedPrice } = priceData(price, intl)
 
     const handleBookingSubmit = (values) => {
       const isCurrentlyClosed = currentListing.attributes.state === LISTING_STATE_CLOSED
@@ -418,8 +418,6 @@ export class ListingPageComponent extends Component {
 
                 <div className={css.mainContent}>
                   <SectionHeading
-                    priceTitle={priceTitle}
-                    formattedPrice={formattedPrice}
                     richTitle={richTitle}
                     category={category}
                     hostLink={hostLink}
@@ -428,15 +426,6 @@ export class ListingPageComponent extends Component {
                   />
 
                   <Listing listingAttributes={currentListing.attributes} />
-
-                  {/*<SectionDescriptionMaybe description={description} />*/}
-                  {/*<SectionFeaturesMaybe options={amenityOptions} publicData={publicData} />*/}
-                  {/*<SectionRulesMaybe publicData={publicData} />*/}
-                  {/*<SectionMapMaybe*/}
-                  {/*  geolocation={geolocation}*/}
-                  {/*  publicData={publicData}*/}
-                  {/*  listingId={currentListing.id}*/}
-                  {/*/>*/}
 
                   <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
 

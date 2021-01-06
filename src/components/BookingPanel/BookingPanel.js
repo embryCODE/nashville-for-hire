@@ -5,8 +5,7 @@ import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl'
 import { arrayOf, bool, func, node, oneOfType, shape, string } from 'prop-types'
 import classNames from 'classnames'
 import omit from 'lodash/omit'
-import { propTypes, LISTING_STATE_CLOSED, LINE_ITEM_NIGHT, LINE_ITEM_DAY } from '../../util/types'
-import { formatMoney } from '../../util/currency'
+import { propTypes, LISTING_STATE_CLOSED } from '../../util/types'
 import { parse, stringify } from '../../util/urlHelpers'
 import config from '../../config'
 import { ModalInMobile, Button } from '../../components'
@@ -16,19 +15,6 @@ import css from './BookingPanel.css'
 
 // This defines when ModalInMobile shows content as Modal
 const MODAL_BREAKPOINT = 1023
-
-const priceData = (price, intl) => {
-  if (price && price.currency === config.currency) {
-    const formattedPrice = formatMoney(intl, price)
-    return { formattedPrice, priceTitle: formattedPrice }
-  } else if (price) {
-    return {
-      formattedPrice: `(${price.currency})`,
-      priceTitle: `Unsupported currency (${price.currency})`,
-    }
-  }
-  return {}
-}
 
 const openBookModal = (isOwnListing, isClosed, history, location) => {
   if (isOwnListing || isClosed) {
@@ -67,12 +53,13 @@ const BookingPanel = (props) => {
     intl,
   } = props
 
-  const price = listing.attributes.price
+  console.log('Mason log:\n', 'publicData:', listing.attributes.publicData)
+
+  const prices = listing.attributes.publicData.prices
   const hasListingState = !!listing.attributes.state
   const isClosed = hasListingState && listing.attributes.state === LISTING_STATE_CLOSED
   const showBookingDatesForm = hasListingState && !isClosed
   const showClosedListingHelpText = listing.id && isClosed
-  const { formattedPrice, priceTitle } = priceData(price, intl)
   const isBook = !!parse(location.search).book
 
   const subTitleText = !!subTitle
@@ -80,15 +67,6 @@ const BookingPanel = (props) => {
     : showClosedListingHelpText
     ? intl.formatMessage({ id: 'BookingPanel.subTitleClosedListing' })
     : null
-
-  const isNightly = unitType === LINE_ITEM_NIGHT
-  const isDaily = unitType === LINE_ITEM_DAY
-
-  const unitTranslationKey = isNightly
-    ? 'BookingPanel.perNight'
-    : isDaily
-    ? 'BookingPanel.perDay'
-    : 'BookingPanel.perUnit'
 
   const classes = classNames(rootClassName || css.root, className)
   const titleClasses = classNames(titleClassName || css.bookingTitle)
@@ -121,23 +99,15 @@ const BookingPanel = (props) => {
             submitButtonWrapperClassName={css.bookingDatesSubmitButtonWrapper}
             unitType={unitType}
             onSubmit={onSubmit}
-            price={price}
+            prices={prices}
             isOwnListing={isOwnListing}
             timeSlots={timeSlots}
             fetchTimeSlotsError={fetchTimeSlotsError}
           />
         ) : null}
       </ModalInMobile>
-      <div className={css.openBookingForm}>
-        <div className={css.priceContainer}>
-          <div className={css.priceValue} title={priceTitle}>
-            {formattedPrice}
-          </div>
-          <div className={css.perUnit}>
-            <FormattedMessage id={unitTranslationKey} />
-          </div>
-        </div>
 
+      <div className={css.openBookingForm}>
         {showBookingDatesForm ? (
           <Button
             rootClassName={css.bookButton}
