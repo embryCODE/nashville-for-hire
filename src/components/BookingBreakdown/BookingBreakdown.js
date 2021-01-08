@@ -11,7 +11,6 @@ import {
   LINE_ITEM_CUSTOMER_COMMISSION,
   LINE_ITEM_PROVIDER_COMMISSION,
 } from '../../util/types'
-
 import LineItemBookingPeriod from './LineItemBookingPeriod'
 import LineItemBasePriceMaybe from './LineItemBasePriceMaybe'
 import LineItemUnitsMaybe from './LineItemUnitsMaybe'
@@ -23,7 +22,6 @@ import LineItemProviderCommissionRefundMaybe from './LineItemProviderCommissionR
 import LineItemRefundMaybe from './LineItemRefundMaybe'
 import LineItemTotalPrice from './LineItemTotalPrice'
 import LineItemUnknownItemsMaybe from './LineItemUnknownItemsMaybe'
-
 import css from './BookingBreakdown.css'
 
 export const BookingBreakdownComponent = (props) => {

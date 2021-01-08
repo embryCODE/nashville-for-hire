@@ -167,7 +167,6 @@ export class ListingPageComponent extends Component {
 
   render() {
     const {
-      unitType,
       isAuthenticated,
       currentUser,
       getListing,
@@ -448,7 +447,6 @@ export class ListingPageComponent extends Component {
                   className={css.bookingPanel}
                   listing={currentListing}
                   isOwnListing={isOwnListing}
-                  unitType={unitType}
                   onSubmit={handleBookingSubmit}
                   title={bookingTitle}
                   subTitle={bookingSubTitle}

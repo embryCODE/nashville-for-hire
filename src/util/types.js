@@ -332,6 +332,8 @@ export const LINE_ITEM_DAY = 'line-item/day'
 export const LINE_ITEM_UNITS = 'line-item/units'
 export const LINE_ITEM_CUSTOMER_COMMISSION = 'line-item/customer-commission'
 export const LINE_ITEM_PROVIDER_COMMISSION = 'line-item/provider-commission'
+export const LINE_ITEM_MUSIC_SERVICE_PRICE = 'line-item/music-service-price'
+export const LINE_ITEM_CONTACT_FOR_MUSIC_SERVICE_PRICE = 'line-item/contact-for-music-service-price'
 
 export const LINE_ITEMS = [
   LINE_ITEM_NIGHT,

@@ -8,10 +8,8 @@ import { START_DATE, END_DATE } from '../../util/dates'
 import { propTypes } from '../../util/types'
 import { Form, PrimaryButton } from '../../components'
 import EstimatedBreakdownMaybe from './EstimatedBreakdownMaybe'
-
 import css from './BookingDatesForm.css'
 import * as PropTypes from 'prop-types'
-import { Money } from 'sharetribe-flex-sdk/src/types'
 
 export class BookingDatesFormComponent extends Component {
   constructor(props) {
@@ -48,36 +46,15 @@ export class BookingDatesFormComponent extends Component {
     const { rootClassName, className, prices, ...rest } = this.props
     const classes = classNames(rootClassName || css.root, className)
 
-    const unitPrice = new Money(prices.option0.price.amount, prices.option0.price.currency)
-
-    if (!unitPrice) {
-      return (
-        <div className={classes}>
-          <p className={css.error}>
-            <FormattedMessage id="BookingDatesForm.listingPriceMissing" />
-          </p>
-        </div>
-      )
-    }
-
     return (
       <FinalForm
         {...rest}
-        unitPrice={unitPrice}
         onSubmit={this.handleFormSubmit}
         render={(fieldRenderProps) => {
-          const {
-            handleSubmit,
-            isOwnListing,
-            submitButtonWrapperClassName,
-            unitPrice,
-            unitType,
-          } = fieldRenderProps
+          const { handleSubmit, isOwnListing, submitButtonWrapperClassName } = fieldRenderProps
 
           const bookingData = {
-            unitType,
-            unitPrice,
-            quantity: 1,
+            prices,
           }
 
           const bookingInfo = bookingData ? (

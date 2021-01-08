@@ -40,7 +40,6 @@ const BookingPanel = (props) => {
     titleClassName,
     listing,
     isOwnListing,
-    unitType,
     onSubmit,
     title,
     subTitle,
@@ -52,8 +51,6 @@ const BookingPanel = (props) => {
     location,
     intl,
   } = props
-
-  console.log('Mason log:\n', 'publicData:', listing.attributes.publicData)
 
   const prices = listing.attributes.publicData.prices
   const hasListingState = !!listing.attributes.state
@@ -97,7 +94,6 @@ const BookingPanel = (props) => {
             className={css.bookingForm}
             formId="BookingPanel"
             submitButtonWrapperClassName={css.bookingDatesSubmitButtonWrapper}
-            unitType={unitType}
             onSubmit={onSubmit}
             prices={prices}
             isOwnListing={isOwnListing}
