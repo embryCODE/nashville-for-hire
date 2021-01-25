@@ -184,7 +184,6 @@ export class CheckoutPageComponent extends Component {
       !isBookingCreated
 
     if (shouldFetchSpeculatedTransaction) {
-      const listingId = pageData.listing.id
       const { bookingStart, bookingEnd } = pageData.bookingDates
 
       // Convert picked date to date that will be converted on the API as
@@ -337,7 +336,7 @@ export class CheckoutPageComponent extends Component {
             }
             return { ...fnParams, paymentMethodSaved: true }
           })
-          .catch((e) => {
+          .catch(() => {
             // Real error cases are catched already in paymentMethods page.
             return { ...fnParams, paymentMethodSaved: false }
           })

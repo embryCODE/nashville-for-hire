@@ -28,12 +28,14 @@ export interface Audio {
   title: string
 }
 
+export type PriceData = null | {
+  amount: number
+  currency: string
+}
+
 export interface Price {
   label: string
   placeholder: string
-  price: null | {
-    amount: number
-    currency: string
-  }
+  price: PriceData
   shouldContactForPrice: boolean
 }
