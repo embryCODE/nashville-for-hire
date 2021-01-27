@@ -1,4 +1,4 @@
-import React, { FormEventHandler, SyntheticEvent, useState } from 'react'
+import React, { SyntheticEvent } from 'react'
 import { Price, PriceData } from '../../types'
 import styled from 'styled-components'
 import { css } from 'styled-components/macro'
@@ -33,13 +33,17 @@ const formatPrice = (pd: PriceData): string => {
 
 interface PriceItemSelectorProps {
   price: Price
+  quantity: number
+  onQuantityChange: (q: number) => void
 }
 
-const PriceItemSelector: React.FC<PriceItemSelectorProps> = ({ price }) => {
-  const [quantity, setQuantity] = useState<number>(0)
-
+const PriceItemSelector: React.FC<PriceItemSelectorProps> = ({
+  price,
+  quantity,
+  onQuantityChange,
+}) => {
   const handleSelect = () => {
-    setQuantity(1)
+    onQuantityChange(1)
   }
 
   const handleQuantityChange = (e: SyntheticEvent) => {
@@ -49,7 +53,7 @@ const PriceItemSelector: React.FC<PriceItemSelectorProps> = ({ price }) => {
     const quantity = parseInt(target.value)
     const quantityToSet = quantity > 0 ? quantity : 0
 
-    setQuantity(quantityToSet)
+    onQuantityChange(quantityToSet)
   }
 
   return (

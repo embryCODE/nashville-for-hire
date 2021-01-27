@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { bool, func, instanceOf, object, oneOfType, shape, string } from 'prop-types'
+import { bool, func, object, oneOfType, shape, string } from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl'
@@ -18,7 +18,7 @@ import {
   ensureStripeCustomer,
   ensurePaymentMethodCard,
 } from '../../util/data'
-import { dateFromLocalToAPI, minutesBetween } from '../../util/dates'
+import { minutesBetween } from '../../util/dates'
 import { createSlug } from '../../util/urlHelpers'
 import {
   isTransactionInitiateAmountTooLowError,
@@ -29,7 +29,6 @@ import {
   isTransactionZeroPaymentError,
   transactionInitiateOrderStripeErrors,
 } from '../../util/errors'
-import { formatMoney } from '../../util/currency'
 import { TRANSITION_ENQUIRE, txIsPaymentPending, txIsPaymentExpired } from '../../util/transaction'
 import {
   AvatarMedium,
@@ -55,7 +54,6 @@ import {
 } from './CheckoutPage.duck'
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers'
 import css from './CheckoutPage.css'
-import { nightsBetween, daysBetween } from '../../util/dates'
 import { types as sdkTypes } from '../../util/sdkLoader'
 
 const { Money } = sdkTypes
@@ -139,7 +137,6 @@ export class CheckoutPageComponent extends Component {
   loadInitialData() {
     const {
       bookingData,
-      bookingDates,
       listing,
       transaction,
       fetchSpeculatedTransaction,
@@ -158,15 +155,19 @@ export class CheckoutPageComponent extends Component {
     // Action is 'REPLACE' when user has directed through login/signup process
     const hasNavigatedThroughLink = history.action === 'PUSH' || history.action === 'REPLACE'
 
-    const hasDataInProps = !!(bookingData && bookingDates && listing) && hasNavigatedThroughLink
+    const hasDataInProps = !!(bookingData && listing) && hasNavigatedThroughLink
     if (hasDataInProps) {
       // Store data only if data is passed through props and user has navigated through a link.
-      storeData(bookingData, bookingDates, listing, transaction, STORAGE_KEY)
+      storeData(bookingData, listing, transaction, STORAGE_KEY)
     }
 
     // NOTE: stored data can be empty if user has already successfully completed transaction.
     const pageData = hasDataInProps
-      ? { bookingData, bookingDates, listing, transaction }
+      ? {
+          bookingData,
+          listing,
+          transaction,
+        }
       : storedData(STORAGE_KEY)
 
     // Check if a booking is already created according to stored data.
@@ -178,27 +179,16 @@ export class CheckoutPageComponent extends Component {
       pageData.listing &&
       pageData.listing.id &&
       pageData.bookingData &&
-      pageData.bookingDates &&
-      pageData.bookingDates.bookingStart &&
-      pageData.bookingDates.bookingEnd &&
       !isBookingCreated
 
     if (shouldFetchSpeculatedTransaction) {
-      const { bookingStart, bookingEnd } = pageData.bookingDates
-
-      // Convert picked date to date that will be converted on the API as
-      // a noon of correct year-month-date combo in UTC
-      const bookingStartForAPI = dateFromLocalToAPI(bookingStart)
-      const bookingEndForAPI = dateFromLocalToAPI(bookingEnd)
-
       // Fetch speculated transaction for showing price in booking breakdown
       // NOTE: if unit type is line-item/units, quantity needs to be added.
       // The way to pass it to checkout page is through pageData.bookingData
       fetchSpeculatedTransaction(
         this.customPricingParams({
           listing,
-          bookingStart: bookingStartForAPI,
-          bookingEnd: bookingEndForAPI,
+          bookingData,
         }),
       )
     }
@@ -262,8 +252,8 @@ export class CheckoutPageComponent extends Component {
       const order = ensureTransaction(fnParams)
       if (order.id) {
         // Store order.
-        const { bookingData, bookingDates, listing } = pageData
-        storeData(bookingData, bookingDates, listing, order, STORAGE_KEY)
+        const { bookingData, listing } = pageData
+        storeData(bookingData, listing, order, STORAGE_KEY)
         this.setState({ pageData: { ...pageData, transaction: order } })
       }
 
@@ -308,7 +298,10 @@ export class CheckoutPageComponent extends Component {
       const hasPaymentIntentUserActionsDone =
         paymentIntent && STRIPE_PI_USER_ACTIONS_DONE_STATUSES.includes(paymentIntent.status)
       return hasPaymentIntentUserActionsDone
-        ? Promise.resolve({ transactionId: order.id, paymentIntent })
+        ? Promise.resolve({
+            transactionId: order.id,
+            paymentIntent,
+          })
         : onHandleCardPayment(params)
     }
 
@@ -377,8 +370,6 @@ export class CheckoutPageComponent extends Component {
 
     const orderParams = this.customPricingParams({
       listing: pageData.listing,
-      bookingStart: tx.booking.attributes.start,
-      bookingEnd: tx.booking.attributes.end,
       ...optionalPaymentParams,
     })
 
@@ -497,28 +488,24 @@ export class CheckoutPageComponent extends Component {
    * @return a params object for custom pricing bookings
    */
   customPricingParams(params) {
-    const { bookingStart, bookingEnd, listing, ...rest } = params
-    const { amount, currency } = listing.attributes.price
+    const { listing, bookingData } = params
 
     const unitType = config.bookingUnitType
-    const isNightly = unitType === LINE_ITEM_NIGHT
 
-    const quantity = isNightly
-      ? nightsBetween(bookingStart, bookingEnd)
-      : daysBetween(bookingStart, bookingEnd)
+    const lineItems = Object.values(bookingData).map((d) => {
+      // TODO: Handle when there is no price correctly
+      const unitPrice = d.price ? new Money(d.price.amount, d.price.currency) : new Money(0, 'USD')
+
+      return {
+        code: unitType,
+        unitPrice,
+        quantity: d.quantity,
+      }
+    })
 
     return {
       listingId: listing.id,
-      bookingStart,
-      bookingEnd,
-      lineItems: [
-        {
-          code: unitType,
-          unitPrice: new Money(amount, currency),
-          quantity,
-        },
-      ],
-      ...rest,
+      lineItems,
     }
   }
 
@@ -551,7 +538,7 @@ export class CheckoutPageComponent extends Component {
 
     const isLoading = !this.state.dataLoaded || speculateTransactionInProgress
 
-    const { listing, bookingDates, transaction } = this.state.pageData
+    const { listing, transaction } = this.state.pageData
     const existingTransaction = ensureTransaction(transaction)
     const speculatedTransaction = ensureTransaction(speculatedTransactionMaybe, {}, null)
     const currentListing = ensureListing(listing)
@@ -590,8 +577,7 @@ export class CheckoutPageComponent extends Component {
       currentAuthor.id.uuid === currentUser.id.uuid
 
     const hasListingAndAuthor = !!(currentListing.id && currentAuthor.id)
-    const hasBookingDates = !!(bookingDates && bookingDates.bookingStart && bookingDates.bookingEnd)
-    const hasRequiredData = hasListingAndAuthor && hasBookingDates
+    const hasRequiredData = hasListingAndAuthor
     const canShowPage = hasRequiredData && !isOwnListing
     const shouldRedirect = !isLoading && !canShowPage
 
@@ -601,7 +587,6 @@ export class CheckoutPageComponent extends Component {
       // eslint-disable-next-line no-console
       console.error('Missing or invalid data for checkout, redirecting back to listing page.', {
         transaction: speculatedTransaction,
-        bookingDates,
         listing,
       })
       return <NamedRedirect name="ListingPage" params={params} />
@@ -752,9 +737,7 @@ export class CheckoutPageComponent extends Component {
       ? 'CheckoutPage.perDay'
       : 'CheckoutPage.perUnit'
 
-    const price = currentListing.attributes.price
-    const formattedPrice = formatMoney(intl, price)
-    const detailsSubTitle = `${formattedPrice} ${intl.formatMessage({ id: unitTranslationKey })}`
+    const detailsSubTitle = `$??? ${intl.formatMessage({ id: unitTranslationKey })}`
 
     const showInitialMessageInput = !(
       existingTransaction && existingTransaction.attributes.lastTransition === TRANSITION_ENQUIRE
@@ -882,7 +865,6 @@ CheckoutPageComponent.defaultProps = {
   confirmPaymentError: null,
   listing: null,
   bookingData: {},
-  bookingDates: null,
   speculateTransactionError: null,
   speculatedTransaction: null,
   transaction: null,
@@ -894,10 +876,6 @@ CheckoutPageComponent.propTypes = {
   scrollingDisabled: bool.isRequired,
   listing: propTypes.listing,
   bookingData: object,
-  bookingDates: shape({
-    bookingStart: instanceOf(Date).isRequired,
-    bookingEnd: instanceOf(Date).isRequired,
-  }),
   fetchStripeCustomer: func.isRequired,
   stripeCustomerFetched: bool.isRequired,
   fetchSpeculatedTransaction: func.isRequired,
@@ -917,8 +895,7 @@ CheckoutPageComponent.propTypes = {
   onSavePaymentMethod: func.isRequired,
   onSendMessage: func.isRequired,
   initiateOrderError: propTypes.error,
-  confirmPaymentError: propTypes.error,
-  // handleCardPaymentError comes from Stripe so that's why we can't expect it to be in a specific form
+  confirmPaymentError: propTypes.error, // handleCardPaymentError comes from Stripe so that's why we can't expect it to be in a specific form
   handleCardPaymentError: oneOfType([propTypes.error, object]),
   paymentIntent: object,
 
@@ -938,7 +915,6 @@ const mapStateToProps = (state) => {
   const {
     listing,
     bookingData,
-    bookingDates,
     stripeCustomerFetched,
     speculateTransactionInProgress,
     speculateTransactionError,
@@ -954,7 +930,6 @@ const mapStateToProps = (state) => {
     currentUser,
     stripeCustomerFetched,
     bookingData,
-    bookingDates,
     speculateTransactionInProgress,
     speculateTransactionError,
     speculatedTransaction,

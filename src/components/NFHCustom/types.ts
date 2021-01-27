@@ -39,3 +39,7 @@ export interface Price {
   price: PriceData
   shouldContactForPrice: boolean
 }
+
+export interface PriceWithQuantity extends Price {
+  quantity: number
+}

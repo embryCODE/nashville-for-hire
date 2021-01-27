@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom'
 import config from '../../config'
 import routeConfiguration from '../../routeConfiguration'
 import { findOptionsForSelectFilter } from '../../util/search'
-import { LISTING_STATE_PENDING_APPROVAL, LISTING_STATE_CLOSED, propTypes } from '../../util/types'
+import { LISTING_STATE_PENDING_APPROVAL, propTypes } from '../../util/types'
 import { types as sdkTypes } from '../../util/sdkLoader'
 import {
   LISTING_PAGE_DRAFT_VARIANT,
@@ -99,15 +99,9 @@ export class ListingPageComponent extends Component {
     const listingId = new UUID(params.id)
     const listing = getListing(listingId)
 
-    const { bookingDates, ...bookingData } = values
-
     const initialValues = {
       listing,
-      bookingData,
-      bookingDates: {
-        bookingStart: bookingDates.startDate,
-        bookingEnd: bookingDates.endDate,
-      },
+      bookingData: values,
       confirmPaymentError: null,
     }
 
@@ -181,8 +175,6 @@ export class ListingPageComponent extends Component {
       fetchReviewsError,
       sendEnquiryInProgress,
       sendEnquiryError,
-      timeSlots,
-      fetchTimeSlotsError,
       filterConfig,
     } = this.props
 
@@ -238,11 +230,6 @@ export class ListingPageComponent extends Component {
         })}
       </span>
     )
-
-    const bookingTitle = (
-      <FormattedMessage id="ListingPage.bookingTitle" values={{ title: richTitle }} />
-    )
-    const bookingSubTitle = intl.formatMessage({ id: 'ListingPage.bookingSubTitle' })
 
     const topbar = <TopbarContainer />
 
@@ -321,8 +308,7 @@ export class ListingPageComponent extends Component {
     const { formattedPrice } = priceData(price, intl)
 
     const handleBookingSubmit = (values) => {
-      const isCurrentlyClosed = currentListing.attributes.state === LISTING_STATE_CLOSED
-      if (isOwnListing || isCurrentlyClosed) {
+      if (isOwnListing) {
         window.scrollTo(0, 0)
       } else {
         this.handleSubmit(values)
@@ -444,18 +430,7 @@ export class ListingPageComponent extends Component {
                 </div>
 
                 <div style={{ margin: '60px 0.5rem 0' }}>
-                  <BookingPanel
-                    className={css.bookingPanel}
-                    listing={currentListing}
-                    isOwnListing={isOwnListing}
-                    onSubmit={handleBookingSubmit}
-                    title={bookingTitle}
-                    subTitle={bookingSubTitle}
-                    authorDisplayName={authorDisplayName}
-                    onManageDisableScrolling={onManageDisableScrolling}
-                    timeSlots={timeSlots}
-                    fetchTimeSlotsError={fetchTimeSlotsError}
-                  />
+                  <BookingPanel listing={currentListing} onSubmit={handleBookingSubmit} />
                 </div>
               </div>
             </div>
