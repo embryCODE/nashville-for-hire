@@ -4,8 +4,8 @@ import { denormalisedResponseEntities } from '../../util/data'
 import { storableError } from '../../util/errors'
 import {
   TRANSITION_REQUEST_PAYMENT,
-  TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY,
   TRANSITION_CONFIRM_PAYMENT,
+  TRANSITION_PRICE_NEGOTIATION,
 } from '../../util/transaction'
 import * as log from '../../util/log'
 import { fetchCurrentUserHasOrdersSuccess, fetchCurrentUser } from '../../ducks/user.duck'
@@ -17,6 +17,10 @@ export const SET_INITAL_VALUES = 'app/CheckoutPage/SET_INITIAL_VALUES'
 export const INITIATE_ORDER_REQUEST = 'app/CheckoutPage/INITIATE_ORDER_REQUEST'
 export const INITIATE_ORDER_SUCCESS = 'app/CheckoutPage/INITIATE_ORDER_SUCCESS'
 export const INITIATE_ORDER_ERROR = 'app/CheckoutPage/INITIATE_ORDER_ERROR'
+
+export const SET_PRICES_REQUEST = 'app/CheckoutPage/SET_PRICES_REQUEST'
+export const SET_PRICES_SUCCESS = 'app/CheckoutPage/SET_PRICES_SUCCESS'
+export const SET_PRICES_ERROR = 'app/CheckoutPage/SET_PRICES_ERROR'
 
 export const CONFIRM_PAYMENT_REQUEST = 'app/CheckoutPage/CONFIRM_PAYMENT_REQUEST'
 export const CONFIRM_PAYMENT_SUCCESS = 'app/CheckoutPage/CONFIRM_PAYMENT_SUCCESS'
@@ -42,6 +46,7 @@ const initialState = {
   initiateOrderError: null,
   confirmPaymentError: null,
   stripeCustomerFetched: false,
+  setPricesError: null,
 }
 
 export default function checkoutPageReducer(state = initialState, action = {}) {
@@ -78,6 +83,14 @@ export default function checkoutPageReducer(state = initialState, action = {}) {
     case INITIATE_ORDER_ERROR:
       console.error(payload) // eslint-disable-line no-console
       return { ...state, initiateOrderError: payload }
+
+    case SET_PRICES_REQUEST:
+      return { ...state, setPricesError: null }
+    case SET_PRICES_SUCCESS:
+      return { ...state, transaction: payload }
+    case SET_PRICES_ERROR:
+      console.error(payload) // eslint-disable-line no-console
+      return { ...state, setPricesError: payload }
 
     case CONFIRM_PAYMENT_REQUEST:
       return { ...state, confirmPaymentError: null }
@@ -122,6 +135,19 @@ const initiateOrderError = (e) => ({
   payload: e,
 })
 
+const setPricesRequest = () => ({ type: SET_PRICES_REQUEST })
+
+const setPricesSuccess = (order) => ({
+  type: SET_PRICES_SUCCESS,
+  payload: order,
+})
+
+const setPricesError = (e) => ({
+  type: SET_PRICES_ERROR,
+  error: true,
+  payload: e,
+})
+
 const confirmPaymentRequest = () => ({ type: CONFIRM_PAYMENT_REQUEST })
 
 const confirmPaymentSuccess = (orderId) => ({
@@ -158,25 +184,47 @@ export const stripeCustomerError = (e) => ({
 
 /* ================ Thunks ================ */
 
-export const initiateOrder = (orderParams, transactionId) => (dispatch, getState, sdk) => {
+export const setPrices = (orderParams) => (dispatch, getState, sdk) => {
+  dispatch(setPricesRequest())
+
+  const bodyParams = {
+    id: orderParams.transactionId,
+    transition: TRANSITION_PRICE_NEGOTIATION,
+    params: orderParams,
+  }
+
+  return sdk.transactions
+    .transition(bodyParams)
+    .then((response) => {
+      const order = response.data.data
+      dispatch(setPricesSuccess(order.id))
+      return order
+    })
+    .catch((e) => {
+      dispatch(setPricesError(storableError(e)))
+      const transactionIdMaybe = orderParams.transactionId
+        ? { transactionId: orderParams.transactionId.uuid }
+        : {}
+      log.error(e, 'set-prices-failed', {
+        ...transactionIdMaybe,
+      })
+      throw e
+    })
+}
+
+export const initiateOrder = (orderParams) => (dispatch, getState, sdk) => {
   dispatch(initiateOrderRequest())
-  const bodyParams = transactionId
-    ? {
-        id: transactionId,
-        transition: TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY,
-        params: orderParams,
-      }
-    : {
-        processAlias: config.bookingProcessAlias,
-        transition: TRANSITION_REQUEST_PAYMENT,
-        params: orderParams,
-      }
+  const bodyParams = {
+    processAlias: config.bookingProcessAlias,
+    transition: TRANSITION_REQUEST_PAYMENT,
+    params: orderParams,
+  }
   const queryParams = {
     include: ['booking', 'provider'],
     expand: true,
   }
 
-  const createOrder = transactionId ? sdk.transactions.transition : sdk.transactions.initiate
+  const createOrder = sdk.transactions.transition
 
   return createOrder(bodyParams, queryParams)
     .then((response) => {
@@ -188,7 +236,9 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
     })
     .catch((e) => {
       dispatch(initiateOrderError(storableError(e)))
-      const transactionIdMaybe = transactionId ? { transactionId: transactionId.uuid } : {}
+      const transactionIdMaybe = orderParams.transactionId
+        ? { transactionId: orderParams.transactionId.uuid }
+        : {}
       log.error(e, 'initiate-order-failed', {
         ...transactionIdMaybe,
         listingId: orderParams.listingId.uuid,
@@ -295,11 +345,11 @@ export const speculateTransaction = (params) => (dispatch, getState, sdk) => {
 
 // StripeCustomer is a relantionship to currentUser
 // We need to fetch currentUser with correct params to include relationship
-export const stripeCustomer = () => (dispatch, getState, sdk) => {
+export const stripeCustomer = () => (dispatch) => {
   dispatch(stripeCustomerRequest())
 
   return dispatch(fetchCurrentUser({ include: ['stripeCustomer.defaultPaymentMethod'] }))
-    .then((response) => {
+    .then(() => {
       dispatch(stripeCustomerSuccess())
     })
     .catch((e) => {

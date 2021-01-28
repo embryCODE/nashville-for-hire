@@ -7,6 +7,7 @@ import { NamedLink } from '../../components'
 import css from './TransactionPanel.css'
 
 export const HEADING_ENQUIRED = 'enquired'
+export const HEADING_NEGOTIATING = 'negotiating-price'
 export const HEADING_PAYMENT_PENDING = 'pending-payment'
 export const HEADING_PAYMENT_EXPIRED = 'payment-expired'
 export const HEADING_REQUESTED = 'requested'

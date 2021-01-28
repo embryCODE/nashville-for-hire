@@ -3,15 +3,16 @@ import { array, arrayOf, bool, func, number, string } from 'prop-types'
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl'
 import classNames from 'classnames'
 import {
-  TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY,
   txIsAccepted,
   txIsCanceled,
   txIsDeclined,
   txIsEnquired,
+  txIsNegotiated,
   txIsPaymentExpired,
   txIsPaymentPending,
   txIsRequested,
   txHasBeenDelivered,
+  TRANSITION_PRICE_NEGOTIATION_AFTER_ENQUIRY,
 } from '../../util/transaction'
 import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../util/types'
 import {
@@ -48,6 +49,7 @@ import PanelHeading, {
   HEADING_DECLINED,
   HEADING_CANCELED,
   HEADING_DELIVERED,
+  HEADING_NEGOTIATING,
 } from './PanelHeading'
 
 import css from './TransactionPanel.css'
@@ -217,10 +219,15 @@ export class TransactionPanelComponent extends Component {
             })
           : []
         const hasCorrectNextTransition =
-          transitions.length > 0 && transitions.includes(TRANSITION_REQUEST_PAYMENT_AFTER_ENQUIRY)
+          transitions.length > 0 && transitions.includes(TRANSITION_PRICE_NEGOTIATION_AFTER_ENQUIRY)
         return {
           headingState: HEADING_ENQUIRED,
           showBookingPanel: isCustomer && !isProviderBanned && hasCorrectNextTransition,
+        }
+      } else if (txIsNegotiated(tx)) {
+        return {
+          headingState: HEADING_NEGOTIATING,
+          showDetailCardHeadings: isCustomer,
         }
       } else if (txIsPaymentPending(tx)) {
         return {
