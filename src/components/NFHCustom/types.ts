@@ -34,6 +34,7 @@ export type PriceData = null | {
 }
 
 export interface Price {
+  code: string
   label: string
   placeholder: string
   price: PriceData

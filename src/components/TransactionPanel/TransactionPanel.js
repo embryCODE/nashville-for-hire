@@ -342,8 +342,7 @@ export class TransactionPanelComponent extends Component {
 
     const classes = classNames(rootClassName || css.root, className)
 
-    console.log(currentTransaction)
-    const prices = currentListing.attributes.publicData.prices
+    const lineItems = currentTransaction.attributes.lineItems
     const handleFinishNegotiation = () => {
       console.log('handleFinishNegotation')
     }
@@ -463,7 +462,10 @@ export class TransactionPanelComponent extends Component {
               ) : null}
 
               {stateData.showNegotiationPanel ? (
-                <FinishNegotiation prices={prices} onFinishNegotiation={handleFinishNegotiation} />
+                <FinishNegotiation
+                  lineItems={lineItems}
+                  onFinishNegotiation={handleFinishNegotiation}
+                />
               ) : null}
 
               <BreakdownMaybe

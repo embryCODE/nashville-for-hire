@@ -18,20 +18,17 @@ import { TopbarContainer } from '../index'
 import { initializeCardPaymentData } from '../../ducks/stripe.duck'
 import { setInitialValues, beginNegotiation } from './BeginNegotiationPage.duck'
 import { BeginNegotiation } from '../../components/NFHCustom/pages/BeginNegotiation'
-import config from '../../config'
 import { Money } from 'sharetribe-flex-sdk/src/types'
 
 const createCustomPricingParams = (params) => {
   const { listing, bookingData } = params
-
-  const unitType = config.bookingUnitType
 
   const lineItems = Object.values(bookingData).map((d) => {
     // TODO: Handle when there is no price correctly
     const unitPrice = d.price ? new Money(d.price.amount, d.price.currency) : new Money(0, 'USD')
 
     return {
-      code: unitType,
+      code: 'line-item/' + d.code,
       unitPrice,
       quantity: d.quantity,
     }
@@ -56,8 +53,6 @@ export class NegotiationPageComponent extends Component {
 
     const data = {
       transactionId,
-      listing,
-      bookingData,
       ...createCustomPricingParams({ listing, bookingData }),
     }
 

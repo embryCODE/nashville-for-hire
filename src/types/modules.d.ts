@@ -51,3 +51,5 @@ declare module '*.sass' {
   const classes: { [key: string]: string }
   export default classes
 }
+
+declare module 'sharetribe-flex-sdk/src/types'

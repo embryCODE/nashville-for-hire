@@ -69,7 +69,7 @@ const beginNegotiationError = (e) => ({
 export const beginNegotiation = (orderParams) => (dispatch, getState, sdk) => {
   dispatch(beginNegotiationRequest())
 
-  const { transactionId, listing, bookingData } = orderParams
+  const { transactionId, listingId, lineItems } = orderParams
   const message = 'Negotiation started'
 
   // If we have an ID, we want to transition the transaction
@@ -77,7 +77,9 @@ export const beginNegotiation = (orderParams) => (dispatch, getState, sdk) => {
     const bodyParams = {
       id: transactionId,
       transition: TRANSITION_PRICE_NEGOTIATION_AFTER_ENQUIRY,
-      params: {},
+      params: {
+        lineItems,
+      },
     }
 
     return sdk.transactions
@@ -101,7 +103,7 @@ export const beginNegotiation = (orderParams) => (dispatch, getState, sdk) => {
     const bodyParams = {
       processAlias: config.bookingProcessAlias,
       transition: TRANSITION_PRICE_NEGOTIATION,
-      params: { listingId: listing.id },
+      params: { listingId, lineItems },
     }
 
     return sdk.transactions
