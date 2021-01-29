@@ -208,7 +208,6 @@ export class CheckoutPageComponent extends Component {
     } = this.props
     const {
       pageData,
-      speculatedTransaction,
       message,
       paymentIntent,
       selectedPaymentMethod,
@@ -351,11 +350,6 @@ export class CheckoutPageComponent extends Component {
       fnSendMessage,
       fnSavePaymentMethod,
     )
-
-    // Create order aka transaction
-    // NOTE: if unit type is line-item/units, quantity needs to be added.
-    // The way to pass it to checkout page is through pageData.bookingData
-    const tx = speculatedTransaction ? speculatedTransaction : storedTx
 
     // Note: optionalPaymentParams contains Stripe paymentMethod,
     // but that can also be passed on Step 2

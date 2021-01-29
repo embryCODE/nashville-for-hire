@@ -29,7 +29,7 @@ import {
 // Otherwise, components will import form container eventually and
 // at that point css bundling / imports will happen in wrong order.
 import { NamedRedirect } from './components'
-import NegotiationPage from './containers/NegotiationPage/NegotiationPage'
+import BeginNegotiationPage from './containers/BeginNegotiationPage/BeginNegotiationPage'
 
 export const ACCOUNT_SETTINGS_PAGES = [
   'ContactDetailsPage',
@@ -103,8 +103,8 @@ const routeConfiguration = () => {
       path: '/l/:slug/:id/negotiation',
       name: 'NegotiationPage',
       auth: true,
-      component: (props) => <NegotiationPage {...props} />,
-      setInitialValues: NegotiationPage.setInitialValues,
+      component: (props) => <BeginNegotiationPage {...props} />,
+      setInitialValues: BeginNegotiationPage.setInitialValues,
     },
     {
       path: '/l/:slug/:id/checkout',

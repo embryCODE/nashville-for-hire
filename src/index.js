@@ -85,6 +85,7 @@ if (typeof window !== 'undefined') {
   const sdk = createInstance({
     transitVerbose: config.sdk.transitVerbose,
     clientId: config.sdk.clientId,
+    clientSecret: config.sdk.clientSecret,
     secure: config.usingSSL,
     typeHandlers: [
       {

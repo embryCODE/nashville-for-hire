@@ -9,7 +9,6 @@ import { createResourceLocatorString, findRouteByRouteName } from '../../util/ro
 import routeConfiguration from '../../routeConfiguration'
 import { propTypes } from '../../util/types'
 import { ensureListing, ensureTransaction } from '../../util/data'
-import { dateFromAPIToLocalNoon } from '../../util/dates'
 import { createSlug } from '../../util/urlHelpers'
 import { txIsPaymentPending } from '../../util/transaction'
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck'
@@ -85,7 +84,7 @@ export const TransactionPageComponent = (props) => {
   const isProviderRole = transactionRole === PROVIDER
   const isCustomerRole = transactionRole === CUSTOMER
 
-  const redirectToCheckoutPageWithInitialValues = (initialValues, listing) => {
+  const redirectToCheckoutPageWithInitialValues = (initialValues) => {
     const routes = routeConfiguration()
     // Customize checkout page state with current listing and selected bookingDates
     const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes)
@@ -105,48 +104,51 @@ export const TransactionPageComponent = (props) => {
     )
   }
 
+  const redirectToNegotiationPageWithInitialValues = (initialValues) => {
+    const routes = routeConfiguration()
+    // Customize checkout page state with current listing and selected bookingDates
+    const { setInitialValues } = findRouteByRouteName('NegotiationPage', routes)
+    callSetInitialValues(setInitialValues, initialValues)
+
+    // Clear previous Stripe errors from store if there is any
+    onInitializeCardPaymentData()
+
+    // Redirect to BeginNegotiationPage
+    history.push(
+      createResourceLocatorString(
+        'NegotiationPage',
+        routes,
+        { id: currentListing.id.uuid, slug: createSlug(currentListing.attributes.title) },
+        {},
+      ),
+    )
+  }
+
   // If payment is pending, redirect to CheckoutPage
   if (
     txIsPaymentPending(currentTransaction) &&
     isCustomerRole &&
     currentTransaction.attributes.lineItems
   ) {
-    const currentBooking = ensureListing(currentTransaction.booking)
-
     const initialValues = {
       listing: currentListing,
       // Transaction with payment pending should be passed to CheckoutPage
       transaction: currentTransaction,
-      // Original bookingData content is not available,
-      // but it is already used since booking is created.
-      // (E.g. quantity is used when booking is created.)
-      bookingData: {},
-      bookingDates: {
-        bookingStart: dateFromAPIToLocalNoon(currentBooking.attributes.start),
-        bookingEnd: dateFromAPIToLocalNoon(currentBooking.attributes.end),
-      },
     }
 
     redirectToCheckoutPageWithInitialValues(initialValues, currentListing)
   }
 
   // Customer can create a booking, if the tx is in "enquiry" state.
-  const handleSubmitBookingRequest = (values) => {
-    const { bookingDates, ...bookingData } = values
-
+  const handleSubmitBookingRequest = (bookingData) => {
     const initialValues = {
       listing: currentListing,
-      // enquired transaction should be passed to CheckoutPage
       transaction: currentTransaction,
       bookingData,
-      bookingDates: {
-        bookingStart: bookingDates.startDate,
-        bookingEnd: bookingDates.endDate,
-      },
       confirmPaymentError: null,
     }
 
-    redirectToCheckoutPageWithInitialValues(initialValues, currentListing)
+    redirectToNegotiationPageWithInitialValues(initialValues, currentListing)
   }
 
   const deletedListingTitle = intl.formatMessage({

@@ -2,11 +2,7 @@ import pick from 'lodash/pick'
 import config from '../../config'
 import { denormalisedResponseEntities } from '../../util/data'
 import { storableError } from '../../util/errors'
-import {
-  TRANSITION_REQUEST_PAYMENT,
-  TRANSITION_CONFIRM_PAYMENT,
-  TRANSITION_PRICE_NEGOTIATION,
-} from '../../util/transaction'
+import { TRANSITION_REQUEST_PAYMENT, TRANSITION_CONFIRM_PAYMENT } from '../../util/transaction'
 import * as log from '../../util/log'
 import { fetchCurrentUserHasOrdersSuccess, fetchCurrentUser } from '../../ducks/user.duck'
 
@@ -17,10 +13,6 @@ export const SET_INITAL_VALUES = 'app/CheckoutPage/SET_INITIAL_VALUES'
 export const INITIATE_ORDER_REQUEST = 'app/CheckoutPage/INITIATE_ORDER_REQUEST'
 export const INITIATE_ORDER_SUCCESS = 'app/CheckoutPage/INITIATE_ORDER_SUCCESS'
 export const INITIATE_ORDER_ERROR = 'app/CheckoutPage/INITIATE_ORDER_ERROR'
-
-export const SET_PRICES_REQUEST = 'app/CheckoutPage/SET_PRICES_REQUEST'
-export const SET_PRICES_SUCCESS = 'app/CheckoutPage/SET_PRICES_SUCCESS'
-export const SET_PRICES_ERROR = 'app/CheckoutPage/SET_PRICES_ERROR'
 
 export const CONFIRM_PAYMENT_REQUEST = 'app/CheckoutPage/CONFIRM_PAYMENT_REQUEST'
 export const CONFIRM_PAYMENT_SUCCESS = 'app/CheckoutPage/CONFIRM_PAYMENT_SUCCESS'
@@ -46,7 +38,6 @@ const initialState = {
   initiateOrderError: null,
   confirmPaymentError: null,
   stripeCustomerFetched: false,
-  setPricesError: null,
 }
 
 export default function checkoutPageReducer(state = initialState, action = {}) {
@@ -83,14 +74,6 @@ export default function checkoutPageReducer(state = initialState, action = {}) {
     case INITIATE_ORDER_ERROR:
       console.error(payload) // eslint-disable-line no-console
       return { ...state, initiateOrderError: payload }
-
-    case SET_PRICES_REQUEST:
-      return { ...state, setPricesError: null }
-    case SET_PRICES_SUCCESS:
-      return { ...state, transaction: payload }
-    case SET_PRICES_ERROR:
-      console.error(payload) // eslint-disable-line no-console
-      return { ...state, setPricesError: payload }
 
     case CONFIRM_PAYMENT_REQUEST:
       return { ...state, confirmPaymentError: null }
@@ -135,19 +118,6 @@ const initiateOrderError = (e) => ({
   payload: e,
 })
 
-const setPricesRequest = () => ({ type: SET_PRICES_REQUEST })
-
-const setPricesSuccess = (order) => ({
-  type: SET_PRICES_SUCCESS,
-  payload: order,
-})
-
-const setPricesError = (e) => ({
-  type: SET_PRICES_ERROR,
-  error: true,
-  payload: e,
-})
-
 const confirmPaymentRequest = () => ({ type: CONFIRM_PAYMENT_REQUEST })
 
 const confirmPaymentSuccess = (orderId) => ({
@@ -183,34 +153,6 @@ export const stripeCustomerError = (e) => ({
 })
 
 /* ================ Thunks ================ */
-
-export const setPrices = (orderParams) => (dispatch, getState, sdk) => {
-  dispatch(setPricesRequest())
-
-  const bodyParams = {
-    id: orderParams.transactionId,
-    transition: TRANSITION_PRICE_NEGOTIATION,
-    params: orderParams,
-  }
-
-  return sdk.transactions
-    .transition(bodyParams)
-    .then((response) => {
-      const order = response.data.data
-      dispatch(setPricesSuccess(order.id))
-      return order
-    })
-    .catch((e) => {
-      dispatch(setPricesError(storableError(e)))
-      const transactionIdMaybe = orderParams.transactionId
-        ? { transactionId: orderParams.transactionId.uuid }
-        : {}
-      log.error(e, 'set-prices-failed', {
-        ...transactionIdMaybe,
-      })
-      throw e
-    })
-}
 
 export const initiateOrder = (orderParams) => (dispatch, getState, sdk) => {
   dispatch(initiateOrderRequest())

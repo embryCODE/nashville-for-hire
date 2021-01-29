@@ -7,19 +7,21 @@
 
   {:name :transition/price-negotiation,
    :actor :actor.role/customer,
-   :actions [],
+   :privileged? true,
+   :actions [{:name :action/privileged-update-metadata}],
    :to :state/price-negotiation,
     }
 
   {:name :transition/price-negotiation-after-enquiry,
    :actor :actor.role/customer,
-   :actions [],
+   :privileged? true,
+   :actions [{:name :action/privileged-update-metadata}],
    :from :state/enquiry,
    :to :state/price-negotiation}
 
   {:name :transition/request-payment,
-   :actor :actor.role/customer,
-   :privileged? true
+   :actor :actor.role/provider,
+   :privileged? true,
    :actions
    [{:name :action/privileged-set-line-items}
     {:name :action/stripe-create-payment-intent}],

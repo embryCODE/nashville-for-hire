@@ -233,7 +233,7 @@ const txLastTransition = (tx) => ensureTransaction(tx).attributes.lastTransition
 export const txIsEnquired = (tx) =>
   getTransitionsToState(STATE_ENQUIRY).includes(txLastTransition(tx))
 
-export const txIsNegotiated = (tx) =>
+export const txIsNegotiating = (tx) =>
   getTransitionsToState(STATE_PRICE_NEGOTIATION).includes(txLastTransition(tx))
 
 export const txIsPaymentPending = (tx) =>

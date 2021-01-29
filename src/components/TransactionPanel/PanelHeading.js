@@ -129,6 +129,22 @@ const PanelHeading = (props) => {
           isCustomerBanned={isCustomerBanned}
         />
       )
+    case HEADING_NEGOTIATING:
+      return isCustomer ? (
+        <HeadingCustomer
+          className={titleClasses}
+          id="TransactionPanel.orderEnquiredTitle"
+          values={{ listingLink }}
+          listingDeleted={listingDeleted}
+        />
+      ) : (
+        <HeadingProvider
+          className={titleClasses}
+          id="TransactionPanel.saleEnquiredTitle"
+          values={{ customerName, listingLink }}
+          isCustomerBanned={isCustomerBanned}
+        />
+      )
     case HEADING_PAYMENT_PENDING:
       return isCustomer ? (
         <HeadingCustomer

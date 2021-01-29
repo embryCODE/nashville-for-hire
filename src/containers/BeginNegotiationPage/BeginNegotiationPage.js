@@ -4,10 +4,7 @@ import { injectIntl } from '../../util/reactIntl'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import routeConfiguration from '../../routeConfiguration'
 import { propTypes } from '../../util/types'
-import { createSlug } from '../../util/urlHelpers'
-import { createResourceLocatorString, findRouteByRouteName } from '../../util/routes'
 import { ensureUser, userDisplayNameAsString } from '../../util/data'
 import {
   Page,
@@ -17,67 +14,61 @@ import {
   LayoutWrapperFooter,
   Footer,
 } from '../../components'
-
-import { setPrices } from './NegotiationPage.duck'
 import { TopbarContainer } from '../index'
 import { initializeCardPaymentData } from '../../ducks/stripe.duck'
-import { setInitialValues } from './NegotiationPage.duck'
+import { setInitialValues, beginNegotiation } from './BeginNegotiationPage.duck'
+import { BeginNegotiation } from '../../components/NFHCustom/pages/BeginNegotiation'
+import config from '../../config'
+import { Money } from 'sharetribe-flex-sdk/src/types'
+
+const createCustomPricingParams = (params) => {
+  const { listing, bookingData } = params
+
+  const unitType = config.bookingUnitType
+
+  const lineItems = Object.values(bookingData).map((d) => {
+    // TODO: Handle when there is no price correctly
+    const unitPrice = d.price ? new Money(d.price.amount, d.price.currency) : new Money(0, 'USD')
+
+    return {
+      code: unitType,
+      unitPrice,
+      quantity: d.quantity,
+    }
+  })
+
+  return {
+    listingId: listing.id,
+    lineItems,
+  }
+}
 
 export class NegotiationPageComponent extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      pageData: {},
-      dataLoaded: false,
-      submitting: false,
-    }
-
-    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleBeginNegotiation = this.handleBeginNegotiation.bind(this)
   }
 
-  handleSubmit() {
-    const {
-      callSetInitialValues,
-      onInitializeCardPaymentData,
-      history,
-      bookingData,
-      listing,
-    } = this.props
+  handleBeginNegotiation() {
+    const { callBeginNegotiation, bookingData, listing, transaction } = this.props
+    const transactionId = transaction ? transaction.id : null
 
-    const initialValues = {
+    const data = {
+      transactionId,
       listing,
       bookingData,
-      confirmPaymentError: null,
+      ...createCustomPricingParams({ listing, bookingData }),
     }
 
-    const routes = routeConfiguration()
-    // Customize checkout page state with current listing and selected bookingDates
-    const { setInitialValues } = findRouteByRouteName('CheckoutPage', routes)
-    callSetInitialValues(setInitialValues, initialValues)
-
-    // Clear previous Stripe errors from store if there is any
-    onInitializeCardPaymentData()
-
-    // Redirect to CheckoutPage
-    history.push(
-      createResourceLocatorString(
-        'CheckoutPage',
-        routes,
-        {
-          id: listing.id.uuid,
-          slug: createSlug(listing.attributes.title),
-        },
-        {},
-      ),
-    )
+    callBeginNegotiation(beginNegotiation, data)
   }
 
   render() {
-    console.log('Negotiation page props:', this.props)
-    const { listing } = this.props
+    const { listing, bookingData } = this.props
 
-    if (!listing) return null
+    // TODO: Probably redirect to listing if Redux doesn't have needed data
+    if (!listing || !bookingData) return <div>Data is missing</div>
 
     const { description = '' } = listing.attributes
     const authorAvailable = listing && listing.author
@@ -132,10 +123,7 @@ export class NegotiationPageComponent extends Component {
           </LayoutWrapperTopbar>
 
           <LayoutWrapperMain>
-            <h1>Content goes here</h1>
-            <form onSubmit={this.handleSubmit}>
-              <button>To checkout</button>
-            </form>
+            <BeginNegotiation onBeginNegotiation={this.handleBeginNegotiation} />
           </LayoutWrapperMain>
 
           <LayoutWrapperFooter>
@@ -172,13 +160,14 @@ NegotiationPageComponent.propTypes = {
   setPricingError: propTypes.error,
 
   callSetInitialValues: func.isRequired,
+  callBeginNegotiation: func.isRequired,
   onInitializeCardPaymentData: func.isRequired,
 }
 
 const mapStateToProps = (state) => {
   const { isAuthenticated } = state.Auth
-  const { listing, bookingData, transaction, setPricingError } = state.NegotiationPage
   const { currentUser } = state.user
+  const { listing, bookingData, transaction = null } = state.BeginNegotiationPage
 
   return {
     isAuthenticated,
@@ -186,13 +175,13 @@ const mapStateToProps = (state) => {
     listing,
     bookingData,
     transaction,
-    setPricingError,
   }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-  onSetPrices: (params) => dispatch(setPrices(params)),
+  onBeginNegotiation: (params) => dispatch(beginNegotiation(params)),
   callSetInitialValues: (setInitialValues, values) => dispatch(setInitialValues(values)),
+  callBeginNegotiation: (beginNegotiation, values) => dispatch(beginNegotiation(values)),
   onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
 })
 
@@ -202,13 +191,13 @@ const mapDispatchToProps = (dispatch) => ({
 // lifecycle hook.
 //
 // See: https://github.com/ReactTraining/react-router/issues/4671
-const NegotiationPage = compose(
+const BeginNegotiationPage = compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps),
   injectIntl,
 )(NegotiationPageComponent)
 
-NegotiationPage.setInitialValues = (initialValues) => setInitialValues(initialValues)
-NegotiationPage.displayName = 'NegotiationPage'
+BeginNegotiationPage.setInitialValues = (initialValues) => setInitialValues(initialValues)
+BeginNegotiationPage.displayName = 'BeginNegotiationPage'
 
-export default NegotiationPage
+export default BeginNegotiationPage

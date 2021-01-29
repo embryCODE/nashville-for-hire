@@ -7,7 +7,7 @@ import {
   txIsCanceled,
   txIsDeclined,
   txIsEnquired,
-  txIsNegotiated,
+  txIsNegotiating,
   txIsPaymentExpired,
   txIsPaymentPending,
   txIsRequested,
@@ -53,6 +53,7 @@ import PanelHeading, {
 } from './PanelHeading'
 
 import css from './TransactionPanel.css'
+import { FinishNegotiation } from '../NFHCustom/pages/FinishNegotiation/FinishNegotiation'
 
 // Helper function to get display names for different roles
 const displayNames = (currentUser, currentProvider, currentCustomer, intl) => {
@@ -224,10 +225,11 @@ export class TransactionPanelComponent extends Component {
           headingState: HEADING_ENQUIRED,
           showBookingPanel: isCustomer && !isProviderBanned && hasCorrectNextTransition,
         }
-      } else if (txIsNegotiated(tx)) {
+      } else if (txIsNegotiating(tx)) {
         return {
           headingState: HEADING_NEGOTIATING,
           showDetailCardHeadings: isCustomer,
+          showNegotiationPanel: true,
         }
       } else if (txIsPaymentPending(tx)) {
         return {
@@ -339,6 +341,12 @@ export class TransactionPanelComponent extends Component {
     )
 
     const classes = classNames(rootClassName || css.root, className)
+
+    console.log(currentTransaction)
+    const prices = currentListing.attributes.publicData.prices
+    const handleFinishNegotiation = () => {
+      console.log('handleFinishNegotation')
+    }
 
     return (
       <div className={classes}>
@@ -453,6 +461,11 @@ export class TransactionPanelComponent extends Component {
                   fetchTimeSlotsError={fetchTimeSlotsError}
                 />
               ) : null}
+
+              {stateData.showNegotiationPanel ? (
+                <FinishNegotiation prices={prices} onFinishNegotiation={handleFinishNegotiation} />
+              ) : null}
+
               <BreakdownMaybe
                 className={css.breakdownContainer}
                 transaction={currentTransaction}
