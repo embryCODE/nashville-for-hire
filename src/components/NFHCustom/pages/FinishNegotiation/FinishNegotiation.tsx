@@ -1,46 +1,40 @@
-import React, { SyntheticEvent, Fragment, useState } from 'react'
+import React, { SyntheticEvent, useState } from 'react'
 import styled from 'styled-components'
 import pricingOptions from '../../../../util/pricingOptions'
 import { Money } from 'sharetribe-flex-sdk/src/types'
 
-// TODO: Clean this mess up
-
 const FinishNegotiationWrapper = styled.div`
-  padding: 1rem;
+  padding: 0 1rem 1rem;
 `
 
-const hydrateLineItems = (lineItems: any) => {
-  return lineItems.map((li: any) => {
-    const unnestedPricingOptions = Object.values(pricingOptions)
-      .flat()
-      .map((po) => Object.values(po).flat())
-      .flat()
+const unnestedPricingOptions = Object.values(pricingOptions)
+  .flat()
+  .map((po) => Object.values(po).flat())
+  .flat()
 
-    const foundPricingOption = unnestedPricingOptions.find((po) => {
-      return li.code.includes(po.code)
-    })
-
-    return { ...li, ...foundPricingOption }
-  })
+const getLabel = (code: string): string => {
+  return unnestedPricingOptions.find((po) => code.includes(po.code)).label
 }
 
 interface FinishNegotiationProps {
+  isCustomer: boolean
   lineItems: any[]
-  onFinishNegotiation: () => void
+  onFinishNegotiation: (newLineItems: any) => void
 }
 
 const FinishNegotiation: React.FC<FinishNegotiationProps> = ({
+  isCustomer,
   lineItems,
   onFinishNegotiation,
 }) => {
-  const [hydratedLineItems, setHydratedLineItems] = useState(hydrateLineItems(lineItems))
+  const [newLineItems, setNewLineItems] = useState(lineItems)
 
   const handleChange = (code: string) => (e: SyntheticEvent) => {
     const target = e.target as typeof e.target & {
       value: string
     }
 
-    setHydratedLineItems((prev: any) => {
+    setNewLineItems((prev: any) => {
       return prev.map((li: any) => {
         return li.code === code
           ? {
@@ -54,26 +48,41 @@ const FinishNegotiation: React.FC<FinishNegotiationProps> = ({
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault()
-    onFinishNegotiation()
+    onFinishNegotiation(newLineItems)
   }
+
+  const isDisabled = !newLineItems.every((li) => li.unitPrice.amount > 0)
 
   return (
     <FinishNegotiationWrapper>
       <h2>Negotiation</h2>
-      <p>Communicate with the buyer then submit the agreed upon prices below</p>
-      <form onSubmit={handleSubmit}>
-        {hydratedLineItems.map((li: any) => (
-          <Fragment key={li.code}>
-            <label htmlFor={li.code}>{li.label}</label>
-            <input
-              id={li.code}
-              value={li.unitPrice.amount / 100 || 0}
-              onChange={handleChange(li.code)}
-            />
-          </Fragment>
-        ))}
-        <button>Submit</button>
-      </form>
+      {isCustomer ? (
+        <>
+          <p>
+            Discuss prices with the seller. Once in agreement, the seller will set the prices and
+            you can continue to payment.
+          </p>
+        </>
+      ) : (
+        <>
+          <p>Communicate with the buyer then submit the agreed upon prices below</p>
+
+          <form onSubmit={handleSubmit}>
+            {newLineItems.map((li: any) => (
+              <div key={li.code} style={{ marginBottom: '1rem' }}>
+                <label htmlFor={li.code}>{getLabel(li.code)}</label>
+                <input
+                  id={li.code}
+                  value={li.unitPrice.amount / 100 || ''}
+                  onChange={handleChange(li.code)}
+                />
+              </div>
+            ))}
+
+            <button disabled={isDisabled}>Submit</button>
+          </form>
+        </>
+      )}
     </FinishNegotiationWrapper>
   )
 }

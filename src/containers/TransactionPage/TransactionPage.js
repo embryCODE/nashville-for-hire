@@ -25,7 +25,6 @@ import {
   Footer,
 } from '../../components'
 import { TopbarContainer } from '../../containers'
-
 import {
   acceptSale,
   declineSale,
@@ -36,6 +35,8 @@ import {
   fetchMoreMessages,
 } from './TransactionPage.duck'
 import css from './TransactionPage.css'
+import createCustomPricingParams from '../../util/createCustomPricingParams'
+import { beginNegotiation } from '../../ducks/BeginNegotiation.duck'
 
 const PROVIDER = 'provider'
 const CUSTOMER = 'customer'
@@ -77,6 +78,8 @@ export const TransactionPageComponent = (props) => {
     processTransitions,
     callSetInitialValues,
     onInitializeCardPaymentData,
+    callBeginNegotiation,
+    callLoadData,
   } = props
 
   const currentTransaction = ensureTransaction(transaction)
@@ -98,27 +101,10 @@ export const TransactionPageComponent = (props) => {
       createResourceLocatorString(
         'CheckoutPage',
         routes,
-        { id: currentListing.id.uuid, slug: createSlug(currentListing.attributes.title) },
-        {},
-      ),
-    )
-  }
-
-  const redirectToNegotiationPageWithInitialValues = (initialValues) => {
-    const routes = routeConfiguration()
-    // Customize checkout page state with current listing and selected bookingDates
-    const { setInitialValues } = findRouteByRouteName('NegotiationPage', routes)
-    callSetInitialValues(setInitialValues, initialValues)
-
-    // Clear previous Stripe errors from store if there is any
-    onInitializeCardPaymentData()
-
-    // Redirect to BeginNegotiationPage
-    history.push(
-      createResourceLocatorString(
-        'NegotiationPage',
-        routes,
-        { id: currentListing.id.uuid, slug: createSlug(currentListing.attributes.title) },
+        {
+          id: currentListing.id.uuid,
+          slug: createSlug(currentListing.attributes.title),
+        },
         {},
       ),
     )
@@ -131,8 +117,7 @@ export const TransactionPageComponent = (props) => {
     currentTransaction.attributes.lineItems
   ) {
     const initialValues = {
-      listing: currentListing,
-      // Transaction with payment pending should be passed to CheckoutPage
+      listing: currentListing, // Transaction with payment pending should be passed to CheckoutPage
       transaction: currentTransaction,
     }
 
@@ -141,14 +126,21 @@ export const TransactionPageComponent = (props) => {
 
   // Customer can create a booking, if the tx is in "enquiry" state.
   const handleSubmitBookingRequest = (bookingData) => {
-    const initialValues = {
-      listing: currentListing,
-      transaction: currentTransaction,
-      bookingData,
-      confirmPaymentError: null,
+    const listing = currentListing
+    const transaction = currentTransaction
+    const transactionId = transaction.id
+    const data = {
+      transactionId,
+      ...createCustomPricingParams({ listing, bookingData }),
     }
 
-    redirectToNegotiationPageWithInitialValues(initialValues, currentListing)
+    callBeginNegotiation(beginNegotiation, data).then(() => {
+      callLoadData(loadData, { id: transactionId.uuid, transactionRole })
+    })
+  }
+
+  const handleFinishNegotiation = (lineItems) => {
+    console.log(lineItems)
   }
 
   const deletedListingTitle = intl.formatMessage({
@@ -241,6 +233,7 @@ export const TransactionPageComponent = (props) => {
       onSubmitBookingRequest={handleSubmitBookingRequest}
       timeSlots={timeSlots}
       fetchTimeSlotsError={fetchTimeSlotsError}
+      onFinishNegotiation={handleFinishNegotiation}
     />
   ) : (
     loadingOrFailedFetching
@@ -308,6 +301,8 @@ TransactionPageComponent.propTypes = {
   timeSlots: arrayOf(propTypes.timeSlot),
   fetchTimeSlotsError: propTypes.error,
   callSetInitialValues: func.isRequired,
+  callBeginNegotiation: func.isRequired,
+  callLoadData: func.isRequired,
   onInitializeCardPaymentData: func.isRequired,
 
   // from withRouter
@@ -387,6 +382,8 @@ const mapDispatchToProps = (dispatch) => {
     onSendReview: (role, tx, reviewRating, reviewContent) =>
       dispatch(sendReview(role, tx, reviewRating, reviewContent)),
     callSetInitialValues: (setInitialValues, values) => dispatch(setInitialValues(values)),
+    callBeginNegotiation: (beginNegotiation, values) => dispatch(beginNegotiation(values)),
+    callLoadData: (loadData, values) => dispatch(loadData(values)),
     onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
   }
 }

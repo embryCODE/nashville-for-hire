@@ -53,7 +53,7 @@ import PanelHeading, {
 } from './PanelHeading'
 
 import css from './TransactionPanel.css'
-import { FinishNegotiation } from '../NFHCustom/pages/FinishNegotiation/FinishNegotiation'
+import { FinishNegotiation } from '../NFHCustom/pages/FinishNegotiation'
 
 // Helper function to get display names for different roles
 const displayNames = (currentUser, currentProvider, currentCustomer, intl) => {
@@ -194,6 +194,7 @@ export class TransactionPanelComponent extends Component {
       timeSlots,
       fetchTimeSlotsError,
       nextTransitions,
+      onFinishNegotiation,
     } = this.props
 
     const currentTransaction = ensureTransaction(transaction)
@@ -341,11 +342,7 @@ export class TransactionPanelComponent extends Component {
     )
 
     const classes = classNames(rootClassName || css.root, className)
-
     const lineItems = currentTransaction.attributes.lineItems
-    const handleFinishNegotiation = () => {
-      console.log('handleFinishNegotation')
-    }
 
     return (
       <div className={classes}>
@@ -463,8 +460,9 @@ export class TransactionPanelComponent extends Component {
 
               {stateData.showNegotiationPanel ? (
                 <FinishNegotiation
+                  isCustomer={isCustomer}
                   lineItems={lineItems}
-                  onFinishNegotiation={handleFinishNegotiation}
+                  onFinishNegotiation={onFinishNegotiation}
                 />
               ) : null}
 
@@ -534,6 +532,7 @@ TransactionPanelComponent.propTypes = {
   onSendMessage: func.isRequired,
   onSendReview: func.isRequired,
   onSubmitBookingRequest: func.isRequired,
+  onFinishNegotiation: func.isRequired,
   timeSlots: arrayOf(propTypes.timeSlot),
   fetchTimeSlotsError: propTypes.error,
   nextTransitions: array,

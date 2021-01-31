@@ -1,10 +1,12 @@
-import { storableError } from '../../util/errors'
+import { storableError } from '../util/errors'
 import {
   TRANSITION_PRICE_NEGOTIATION,
   TRANSITION_PRICE_NEGOTIATION_AFTER_ENQUIRY,
-} from '../../util/transaction'
+} from '../util/transaction'
 import pick from 'lodash/pick'
-import config from '../../config'
+import config from '../config'
+import { fetchCurrentUserHasOrdersSuccess } from './user.duck'
+import { addMarketplaceEntities } from './marketplaceData.duck'
 
 // ================ Action types ================ //
 
@@ -70,7 +72,7 @@ export const beginNegotiation = (orderParams) => (dispatch, getState, sdk) => {
   dispatch(beginNegotiationRequest())
 
   const { transactionId, listingId, lineItems } = orderParams
-  const message = 'Negotiation started'
+  const message = '[System Message] Negotiation started'
 
   // If we have an ID, we want to transition the transaction
   if (transactionId) {
@@ -86,9 +88,10 @@ export const beginNegotiation = (orderParams) => (dispatch, getState, sdk) => {
       .transition(bodyParams)
       .then((response) => {
         const transaction = response.data.data
+        const transactionId = transaction.id
 
         // Send the message to the created transaction
-        return sdk.messages.send({ transactionId: transaction.id, content: message }).then(() => {
+        return sdk.messages.send({ transactionId, content: message }).then(() => {
           dispatch(beginNegotiationSuccess(transaction))
           return transactionId
         })
@@ -110,10 +113,12 @@ export const beginNegotiation = (orderParams) => (dispatch, getState, sdk) => {
       .initiate(bodyParams)
       .then((response) => {
         const transaction = response.data.data
+        const transactionId = transaction.id
 
         // Send the message to the created transaction
-        return sdk.messages.send({ transactionId: transaction.id, content: message }).then(() => {
+        return sdk.messages.send({ transactionId, content: message }).then(() => {
           dispatch(beginNegotiationSuccess(transaction))
+          dispatch(addMarketplaceEntities(response))
           return transactionId
         })
       })

@@ -18,7 +18,7 @@ import {
   createSlug,
 } from '../../util/urlHelpers'
 import { formatMoney } from '../../util/currency'
-import { createResourceLocatorString, findRouteByRouteName } from '../../util/routes'
+import { createResourceLocatorString } from '../../util/routes'
 import {
   ensureListing,
   ensureOwnListing,
@@ -41,7 +41,6 @@ import {
   BookingPanel,
 } from '../../components'
 import { TopbarContainer, NotFoundPage } from '../../containers'
-
 import { sendEnquiry, loadData, setInitialValues } from './ListingPage.duck'
 import SectionImages from './SectionImages'
 import SectionAvatar from './SectionAvatar'
@@ -50,6 +49,8 @@ import SectionReviews from './SectionReviews'
 import SectionHostMaybe from './SectionHostMaybe'
 import css from './ListingPage.css'
 import { Listing } from '../../components/NFHCustom/pages/Listing'
+import { beginNegotiation } from '../../ducks/BeginNegotiation.duck'
+import createCustomPricingParams from '../../util/createCustomPricingParams'
 
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16
 
@@ -88,40 +89,32 @@ export class ListingPageComponent extends Component {
     this.onSubmitEnquiry = this.onSubmitEnquiry.bind(this)
   }
 
-  handleSubmit(values) {
+  handleSubmit(bookingData) {
     const {
       history,
       getListing,
       params,
-      callSetInitialValues,
       onInitializeCardPaymentData,
+      callBeginNegotiation,
+      transaction,
     } = this.props
-    const listingId = new UUID(params.id)
-    const listing = getListing(listingId)
-
-    const initialValues = {
-      listing,
-      bookingData: values,
-      confirmPaymentError: null,
-    }
-
-    const routes = routeConfiguration()
-    // Customize checkout page state with current listing and selected bookingDates
-    const { setInitialValues } = findRouteByRouteName('NegotiationPage', routes)
-    callSetInitialValues(setInitialValues, initialValues)
 
     // Clear previous Stripe errors from store if there is any
     onInitializeCardPaymentData()
 
-    // Redirect to BeginNegotiationPage
-    history.push(
-      createResourceLocatorString(
-        'NegotiationPage',
-        routes,
-        { id: listing.id.uuid, slug: createSlug(listing.attributes.title) },
-        {},
-      ),
-    )
+    const routes = routeConfiguration()
+    const listingId = new UUID(params.id)
+    const listing = getListing(listingId)
+    const transactionId = transaction ? transaction.id : null
+    const data = {
+      transactionId,
+      ...createCustomPricingParams({ listing, bookingData }),
+    }
+
+    callBeginNegotiation(beginNegotiation, data).then((txId) => {
+      // Redirect to OrderDetailsPage
+      history.push(createResourceLocatorString('OrderDetailsPage', routes, { id: txId.uuid }, {}))
+    })
   }
 
   onContactUser() {
@@ -215,8 +208,7 @@ export class ListingPageComponent extends Component {
     }
 
     const {
-      description = '',
-      // geolocation = null,
+      description = '', // geolocation = null,
       price = null,
       title = '',
       publicData,
@@ -336,7 +328,11 @@ export class ListingPageComponent extends Component {
     const siteTitle = config.siteTitle
     const schemaTitle = intl.formatMessage(
       { id: 'ListingPage.schemaTitle' },
-      { title, price: formattedPrice, siteTitle },
+      {
+        title,
+        price: formattedPrice,
+        siteTitle,
+      },
     )
 
     const hostLink = (
@@ -467,8 +463,7 @@ ListingPageComponent.propTypes = {
     search: string,
   }).isRequired,
 
-  unitType: propTypes.bookingUnitType,
-  // from injectIntl
+  unitType: propTypes.bookingUnitType, // from injectIntl
   intl: intlShape.isRequired,
 
   params: shape({
@@ -544,6 +539,7 @@ const mapDispatchToProps = (dispatch) => ({
   onManageDisableScrolling: (componentId, disableScrolling) =>
     dispatch(manageDisableScrolling(componentId, disableScrolling)),
   callSetInitialValues: (setInitialValues, values) => dispatch(setInitialValues(values)),
+  callBeginNegotiation: (beginNegotiation, values) => dispatch(beginNegotiation(values)),
   onSendEnquiry: (listingId, message) => dispatch(sendEnquiry(listingId, message)),
   onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
 })
