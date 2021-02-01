@@ -10,7 +10,7 @@ import Decimal from 'decimal.js'
 import { types as sdkTypes } from '../../util/sdkLoader'
 import { TRANSITIONS } from '../../util/transaction'
 
-const { UUID, Money } = sdkTypes
+const { UUID } = sdkTypes
 
 // Validate that given 'obj' has all the keys of defined by validPropTypes parameter
 // and values must pass related test-value-format function.
@@ -37,13 +37,10 @@ export const isValidBookingDates = (bookingDates) => {
 }
 
 // Validate content of listing object received from SessionStore.
-// Currently only id & attributes.price are needed.
+// Currently only id is needed.
 export const isValidListing = (listing) => {
   const props = {
     id: (id) => id instanceof UUID,
-    attributes: (v) => {
-      return typeof v === 'object' && v.price instanceof Money
-    },
   }
   return validateProperties(listing, props)
 }
@@ -62,11 +59,9 @@ export const isValidTransaction = (transaction) => {
 }
 
 // Stores given bookingDates and listing to sessionStorage
-export const storeData = (bookingData, bookingDates, listing, transaction, storageKey) => {
-  if (window && window.sessionStorage && listing && bookingDates && bookingData) {
+export const storeData = (listing, transaction, storageKey) => {
+  if (window && window.sessionStorage && listing) {
     const data = {
-      bookingData,
-      bookingDates,
       listing,
       transaction,
       storedAt: new Date(),
@@ -105,7 +100,7 @@ export const storedData = (storageKey) => {
       return sdkTypes.reviver(k, v)
     }
 
-    const { bookingData, bookingDates, listing, transaction, storedAt } = checkoutPageData
+    const { listing, transaction, storedAt } = checkoutPageData
       ? JSON.parse(checkoutPageData, reviver)
       : {}
 
@@ -115,14 +110,10 @@ export const storedData = (storageKey) => {
     // resolve transaction as valid if it is missing
     const isTransactionValid = !!transaction ? isValidTransaction(transaction) : true
 
-    const isStoredDataValid =
-      isFreshlySaved &&
-      isValidBookingDates(bookingDates) &&
-      isValidListing(listing) &&
-      isTransactionValid
+    const isStoredDataValid = isFreshlySaved && isValidListing(listing) && isTransactionValid
 
     if (isStoredDataValid) {
-      return { bookingData, bookingDates, listing, transaction }
+      return { listing, transaction }
     }
   }
   return {}

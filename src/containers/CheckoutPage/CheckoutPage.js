@@ -53,7 +53,6 @@ import {
 } from './CheckoutPage.duck'
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers'
 import css from './CheckoutPage.css'
-import { types as sdkTypes } from '../../util/sdkLoader'
 
 const STORAGE_KEY = 'CheckoutPage'
 
@@ -173,7 +172,10 @@ export class CheckoutPageComponent extends Component {
       pageData && pageData.listing && pageData.listing.id && !isBookingCreated
 
     if (shouldFetchSpeculatedTransaction) {
-      fetchSpeculatedTransaction({ listingId: listing.id, transactionId: transaction.id })
+      fetchSpeculatedTransaction({
+        listingId: pageData.listing.id,
+        transactionId: pageData.transaction.id,
+      })
     }
 
     this.setState({ pageData: pageData || {}, dataLoaded: true })
@@ -233,8 +235,8 @@ export class CheckoutPageComponent extends Component {
       const order = ensureTransaction(fnParams)
       if (order.id) {
         // Store order.
-        const { bookingData, listing } = pageData
-        storeData(bookingData, listing, order, STORAGE_KEY)
+        const { listing } = pageData
+        storeData(listing, order, STORAGE_KEY)
         this.setState({ pageData: { ...pageData, transaction: order } })
       }
 
@@ -344,10 +346,11 @@ export class CheckoutPageComponent extends Component {
         ? { setupPaymentMethodForSaving: true }
         : {}
 
-    const orderParams = this.customPricingParams({
-      listing: pageData.listing,
+    const orderParams = {
+      listingId: pageData.listing.id.uuid,
+      lineItems: pageData.transaction.attributes.lineItems,
       ...optionalPaymentParams,
-    })
+    }
 
     return handlePaymentIntentCreation(orderParams)
   }
@@ -466,7 +469,6 @@ export class CheckoutPageComponent extends Component {
       initiateOrderError,
       confirmPaymentError,
       intl,
-      params,
       currentUser,
       handleCardPaymentError,
       paymentIntent,
@@ -516,6 +518,7 @@ export class CheckoutPageComponent extends Component {
     if (isLoading) {
       return <Page {...pageProps}>{topbar}</Page>
     }
+    const transactionId = transaction && transaction.id.uuid
 
     const isOwnListing =
       currentUser &&
@@ -533,11 +536,11 @@ export class CheckoutPageComponent extends Component {
     // Redirection must happen before any data format error is thrown (e.g. wrong currency)
     if (shouldRedirect) {
       // eslint-disable-next-line no-console
-      console.error('Missing or invalid data for checkout, redirecting back to listing page.', {
+      console.error('Missing or invalid data for checkout, redirecting back to orders page.', {
         transaction: speculatedTransaction,
         listing,
       })
-      return <NamedRedirect name="ListingPage" params={params} />
+      return <NamedRedirect name="OrderPage" params={{ id: transactionId }} />
     }
 
     // Show breakdown only when speculated transaction and booking are loaded
