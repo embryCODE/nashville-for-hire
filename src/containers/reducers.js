@@ -18,7 +18,7 @@ import ProfileSettingsPage from './ProfileSettingsPage/ProfileSettingsPage.duck'
 import SearchPage from './SearchPage/SearchPage.duck'
 import StripePayoutPage from './StripePayoutPage/StripePayoutPage.duck'
 import TransactionPage from './TransactionPage/TransactionPage.duck'
-import BeginNegotiation from '../ducks/BeginNegotiation.duck'
+import BeginNegotiation from '../ducks/Negotiation.duck'
 
 export {
   CheckoutPage,

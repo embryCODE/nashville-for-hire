@@ -49,7 +49,7 @@ import SectionReviews from './SectionReviews'
 import SectionHostMaybe from './SectionHostMaybe'
 import css from './ListingPage.css'
 import { Listing } from '../../components/NFHCustom/pages/Listing'
-import { beginNegotiation } from '../../ducks/BeginNegotiation.duck'
+import { beginNegotiation } from '../../ducks/Negotiation.duck'
 import createCustomPricingParams from '../../util/createCustomPricingParams'
 
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16

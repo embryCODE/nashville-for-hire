@@ -36,7 +36,7 @@ import {
 } from './TransactionPage.duck'
 import css from './TransactionPage.css'
 import createCustomPricingParams from '../../util/createCustomPricingParams'
-import { beginNegotiation } from '../../ducks/BeginNegotiation.duck'
+import { beginNegotiation, setPrices } from '../../ducks/Negotiation.duck'
 
 const PROVIDER = 'provider'
 const CUSTOMER = 'customer'
@@ -79,6 +79,7 @@ export const TransactionPageComponent = (props) => {
     callSetInitialValues,
     onInitializeCardPaymentData,
     callBeginNegotiation,
+    callSetPrices,
     callLoadData,
   } = props
 
@@ -140,7 +141,27 @@ export const TransactionPageComponent = (props) => {
   }
 
   const handleFinishNegotiation = (lineItems) => {
-    console.log(lineItems)
+    const transactionId = currentTransaction.id
+    const listingId = currentListing.id
+
+    const data = {
+      transactionId,
+      listingId,
+      lineItems,
+    }
+
+    callSetPrices(setPrices, data).then(() => {
+      callLoadData(loadData, { id: transactionId.uuid, transactionRole })
+    })
+  }
+
+  const handleProceedToPayment = () => {
+    const initialValues = {
+      listing: currentListing,
+      transaction: currentTransaction,
+    }
+
+    redirectToCheckoutPageWithInitialValues(initialValues, currentListing)
   }
 
   const deletedListingTitle = intl.formatMessage({
@@ -234,6 +255,7 @@ export const TransactionPageComponent = (props) => {
       timeSlots={timeSlots}
       fetchTimeSlotsError={fetchTimeSlotsError}
       onFinishNegotiation={handleFinishNegotiation}
+      onProceedToPayment={handleProceedToPayment}
     />
   ) : (
     loadingOrFailedFetching
@@ -302,6 +324,7 @@ TransactionPageComponent.propTypes = {
   fetchTimeSlotsError: propTypes.error,
   callSetInitialValues: func.isRequired,
   callBeginNegotiation: func.isRequired,
+  callSetPrices: func.isRequired,
   callLoadData: func.isRequired,
   onInitializeCardPaymentData: func.isRequired,
 
@@ -383,6 +406,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(sendReview(role, tx, reviewRating, reviewContent)),
     callSetInitialValues: (setInitialValues, values) => dispatch(setInitialValues(values)),
     callBeginNegotiation: (beginNegotiation, values) => dispatch(beginNegotiation(values)),
+    callSetPrices: (setPrices, values) => dispatch(setPrices(values)),
     callLoadData: (loadData, values) => dispatch(loadData(values)),
     onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
   }

@@ -7,7 +7,8 @@ import { NamedLink } from '../../components'
 import css from './TransactionPanel.css'
 
 export const HEADING_ENQUIRED = 'enquired'
-export const HEADING_NEGOTIATING = 'negotiating-price'
+export const HEADING_NEGOTIATING = 'price-negotiating'
+export const HEADING_SET_PRICES = 'set-prices'
 export const HEADING_PAYMENT_PENDING = 'pending-payment'
 export const HEADING_PAYMENT_EXPIRED = 'payment-expired'
 export const HEADING_REQUESTED = 'requested'
@@ -130,6 +131,22 @@ const PanelHeading = (props) => {
         />
       )
     case HEADING_NEGOTIATING:
+      return isCustomer ? (
+        <HeadingCustomer
+          className={titleClasses}
+          id="TransactionPanel.orderEnquiredTitle"
+          values={{ listingLink }}
+          listingDeleted={listingDeleted}
+        />
+      ) : (
+        <HeadingProvider
+          className={titleClasses}
+          id="TransactionPanel.saleEnquiredTitle"
+          values={{ customerName, listingLink }}
+          isCustomerBanned={isCustomerBanned}
+        />
+      )
+    case HEADING_SET_PRICES:
       return isCustomer ? (
         <HeadingCustomer
           className={titleClasses}

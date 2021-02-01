@@ -254,7 +254,7 @@ export const speculateTransaction = (params) => (dispatch, getState, sdk) => {
   dispatch(speculateTransactionRequest())
   const bodyParams = {
     transition: TRANSITION_REQUEST_PAYMENT,
-    processAlias: config.bookingProcessAlias,
+    id: params.transactionId,
     params: {
       ...params,
       cardToken: 'CheckoutPage_speculative_card_token',
@@ -264,8 +264,9 @@ export const speculateTransaction = (params) => (dispatch, getState, sdk) => {
     include: ['booking', 'provider'],
     expand: true,
   }
+
   return sdk.transactions
-    .initiateSpeculative(bodyParams, queryParams)
+    .transitionSpeculative(bodyParams, queryParams)
     .then((response) => {
       const entities = denormalisedResponseEntities(response)
       if (entities.length !== 1) {
@@ -275,11 +276,9 @@ export const speculateTransaction = (params) => (dispatch, getState, sdk) => {
       dispatch(speculateTransactionSuccess(tx))
     })
     .catch((e) => {
-      const { listingId, bookingStart, bookingEnd } = params
+      const { listingId } = params
       log.error(e, 'speculate-transaction-failed', {
         listingId: listingId.uuid,
-        bookingStart,
-        bookingEnd,
       })
       return dispatch(speculateTransactionError(storableError(e)))
     })

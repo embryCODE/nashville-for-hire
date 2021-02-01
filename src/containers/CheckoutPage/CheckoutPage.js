@@ -43,7 +43,6 @@ import { StripePaymentForm } from '../../forms'
 import { isScrollingDisabled } from '../../ducks/UI.duck'
 import { handleCardPayment, retrievePaymentIntent } from '../../ducks/stripe.duck'
 import { savePaymentMethod } from '../../ducks/paymentMethods.duck'
-
 import {
   initiateOrder,
   setInitialValues,
@@ -55,8 +54,6 @@ import {
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers'
 import css from './CheckoutPage.css'
 import { types as sdkTypes } from '../../util/sdkLoader'
-
-const { Money } = sdkTypes
 
 const STORAGE_KEY = 'CheckoutPage'
 
@@ -136,7 +133,6 @@ export class CheckoutPageComponent extends Component {
    */
   loadInitialData() {
     const {
-      bookingData,
       listing,
       transaction,
       fetchSpeculatedTransaction,
@@ -155,16 +151,15 @@ export class CheckoutPageComponent extends Component {
     // Action is 'REPLACE' when user has directed through login/signup process
     const hasNavigatedThroughLink = history.action === 'PUSH' || history.action === 'REPLACE'
 
-    const hasDataInProps = !!(bookingData && listing) && hasNavigatedThroughLink
+    const hasDataInProps = listing && hasNavigatedThroughLink
     if (hasDataInProps) {
       // Store data only if data is passed through props and user has navigated through a link.
-      storeData(bookingData, listing, transaction, STORAGE_KEY)
+      storeData(listing, transaction, STORAGE_KEY)
     }
 
     // NOTE: stored data can be empty if user has already successfully completed transaction.
     const pageData = hasDataInProps
       ? {
-          bookingData,
           listing,
           transaction,
         }
@@ -175,22 +170,10 @@ export class CheckoutPageComponent extends Component {
     const isBookingCreated = tx && tx.booking && tx.booking.id
 
     const shouldFetchSpeculatedTransaction =
-      pageData &&
-      pageData.listing &&
-      pageData.listing.id &&
-      pageData.bookingData &&
-      !isBookingCreated
+      pageData && pageData.listing && pageData.listing.id && !isBookingCreated
 
     if (shouldFetchSpeculatedTransaction) {
-      // Fetch speculated transaction for showing price in booking breakdown
-      // NOTE: if unit type is line-item/units, quantity needs to be added.
-      // The way to pass it to checkout page is through pageData.bookingData
-      fetchSpeculatedTransaction(
-        this.customPricingParams({
-          listing,
-          bookingData,
-        }),
-      )
+      fetchSpeculatedTransaction({ listingId: listing.id, transactionId: transaction.id })
     }
 
     this.setState({ pageData: pageData || {}, dataLoaded: true })
@@ -471,34 +454,6 @@ export class CheckoutPageComponent extends Component {
 
       // Fetch up to date PaymentIntent from Stripe
       onRetrievePaymentIntent({ stripe, stripePaymentIntentClientSecret })
-    }
-  }
-
-  /**
-   * Constructs a request params object that can be used when creating bookings
-   * using custom pricing.
-   * @param {} params An object that contains bookingStart, bookingEnd and listing
-   * @return a params object for custom pricing bookings
-   */
-  customPricingParams(params) {
-    const { listing, bookingData } = params
-
-    const unitType = config.bookingUnitType
-
-    const lineItems = Object.values(bookingData).map((d) => {
-      // TODO: Handle when there is no price correctly
-      const unitPrice = d.price ? new Money(d.price.amount, d.price.currency) : new Money(0, 'USD')
-
-      return {
-        code: unitType,
-        unitPrice,
-        quantity: d.quantity,
-      }
-    })
-
-    return {
-      listingId: listing.id,
-      lineItems,
     }
   }
 
@@ -907,7 +862,6 @@ CheckoutPageComponent.propTypes = {
 const mapStateToProps = (state) => {
   const {
     listing,
-    bookingData,
     stripeCustomerFetched,
     speculateTransactionInProgress,
     speculateTransactionError,
@@ -922,7 +876,6 @@ const mapStateToProps = (state) => {
     scrollingDisabled: isScrollingDisabled(state),
     currentUser,
     stripeCustomerFetched,
-    bookingData,
     speculateTransactionInProgress,
     speculateTransactionError,
     speculatedTransaction,

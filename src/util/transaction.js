@@ -9,18 +9,21 @@ import { ensureTransaction } from './data'
  * so we need to understand what those strings mean.
  */
 
-// When a customer makes a booking to a listing, a transaction is
-// created with the initial request-payment transition.
-// At this transition a PaymentIntent is created by Marketplace API.
-// After this transition, the actual payment must be made on client-side directly to Stripe.
-export const TRANSITION_REQUEST_PAYMENT = 'transition/request-payment'
-
 // A customer can also initiate a transaction with an enquiry, and
 // then transition that with a request.
 export const TRANSITION_ENQUIRE = 'transition/enquire'
 export const TRANSITION_PRICE_NEGOTIATION = 'transition/price-negotiation'
 export const TRANSITION_PRICE_NEGOTIATION_AFTER_ENQUIRY =
   'transition/price-negotiation-after-enquiry'
+
+// The provider must set the prices after negotiating with the customer
+export const TRANSITION_SET_PRICES = 'transition/set-prices'
+
+// When a customer makes a booking to a listing, a transaction is
+// created with the initial request-payment transition.
+// At this transition a PaymentIntent is created by Marketplace API.
+// After this transition, the actual payment must be made on client-side directly to Stripe.
+export const TRANSITION_REQUEST_PAYMENT = 'transition/request-payment'
 
 // Stripe SDK might need to ask 3D security from customer, in a separate front-end step.
 // Therefore we need to make another transition to Marketplace API,
@@ -87,6 +90,7 @@ export const TX_TRANSITION_ACTORS = [
 const STATE_INITIAL = 'initial'
 const STATE_ENQUIRY = 'enquiry'
 const STATE_PRICE_NEGOTIATION = 'price-negotiation'
+const STATE_SET_PRICES = 'set-prices'
 const STATE_PENDING_PAYMENT = 'pending-payment'
 const STATE_PAYMENT_EXPIRED = 'payment-expired'
 const STATE_PREAUTHORIZED = 'preauthorized'
@@ -132,6 +136,12 @@ const stateDescription = {
     },
 
     [STATE_PRICE_NEGOTIATION]: {
+      on: {
+        [TRANSITION_SET_PRICES]: STATE_SET_PRICES,
+      },
+    },
+
+    [STATE_SET_PRICES]: {
       on: {
         [TRANSITION_REQUEST_PAYMENT]: STATE_PENDING_PAYMENT,
       },
@@ -235,6 +245,9 @@ export const txIsEnquired = (tx) =>
 
 export const txIsNegotiating = (tx) =>
   getTransitionsToState(STATE_PRICE_NEGOTIATION).includes(txLastTransition(tx))
+
+export const txIsSetPrices = (tx) =>
+  getTransitionsToState(STATE_SET_PRICES).includes(txLastTransition(tx))
 
 export const txIsPaymentPending = (tx) =>
   getTransitionsToState(STATE_PENDING_PAYMENT).includes(txLastTransition(tx))

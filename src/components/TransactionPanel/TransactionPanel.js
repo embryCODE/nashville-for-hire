@@ -13,6 +13,7 @@ import {
   txIsRequested,
   txHasBeenDelivered,
   TRANSITION_PRICE_NEGOTIATION_AFTER_ENQUIRY,
+  txIsSetPrices,
 } from '../../util/transaction'
 import { LINE_ITEM_NIGHT, LINE_ITEM_DAY, propTypes } from '../../util/types'
 import {
@@ -50,10 +51,12 @@ import PanelHeading, {
   HEADING_CANCELED,
   HEADING_DELIVERED,
   HEADING_NEGOTIATING,
+  HEADING_SET_PRICES,
 } from './PanelHeading'
 
 import css from './TransactionPanel.css'
 import { FinishNegotiation } from '../NFHCustom/pages/FinishNegotiation'
+import { ProceedToPayment } from '../NFHCustom/pages/ProceedToPayment'
 
 // Helper function to get display names for different roles
 const displayNames = (currentUser, currentProvider, currentCustomer, intl) => {
@@ -195,6 +198,7 @@ export class TransactionPanelComponent extends Component {
       fetchTimeSlotsError,
       nextTransitions,
       onFinishNegotiation,
+      onProceedToPayment,
     } = this.props
 
     const currentTransaction = ensureTransaction(transaction)
@@ -231,6 +235,12 @@ export class TransactionPanelComponent extends Component {
           headingState: HEADING_NEGOTIATING,
           showDetailCardHeadings: isCustomer,
           showNegotiationPanel: true,
+        }
+      } else if (txIsSetPrices(tx)) {
+        return {
+          headingState: HEADING_SET_PRICES,
+          showDetailCardHeadings: isCustomer,
+          showProceedToPayment: true,
         }
       } else if (txIsPaymentPending(tx)) {
         return {
@@ -356,6 +366,7 @@ export class TransactionPanelComponent extends Component {
               provider={currentProvider}
               isCustomer={isCustomer}
             />
+
             {isProvider ? (
               <div className={css.avatarWrapperProviderDesktop}>
                 <AvatarLarge user={currentCustomer} className={css.avatarDesktop} />
@@ -391,6 +402,7 @@ export class TransactionPanelComponent extends Component {
                 />
               </p>
             ) : null}
+
             <FeedSection
               rootClassName={css.feedContainer}
               currentTransaction={currentTransaction}
@@ -404,6 +416,7 @@ export class TransactionPanelComponent extends Component {
               onShowMoreMessages={() => onShowMoreMessages(currentTransaction.id)}
               totalMessagePages={totalMessagePages}
             />
+
             {showSendMessageForm ? (
               <SendMessageForm
                 formId={this.sendMessageFormName}
@@ -442,6 +455,7 @@ export class TransactionPanelComponent extends Component {
                 geolocation={geolocation}
                 showAddress={stateData.showAddress}
               />
+
               {stateData.showBookingPanel ? (
                 <BookingPanel
                   className={css.bookingPanel}
@@ -463,6 +477,14 @@ export class TransactionPanelComponent extends Component {
                   isCustomer={isCustomer}
                   lineItems={lineItems}
                   onFinishNegotiation={onFinishNegotiation}
+                />
+              ) : null}
+
+              {stateData.showProceedToPayment ? (
+                <ProceedToPayment
+                  isCustomer={isCustomer}
+                  lineItems={lineItems}
+                  onProceedToPayment={onProceedToPayment}
                 />
               ) : null}
 

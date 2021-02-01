@@ -2,11 +2,10 @@ import { storableError } from '../util/errors'
 import {
   TRANSITION_PRICE_NEGOTIATION,
   TRANSITION_PRICE_NEGOTIATION_AFTER_ENQUIRY,
+  TRANSITION_SET_PRICES,
 } from '../util/transaction'
 import pick from 'lodash/pick'
 import config from '../config'
-import { fetchCurrentUserHasOrdersSuccess } from './user.duck'
-import { addMarketplaceEntities } from './marketplaceData.duck'
 
 // ================ Action types ================ //
 
@@ -15,6 +14,10 @@ export const SET_INITIAL_VALUES = 'app/BeginNegotiationPage/SET_INITIAL_VALUES'
 export const BEGIN_NEGOTIATION_REQUEST = 'app/BeginNegotiationPage/BEGIN_NEGOTIATION_REQUEST'
 export const BEGIN_NEGOTIATION_SUCCESS = 'app/BeginNegotiationPage/BEGIN_NEGOTIATION_SUCCESS'
 export const BEGIN_NEGOTIATION_ERROR = 'app/BeginNegotiationPage/BEGIN_NEGOTIATION_ERROR'
+
+export const SET_PRICES_REQUEST = 'app/BeginNegotiationPage/SET_PRICES_REQUEST'
+export const SET_PRICES_SUCCESS = 'app/BeginNegotiationPage/SET_PRICES_SUCCESS'
+export const SET_PRICES_ERROR = 'app/BeginNegotiationPage/SET_PRICES_ERROR'
 
 // ================ Reducer ================ //
 
@@ -40,6 +43,14 @@ export default function beginNegotiationPageReducer(state = initialState, action
       console.error(payload) // eslint-disable-line no-console
       return { ...state, beginNegotiationError: payload }
 
+    case SET_PRICES_REQUEST:
+      return { ...state, setPricesError: null }
+    case SET_PRICES_SUCCESS:
+      return { ...state, transaction: payload }
+    case SET_PRICES_ERROR:
+      console.error(payload) // eslint-disable-line no-console
+      return { ...state, setPricesError: payload }
+
     default:
       return state
   }
@@ -62,6 +73,19 @@ const beginNegotiationSuccess = (order) => ({
 
 const beginNegotiationError = (e) => ({
   type: BEGIN_NEGOTIATION_ERROR,
+  error: true,
+  payload: e,
+})
+
+const setPricesRequest = () => ({ type: SET_PRICES_REQUEST })
+
+const setPricesSuccess = (order) => ({
+  type: SET_PRICES_SUCCESS,
+  payload: order,
+})
+
+const setPricesError = (e) => ({
+  type: SET_PRICES_ERROR,
   error: true,
   payload: e,
 })
@@ -118,7 +142,6 @@ export const beginNegotiation = (orderParams) => (dispatch, getState, sdk) => {
         // Send the message to the created transaction
         return sdk.messages.send({ transactionId, content: message }).then(() => {
           dispatch(beginNegotiationSuccess(transaction))
-          dispatch(addMarketplaceEntities(response))
           return transactionId
         })
       })
@@ -127,4 +150,36 @@ export const beginNegotiation = (orderParams) => (dispatch, getState, sdk) => {
         throw e
       })
   }
+}
+
+export const setPrices = (orderParams) => (dispatch, getState, sdk) => {
+  dispatch(setPricesRequest())
+
+  const { transactionId, lineItems } = orderParams
+  const message = '[System Message] Prices set'
+
+  const bodyParams = {
+    id: transactionId,
+    transition: TRANSITION_SET_PRICES,
+    params: {
+      lineItems,
+    },
+  }
+
+  return sdk.transactions
+    .transition(bodyParams)
+    .then((response) => {
+      const transaction = response.data.data
+      const transactionId = transaction.id
+
+      // Send the message to the created transaction
+      return sdk.messages.send({ transactionId, content: message }).then(() => {
+        dispatch(setPricesSuccess(transaction))
+        return transactionId
+      })
+    })
+    .catch((e) => {
+      dispatch(setPricesError(storableError(e)))
+      throw e
+    })
 }

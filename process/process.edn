@@ -17,14 +17,20 @@
    :from :state/enquiry,
    :to :state/price-negotiation}
 
-  {:name :transition/request-payment,
+  {:name :transition/set-prices,
    :actor :actor.role/provider,
+   :actions [{:name :action/set-line-items-and-total}],
+   :from :state/price-negotiation,
+   :to :state/set-prices,
+   }
+
+  {:name :transition/request-payment,
+   :actor :actor.role/customer,
    :actions
-   [{:name :action/set-line-items-and-total}
-    {:name :action/calculate-tx-provider-commission,
+   [{:name :action/calculate-tx-provider-commission,
      :config {:commission 0.05M}}
     {:name :action/stripe-create-payment-intent}],
-   :from :state/price-negotiation
+   :from :state/set-prices
    :to :state/pending-payment}
 
   {:name :transition/expire-payment,

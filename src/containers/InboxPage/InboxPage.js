@@ -13,14 +13,15 @@ import {
   txHasBeenDelivered,
   txIsPaymentExpired,
   txIsPaymentPending,
+  txIsNegotiating,
+  txIsSetPrices,
 } from '../../util/transaction'
-import { propTypes, DATE_TYPE_DATE } from '../../util/types'
+import { propTypes } from '../../util/types'
 import { ensureCurrentUser } from '../../util/data'
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck'
 import { isScrollingDisabled } from '../../ducks/UI.duck'
 import {
   Avatar,
-  BookingTimeInfo,
   NamedLink,
   NotificationBadge,
   Page,
@@ -87,6 +88,22 @@ export const txState = (intl, tx, type) => {
         }
 
     return requested
+  } else if (txIsNegotiating(tx)) {
+    return {
+      nameClassName: isOrder ? css.nameNotEmphasized : css.nameEmphasized,
+      bookingClassName: css.bookingActionNeeded,
+      lastTransitionedAtClassName: css.lastTransitionedAtEmphasized,
+      stateClassName: css.stateActionNeeded,
+      state: 'Negotiation request',
+    }
+  } else if (txIsSetPrices(tx)) {
+    return {
+      nameClassName: isOrder ? css.nameNotEmphasized : css.nameEmphasized,
+      bookingClassName: css.bookingActionNeeded,
+      lastTransitionedAtClassName: css.lastTransitionedAtEmphasized,
+      stateClassName: css.stateActionNeeded,
+      state: 'Prices set',
+    }
   } else if (txIsPaymentPending(tx)) {
     return {
       nameClassName: isOrder ? css.nameNotEmphasized : css.nameEmphasized,
@@ -155,33 +172,17 @@ export const txState = (intl, tx, type) => {
 
 // Functional component as internal helper to print BookingTimeInfo if that is needed
 const BookingInfoMaybe = (props) => {
-  const { bookingClassName, isOrder, intl, tx, unitType } = props
+  const { bookingClassName, tx } = props
   const isEnquiry = txIsEnquired(tx)
 
   if (isEnquiry) {
     return null
   }
 
-  // If you want to show the booking price after the booking time on InboxPage you can
-  // add the price after the BookingTimeInfo component. You can get the price by uncommenting
-  // sthe following lines:
-
-  // const bookingPrice = isOrder ? tx.attributes.payinTotal : tx.attributes.payoutTotal;
-  // const price = bookingPrice ? formatMoney(intl, bookingPrice) : null;
-
-  // Remember to also add formatMoney function from 'util/currency.js' and add this after BookingTimeInfo:
-  // <div className={css.itemPrice}>{price}</div>
-
   return (
+    // TODO
     <div className={classNames(css.bookingInfoWrapper, bookingClassName)}>
-      <BookingTimeInfo
-        bookingClassName={bookingClassName}
-        isOrder={isOrder}
-        intl={intl}
-        tx={tx}
-        unitType={unitType}
-        dateType={DATE_TYPE_DATE}
-      />
+      Helpful booking info goes here
     </div>
   )
 }
