@@ -36,7 +36,9 @@ const generatePrices = (pricingOptions) => {
 
 /** Checks if price options don't match price options for this service type. */
 const checkIsServiceTypeMismatched = (prices = {}, pricingOptionsForThisServiceType) => {
-  return Object.keys(prices).every((key) => !!pricingOptionsForThisServiceType[key])
+  return !Object.entries(prices).every(
+    ([key, value]) => pricingOptionsForThisServiceType[key].code === value.code,
+  )
 }
 
 const formatInitialValues = (prices, pricingOptionsForThisServiceType) => {
@@ -45,7 +47,7 @@ const formatInitialValues = (prices, pricingOptionsForThisServiceType) => {
     pricingOptionsForThisServiceType,
   )
 
-  return isServiceTypeMismatched
+  return !prices || isServiceTypeMismatched
     ? generatePrices(pricingOptionsForThisServiceType)
     : formatPrices(prices)
 }
@@ -101,7 +103,10 @@ const EditListingPricingPanel = (props) => {
 
             // Price will be null if amount is 0, otherwise it will be this currency object
             const price = priceAsMoney.amount
-              ? { amount: priceAsMoney.amount, currency: priceAsMoney.currency }
+              ? {
+                  amount: priceAsMoney.amount,
+                  currency: priceAsMoney.currency,
+                }
               : null
 
             v[key] = {
