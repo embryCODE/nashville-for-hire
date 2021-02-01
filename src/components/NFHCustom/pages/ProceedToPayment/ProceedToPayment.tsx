@@ -1,28 +1,11 @@
 import React, { SyntheticEvent } from 'react'
 import styled from 'styled-components'
 import pricingOptions from '../../../../util/pricingOptions'
+import { LineItemsDisplay } from '../../organisms/LineItemsDisplay'
 
 const ProceedToPaymentWrapper = styled.div`
   padding: 0 1rem 1rem;
 `
-
-const unnestedPricingOptions = Object.values(pricingOptions)
-  .flat()
-  .map((po) => Object.values(po).flat())
-  .flat()
-
-const getLabel = (code: string): string => {
-  return unnestedPricingOptions.find((po) => code.includes(po.code)).label
-}
-
-const renderLineItemSummary = (li: any) => {
-  return (
-    <span>
-      ${li.unitPrice.amount / 100 || 0} x {li.quantity.toNumber()} = $
-      {li.lineTotal.amount / 100 || 0}
-    </span>
-  )
-}
 
 interface ProceedToPaymentProps {
   isCustomer: boolean
@@ -49,14 +32,7 @@ const ProceedToPayment: React.FC<ProceedToPaymentProps> = ({
         <div>
           <p>Prices have been set. Proceed to payment below</p>
 
-          {Object.values(lineItems).map((li: any) => {
-            return (
-              <div key={li.code}>
-                <h4>{getLabel(li.code)}</h4>
-                {renderLineItemSummary(li)}
-              </div>
-            )
-          })}
+          <LineItemsDisplay lineItems={lineItems} />
 
           <form onSubmit={handleSubmit} style={{ marginTop: '2rem' }}>
             <button>Proceed to payment</button>

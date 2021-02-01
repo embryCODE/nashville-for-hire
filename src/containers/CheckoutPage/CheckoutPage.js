@@ -53,6 +53,7 @@ import {
 } from './CheckoutPage.duck'
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers'
 import css from './CheckoutPage.css'
+import { LineItemsDisplay } from '../../components/NFHCustom/organisms/LineItemsDisplay'
 
 const STORAGE_KEY = 'CheckoutPage'
 
@@ -543,22 +544,6 @@ export class CheckoutPageComponent extends Component {
       return <NamedRedirect name="OrderPage" params={{ id: transactionId }} />
     }
 
-    // Show breakdown only when speculated transaction and booking are loaded
-    // (i.e. have an id)
-    const tx = existingTransaction.booking ? existingTransaction : speculatedTransaction
-    const txBooking = ensureBooking(tx.booking)
-    const breakdown =
-      tx.id && txBooking.id ? (
-        <BookingBreakdown
-          className={css.bookingBreakdown}
-          userRole="customer"
-          unitType={config.bookingUnitType}
-          transaction={tx}
-          booking={txBooking}
-          dateType={DATE_TYPE_DATE}
-        />
-      ) : null
-
     const isPaymentExpired = checkIsPaymentExpired(existingTransaction)
     const hasDefaultPaymentMethod = !!(
       stripeCustomerFetched &&
@@ -688,8 +673,6 @@ export class CheckoutPageComponent extends Component {
       ? 'CheckoutPage.perDay'
       : 'CheckoutPage.perUnit'
 
-    const detailsSubTitle = `$??? ${intl.formatMessage({ id: unitTranslationKey })}`
-
     const showInitialMessageInput = !(
       existingTransaction && existingTransaction.attributes.lastTransition === TRANSITION_ENQUIRE
     )
@@ -738,7 +721,10 @@ export class CheckoutPageComponent extends Component {
 
             <div className={css.priceBreakdownContainer}>
               {speculateTransactionErrorMessage}
-              {breakdown}
+
+              <div style={{ padding: '0 1rem 1rem' }}>
+                <LineItemsDisplay lineItems={transaction.attributes.lineItems} />
+              </div>
             </div>
 
             <section className={css.paymentContainer}>
@@ -800,10 +786,12 @@ export class CheckoutPageComponent extends Component {
             </div>
             <div className={css.detailsHeadings}>
               <h2 className={css.detailsTitle}>{listingTitle}</h2>
-              <p className={css.detailsSubtitle}>{detailsSubTitle}</p>
             </div>
             {speculateTransactionErrorMessage}
-            {breakdown}
+
+            <div style={{ padding: '0 1rem 1rem' }}>
+              <LineItemsDisplay lineItems={transaction.attributes.lineItems} />
+            </div>
           </div>
         </div>
       </Page>
