@@ -1,5 +1,4 @@
 import pick from 'lodash/pick'
-import config from '../../config'
 import { denormalisedResponseEntities } from '../../util/data'
 import { storableError } from '../../util/errors'
 import { TRANSITION_REQUEST_PAYMENT, TRANSITION_CONFIRM_PAYMENT } from '../../util/transaction'
@@ -156,8 +155,9 @@ export const stripeCustomerError = (e) => ({
 
 export const initiateOrder = (orderParams) => (dispatch, getState, sdk) => {
   dispatch(initiateOrderRequest())
+
   const bodyParams = {
-    processAlias: config.bookingProcessAlias,
+    id: orderParams.transactionId,
     transition: TRANSITION_REQUEST_PAYMENT,
     params: orderParams,
   }
@@ -166,10 +166,10 @@ export const initiateOrder = (orderParams) => (dispatch, getState, sdk) => {
     expand: true,
   }
 
-  const createOrder = sdk.transactions.transition
-
-  return createOrder(bodyParams, queryParams)
+  return sdk.transactions
+    .transition(bodyParams, queryParams)
     .then((response) => {
+      debugger
       const entities = denormalisedResponseEntities(response)
       const order = entities[0]
       dispatch(initiateOrderSuccess(order))
@@ -177,6 +177,7 @@ export const initiateOrder = (orderParams) => (dispatch, getState, sdk) => {
       return order
     })
     .catch((e) => {
+      debugger
       dispatch(initiateOrderError(storableError(e)))
       const transactionIdMaybe = orderParams.transactionId
         ? { transactionId: orderParams.transactionId.uuid }

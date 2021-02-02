@@ -5,16 +5,14 @@ import { connect } from 'react-redux'
 import { FormattedMessage, injectIntl, intlShape } from '../../util/reactIntl'
 import { withRouter } from 'react-router-dom'
 import classNames from 'classnames'
-import config from '../../config'
 import routeConfiguration from '../../routeConfiguration'
 import { pathByRouteName, findRouteByRouteName } from '../../util/routes'
-import { propTypes, LINE_ITEM_NIGHT, LINE_ITEM_DAY, DATE_TYPE_DATE } from '../../util/types'
+import { propTypes } from '../../util/types'
 import {
   ensureListing,
   ensureCurrentUser,
   ensureUser,
   ensureTransaction,
-  ensureBooking,
   ensureStripeCustomer,
   ensurePaymentMethodCard,
 } from '../../util/data'
@@ -32,7 +30,6 @@ import {
 import { TRANSITION_ENQUIRE, txIsPaymentPending, txIsPaymentExpired } from '../../util/transaction'
 import {
   AvatarMedium,
-  BookingBreakdown,
   Logo,
   NamedLink,
   NamedRedirect,
@@ -348,8 +345,7 @@ export class CheckoutPageComponent extends Component {
         : {}
 
     const orderParams = {
-      listingId: pageData.listing.id.uuid,
-      lineItems: pageData.transaction.attributes.lineItems,
+      transactionId: storedTx.id,
       ...optionalPaymentParams,
     }
 
@@ -662,16 +658,6 @@ export class CheckoutPageComponent extends Component {
         </p>
       )
     }
-
-    const unitType = config.bookingUnitType
-    const isNightly = unitType === LINE_ITEM_NIGHT
-    const isDaily = unitType === LINE_ITEM_DAY
-
-    const unitTranslationKey = isNightly
-      ? 'CheckoutPage.perNight'
-      : isDaily
-      ? 'CheckoutPage.perDay'
-      : 'CheckoutPage.perUnit'
 
     const showInitialMessageInput = !(
       existingTransaction && existingTransaction.attributes.lastTransition === TRANSITION_ENQUIRE

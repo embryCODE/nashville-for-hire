@@ -57,6 +57,7 @@ import PanelHeading, {
 import css from './TransactionPanel.css'
 import { FinishNegotiation } from '../NFHCustom/pages/FinishNegotiation'
 import { ProceedToPayment } from '../NFHCustom/pages/ProceedToPayment'
+import { CompleteOrder } from '../NFHCustom/molecules/CompleteOrder'
 
 // Helper function to get display names for different roles
 const displayNames = (currentUser, currentProvider, currentCustomer, intl) => {
@@ -199,6 +200,7 @@ export class TransactionPanelComponent extends Component {
       nextTransitions,
       onFinishNegotiation,
       onProceedToPayment,
+      onCompleteOrder,
     } = this.props
 
     const currentTransaction = ensureTransaction(transaction)
@@ -263,6 +265,7 @@ export class TransactionPanelComponent extends Component {
           headingState: HEADING_ACCEPTED,
           showDetailCardHeadings: isCustomer,
           showAddress: isCustomer,
+          showCompleteOrder: true,
         }
       } else if (txIsDeclined(tx)) {
         return {
@@ -486,6 +489,10 @@ export class TransactionPanelComponent extends Component {
                   lineItems={lineItems}
                   onProceedToPayment={onProceedToPayment}
                 />
+              ) : null}
+
+              {stateData.showCompleteOrder ? (
+                <CompleteOrder isCustomer={isCustomer} onCompleteOrder={onCompleteOrder} />
               ) : null}
 
               <BreakdownMaybe

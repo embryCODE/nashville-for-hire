@@ -54,16 +54,14 @@
   {:name :transition/accept,
    :actor :actor.role/provider,
    :actions
-   [{:name :action/accept-booking}
-    {:name :action/stripe-capture-payment-intent}],
+   [{:name :action/stripe-capture-payment-intent}],
    :from :state/preauthorized,
    :to :state/accepted}
 
   {:name :transition/decline,
    :actor :actor.role/provider,
    :actions
-   [{:name :action/decline-booking}
-    {:name :action/calculate-full-refund}
+   [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}],
    :from :state/preauthorized,
    :to :state/declined}
@@ -77,14 +75,13 @@
      {:fn/plus
       [{:fn/timepoint [:time/booking-end]} {:fn/period ["P1D"]}]}]},
    :actions
-   [{:name :action/decline-booking}
-    {:name :action/calculate-full-refund}
+   [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}],
    :from :state/preauthorized,
    :to :state/declined}
 
   {:name :transition/complete,
-   :at {:fn/timepoint [:time/booking-end]},
+   :actor :actor.role/provider,
    :actions [{:name :action/stripe-create-payout}],
    :from :state/accepted,
    :to :state/delivered}
@@ -92,8 +89,7 @@
   {:name :transition/cancel,
    :actor :actor.role/operator,
    :actions
-   [{:name :action/cancel-booking}
-    {:name :action/calculate-full-refund}
+   [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}],
    :from :state/accepted,
    :to :state/cancelled}

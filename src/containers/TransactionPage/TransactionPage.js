@@ -36,7 +36,7 @@ import {
 } from './TransactionPage.duck'
 import css from './TransactionPage.css'
 import createCustomPricingParams from '../../util/createCustomPricingParams'
-import { beginNegotiation, setPrices } from '../../ducks/Negotiation.duck'
+import { beginNegotiation, setPrices, completeOrder } from '../../ducks/Negotiation.duck'
 
 const PROVIDER = 'provider'
 const CUSTOMER = 'customer'
@@ -80,6 +80,7 @@ export const TransactionPageComponent = (props) => {
     onInitializeCardPaymentData,
     callBeginNegotiation,
     callSetPrices,
+    callCompleteOrder,
     callLoadData,
   } = props
 
@@ -162,6 +163,18 @@ export const TransactionPageComponent = (props) => {
     }
 
     redirectToCheckoutPageWithInitialValues(initialValues, currentListing)
+  }
+
+  const handleCompleteOrder = () => {
+    const transaction = currentTransaction
+    const transactionId = transaction.id
+    const data = {
+      transactionId,
+    }
+
+    callCompleteOrder(completeOrder, data).then(() => {
+      callLoadData(loadData, { id: transactionId.uuid, transactionRole })
+    })
   }
 
   const deletedListingTitle = intl.formatMessage({
@@ -256,6 +269,7 @@ export const TransactionPageComponent = (props) => {
       fetchTimeSlotsError={fetchTimeSlotsError}
       onFinishNegotiation={handleFinishNegotiation}
       onProceedToPayment={handleProceedToPayment}
+      onCompleteOrder={handleCompleteOrder}
     />
   ) : (
     loadingOrFailedFetching
@@ -407,6 +421,7 @@ const mapDispatchToProps = (dispatch) => {
     callSetInitialValues: (setInitialValues, values) => dispatch(setInitialValues(values)),
     callBeginNegotiation: (beginNegotiation, values) => dispatch(beginNegotiation(values)),
     callSetPrices: (setPrices, values) => dispatch(setPrices(values)),
+    callCompleteOrder: (completeOrder, values) => dispatch(completeOrder(values)),
     callLoadData: (loadData, values) => dispatch(loadData(values)),
     onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
   }

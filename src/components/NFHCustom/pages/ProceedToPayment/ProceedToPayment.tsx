@@ -1,6 +1,5 @@
 import React, { SyntheticEvent } from 'react'
 import styled from 'styled-components'
-import pricingOptions from '../../../../util/pricingOptions'
 import { LineItemsDisplay } from '../../organisms/LineItemsDisplay'
 
 const ProceedToPaymentWrapper = styled.div`

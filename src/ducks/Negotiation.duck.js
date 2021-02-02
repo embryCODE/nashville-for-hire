@@ -1,5 +1,6 @@
 import { storableError } from '../util/errors'
 import {
+  TRANSITION_COMPLETE,
   TRANSITION_PRICE_NEGOTIATION,
   TRANSITION_PRICE_NEGOTIATION_AFTER_ENQUIRY,
   TRANSITION_SET_PRICES,
@@ -18,6 +19,10 @@ export const BEGIN_NEGOTIATION_ERROR = 'app/BeginNegotiationPage/BEGIN_NEGOTIATI
 export const SET_PRICES_REQUEST = 'app/BeginNegotiationPage/SET_PRICES_REQUEST'
 export const SET_PRICES_SUCCESS = 'app/BeginNegotiationPage/SET_PRICES_SUCCESS'
 export const SET_PRICES_ERROR = 'app/BeginNegotiationPage/SET_PRICES_ERROR'
+
+export const COMPLETE_ORDER_REQUEST = 'app/BeginNegotiationPage/COMPLETE_ORDER_REQUEST'
+export const COMPLETE_ORDER_SUCCESS = 'app/BeginNegotiationPage/COMPLETE_ORDER_SUCCESS'
+export const COMPLETE_ORDER_ERROR = 'app/BeginNegotiationPage/COMPLETE_ORDER_ERROR'
 
 // ================ Reducer ================ //
 
@@ -48,6 +53,14 @@ export default function beginNegotiationPageReducer(state = initialState, action
     case SET_PRICES_SUCCESS:
       return { ...state, transaction: payload }
     case SET_PRICES_ERROR:
+      console.error(payload) // eslint-disable-line no-console
+      return { ...state, setPricesError: payload }
+
+    case COMPLETE_ORDER_REQUEST:
+      return { ...state, setPricesError: null }
+    case COMPLETE_ORDER_SUCCESS:
+      return { ...state, transaction: payload }
+    case COMPLETE_ORDER_ERROR:
       console.error(payload) // eslint-disable-line no-console
       return { ...state, setPricesError: payload }
 
@@ -86,6 +99,19 @@ const setPricesSuccess = (order) => ({
 
 const setPricesError = (e) => ({
   type: SET_PRICES_ERROR,
+  error: true,
+  payload: e,
+})
+
+const completeOrderRequest = () => ({ type: COMPLETE_ORDER_REQUEST })
+
+const completeOrderSuccess = (order) => ({
+  type: COMPLETE_ORDER_SUCCESS,
+  payload: order,
+})
+
+const completeOrderError = (e) => ({
+  type: COMPLETE_ORDER_ERROR,
   error: true,
   payload: e,
 })
@@ -180,6 +206,36 @@ export const setPrices = (orderParams) => (dispatch, getState, sdk) => {
     })
     .catch((e) => {
       dispatch(setPricesError(storableError(e)))
+      throw e
+    })
+}
+
+export const completeOrder = (orderParams) => (dispatch, getState, sdk) => {
+  dispatch(completeOrderRequest())
+
+  const { transactionId } = orderParams
+  const message = '[System Message] Order complete'
+
+  const bodyParams = {
+    id: transactionId,
+    transition: TRANSITION_COMPLETE,
+    params: {},
+  }
+
+  return sdk.transactions
+    .transition(bodyParams)
+    .then((response) => {
+      const transaction = response.data.data
+      const transactionId = transaction.id
+
+      // Send the message to the created transaction
+      return sdk.messages.send({ transactionId, content: message }).then(() => {
+        dispatch(completeOrderSuccess(transaction))
+        return transactionId
+      })
+    })
+    .catch((e) => {
+      dispatch(completeOrderError(storableError(e)))
       throw e
     })
 }
