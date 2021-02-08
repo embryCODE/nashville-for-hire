@@ -169,7 +169,6 @@ export const initiateOrder = (orderParams) => (dispatch, getState, sdk) => {
   return sdk.transactions
     .transition(bodyParams, queryParams)
     .then((response) => {
-      debugger
       const entities = denormalisedResponseEntities(response)
       const order = entities[0]
       dispatch(initiateOrderSuccess(order))
@@ -177,7 +176,6 @@ export const initiateOrder = (orderParams) => (dispatch, getState, sdk) => {
       return order
     })
     .catch((e) => {
-      debugger
       dispatch(initiateOrderError(storableError(e)))
       const transactionIdMaybe = orderParams.transactionId
         ? { transactionId: orderParams.transactionId.uuid }

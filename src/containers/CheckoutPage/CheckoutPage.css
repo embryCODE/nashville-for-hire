@@ -345,3 +345,15 @@
     margin: 0 48px;
   }
 }
+
+.breakdown {
+  margin: 14px 24px 0 24px;
+
+@media (--viewportMedium) {
+  margin: 18px 24px 0 24px;
+}
+@media (--viewportLarge) {
+  margin: 24px 48px 47px 48px;
+  padding: 6px 0 2px 0;
+}
+}

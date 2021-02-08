@@ -11,9 +11,6 @@ import {
   LINE_ITEM_CUSTOMER_COMMISSION,
   LINE_ITEM_PROVIDER_COMMISSION,
 } from '../../util/types'
-import LineItemBookingPeriod from './LineItemBookingPeriod'
-import LineItemBasePriceMaybe from './LineItemBasePriceMaybe'
-import LineItemUnitsMaybe from './LineItemUnitsMaybe'
 import LineItemSubTotalMaybe from './LineItemSubTotalMaybe'
 import LineItemCustomerCommissionMaybe from './LineItemCustomerCommissionMaybe'
 import LineItemCustomerCommissionRefundMaybe from './LineItemCustomerCommissionRefundMaybe'
@@ -25,16 +22,7 @@ import LineItemUnknownItemsMaybe from './LineItemUnknownItemsMaybe'
 import css from './BookingBreakdown.css'
 
 export const BookingBreakdownComponent = (props) => {
-  const {
-    rootClassName,
-    className,
-    userRole,
-    unitType,
-    transaction,
-    booking,
-    intl,
-    dateType,
-  } = props
+  const { rootClassName, className, userRole, transaction, intl } = props
 
   const isCustomer = userRole === 'customer'
   const isProvider = userRole === 'provider'
@@ -86,18 +74,9 @@ export const BookingBreakdownComponent = (props) => {
 
   return (
     <div className={classes}>
-      <LineItemBookingPeriod booking={booking} unitType={unitType} dateType={dateType} />
-      <LineItemUnitsMaybe transaction={transaction} unitType={unitType} />
-
-      <LineItemBasePriceMaybe transaction={transaction} unitType={unitType} intl={intl} />
       <LineItemUnknownItemsMaybe transaction={transaction} intl={intl} />
 
-      <LineItemSubTotalMaybe
-        transaction={transaction}
-        unitType={unitType}
-        userRole={userRole}
-        intl={intl}
-      />
+      <LineItemSubTotalMaybe transaction={transaction} userRole={userRole} intl={intl} />
       <LineItemRefundMaybe transaction={transaction} intl={intl} />
 
       <LineItemCustomerCommissionMaybe
@@ -140,10 +119,7 @@ BookingBreakdownComponent.propTypes = {
   className: string,
 
   userRole: oneOf(['customer', 'provider']).isRequired,
-  unitType: propTypes.bookingUnitType.isRequired,
   transaction: propTypes.transaction.isRequired,
-  booking: propTypes.booking.isRequired,
-  dateType: propTypes.dateType,
 
   // from injectIntl
   intl: intlShape.isRequired,

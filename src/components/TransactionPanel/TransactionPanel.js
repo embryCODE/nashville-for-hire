@@ -483,6 +483,14 @@ export class TransactionPanelComponent extends Component {
                 />
               ) : null}
 
+              {!stateData.showNegotiationPanel && (
+                <BreakdownMaybe
+                  className={css.breakdownContainer}
+                  transaction={currentTransaction}
+                  transactionRole={transactionRole}
+                />
+              )}
+
               {stateData.showProceedToPayment ? (
                 <ProceedToPayment
                   isCustomer={isCustomer}
@@ -491,18 +499,12 @@ export class TransactionPanelComponent extends Component {
                 />
               ) : null}
 
-              {stateData.showCompleteOrder ? (
-                <CompleteOrder isCustomer={isCustomer} onCompleteOrder={onCompleteOrder} />
-              ) : null}
-
-              <BreakdownMaybe
-                className={css.breakdownContainer}
-                transaction={currentTransaction}
-                transactionRole={transactionRole}
-              />
-
               {stateData.showSaleButtons ? (
                 <div className={css.desktopActionButtons}>{saleButtons}</div>
+              ) : null}
+
+              {stateData.showCompleteOrder ? (
+                <CompleteOrder isCustomer={isCustomer} onCompleteOrder={onCompleteOrder} />
               ) : null}
             </div>
           </div>

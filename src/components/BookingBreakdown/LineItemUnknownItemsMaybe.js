@@ -12,8 +12,8 @@
 import React from 'react'
 import { intlShape } from '../../util/reactIntl'
 import { formatMoney } from '../../util/currency'
-import { humanizeLineItemCode } from '../../util/data'
 import { LINE_ITEMS, propTypes } from '../../util/types'
+import getLabelFromPricingOptions from '../../util/getLabelFromPricingOptions'
 
 import css from './BookingBreakdown.css'
 
@@ -28,8 +28,9 @@ const LineItemUnknownItemsMaybe = (props) => {
   return items.length > 0 ? (
     <React.Fragment>
       {items.map((item, i) => {
-        const label = humanizeLineItemCode(item.code)
+        const label = getLabelFromPricingOptions(item.code)
         const formattedTotal = formatMoney(intl, item.lineTotal)
+
         return (
           <div key={`${i}-item.code`} className={css.lineItem}>
             <span className={css.itemLabel}>{label}</span>

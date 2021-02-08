@@ -16,7 +16,6 @@ import {
   ensureStripeCustomer,
   ensurePaymentMethodCard,
 } from '../../util/data'
-import { minutesBetween } from '../../util/dates'
 import { createSlug } from '../../util/urlHelpers'
 import {
   isTransactionInitiateAmountTooLowError,
@@ -27,9 +26,10 @@ import {
   isTransactionZeroPaymentError,
   transactionInitiateOrderStripeErrors,
 } from '../../util/errors'
-import { TRANSITION_ENQUIRE, txIsPaymentPending, txIsPaymentExpired } from '../../util/transaction'
+import { TRANSITION_ENQUIRE, txIsPaymentPending } from '../../util/transaction'
 import {
   AvatarMedium,
+  BookingBreakdown,
   Logo,
   NamedLink,
   NamedRedirect,
@@ -50,7 +50,6 @@ import {
 } from './CheckoutPage.duck'
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers'
 import css from './CheckoutPage.css'
-import { LineItemsDisplay } from '../../components/NFHCustom/organisms/LineItemsDisplay'
 
 const STORAGE_KEY = 'CheckoutPage'
 
@@ -82,11 +81,13 @@ const initializeOrderPage = (initialValues, routes, dispatch) => {
 }
 
 const checkIsPaymentExpired = (existingTransaction) => {
-  return txIsPaymentExpired(existingTransaction)
-    ? true
-    : txIsPaymentPending(existingTransaction)
-    ? minutesBetween(existingTransaction.attributes.lastTransitionedAt, new Date()) >= 15
-    : false
+  // TODO: Fix this
+  return false
+  // return txIsPaymentExpired(existingTransaction)
+  //   ? true
+  //   : txIsPaymentPending(existingTransaction)
+  //   ? minutesBetween(existingTransaction.attributes.lastTransitionedAt, new Date()) >= 15
+  //   : false
 }
 
 export class CheckoutPageComponent extends Component {
@@ -164,10 +165,11 @@ export class CheckoutPageComponent extends Component {
 
     // Check if a booking is already created according to stored data.
     const tx = pageData ? pageData.transaction : null
-    const isBookingCreated = tx && tx.booking && tx.booking.id
+    const isPaymentRequested =
+      tx && tx.attributes && tx.attributes.lastTransition === 'transition/request-payment'
 
     const shouldFetchSpeculatedTransaction =
-      pageData && pageData.listing && pageData.listing.id && !isBookingCreated
+      pageData && pageData.listing && pageData.listing.id && !isPaymentRequested
 
     if (shouldFetchSpeculatedTransaction) {
       fetchSpeculatedTransaction({
@@ -537,7 +539,12 @@ export class CheckoutPageComponent extends Component {
         transaction: speculatedTransaction,
         listing,
       })
-      return <NamedRedirect name="OrderPage" params={{ id: transactionId }} />
+
+      return transactionId ? (
+        <NamedRedirect name="OrderPage" params={{ id: transactionId }} />
+      ) : (
+        <NamedRedirect name="LandingPage" />
+      )
     }
 
     const isPaymentExpired = checkIsPaymentExpired(existingTransaction)
@@ -679,6 +686,8 @@ export class CheckoutPageComponent extends Component {
 
     const initalValuesForStripePayment = { name: userName }
 
+    const breakdownClasses = classNames(css.breakdown)
+
     return (
       <Page {...pageProps}>
         {topbar}
@@ -709,7 +718,11 @@ export class CheckoutPageComponent extends Component {
               {speculateTransactionErrorMessage}
 
               <div style={{ padding: '0 1rem 1rem' }}>
-                <LineItemsDisplay lineItems={transaction.attributes.lineItems} />
+                <BookingBreakdown
+                  className={breakdownClasses}
+                  userRole="customer"
+                  transaction={transaction}
+                />
               </div>
             </div>
 
@@ -776,7 +789,11 @@ export class CheckoutPageComponent extends Component {
             {speculateTransactionErrorMessage}
 
             <div style={{ padding: '0 1rem 1rem' }}>
-              <LineItemsDisplay lineItems={transaction.attributes.lineItems} />
+              <BookingBreakdown
+                className={breakdownClasses}
+                userRole="customer"
+                transaction={transaction}
+              />
             </div>
           </div>
         </div>

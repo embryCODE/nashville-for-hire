@@ -2,6 +2,7 @@ import React, { SyntheticEvent, useState } from 'react'
 import styled from 'styled-components'
 import { Price, PriceWithQuantity } from '../../types'
 import { PriceItemSelector } from './PriceItemSelector'
+import { PrimaryButton } from '../../../Button/Button'
 
 const BookingWrapper = styled.div`
   width: 100%;
@@ -70,7 +71,7 @@ const Booking: React.FC<BookingProps> = ({ sellerName, prices, onSubmit }) => {
             />
           )
         })}
-        <button>Hire!</button>
+        <PrimaryButton>Hire!</PrimaryButton>
       </form>
     </BookingWrapper>
   )

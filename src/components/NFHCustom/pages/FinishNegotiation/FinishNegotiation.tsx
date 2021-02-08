@@ -2,6 +2,7 @@ import React, { SyntheticEvent, useState } from 'react'
 import styled from 'styled-components'
 import pricingOptions from '../../../../util/pricingOptions'
 import { Money } from 'sharetribe-flex-sdk/src/types'
+import { PrimaryButton } from '../../../Button/Button'
 
 const FinishNegotiationWrapper = styled.div`
   padding: 0 1rem 1rem;
@@ -79,7 +80,7 @@ const FinishNegotiation: React.FC<FinishNegotiationProps> = ({
               </div>
             ))}
 
-            <button disabled={isDisabled}>Submit</button>
+            <PrimaryButton disabled={isDisabled}>Submit</PrimaryButton>
           </form>
         </>
       )}

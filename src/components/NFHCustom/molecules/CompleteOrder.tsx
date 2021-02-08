@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import { PrimaryButton } from '../../Button/Button'
 
 const CompleteOrderWrapper = styled.div`
   padding: 0 1rem 1rem;
@@ -20,8 +21,7 @@ const CompleteOrder: React.FC<CompleteOrderProps> = ({ isCustomer, onCompleteOrd
         </p>
       ) : (
         <>
-          <h2>Complete Order</h2>
-          <button onClick={onCompleteOrder}>Complete order</button>
+          <PrimaryButton onClick={onCompleteOrder}>Complete order</PrimaryButton>
         </>
       )}
     </CompleteOrderWrapper>

@@ -102,12 +102,13 @@ const EditListingPricingPanel = (props) => {
             const priceAsMoney = v[key].price
 
             // Price will be null if amount is 0, otherwise it will be this currency object
-            const price = priceAsMoney.amount
-              ? {
-                  amount: priceAsMoney.amount,
-                  currency: priceAsMoney.currency,
-                }
-              : null
+            const price =
+              priceAsMoney && priceAsMoney.amount
+                ? {
+                    amount: priceAsMoney.amount,
+                    currency: priceAsMoney.currency,
+                  }
+                : null
 
             v[key] = {
               ...thisItem,

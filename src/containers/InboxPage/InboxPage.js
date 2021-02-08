@@ -180,9 +180,8 @@ const BookingInfoMaybe = (props) => {
   }
 
   return (
-    // TODO
     <div className={classNames(css.bookingInfoWrapper, bookingClassName)}>
-      Helpful booking info goes here
+      A booking has been requested
     </div>
   )
 }
