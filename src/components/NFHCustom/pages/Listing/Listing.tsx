@@ -9,18 +9,20 @@ interface ListingProps {
 }
 
 const Listing: React.FC<ListingProps> = ({ listingAttributes }) => {
+  const publicData = listingAttributes.publicData
+
+  if (!publicData) return null
+
   const {
-    publicData: {
-      audio,
-      averageTurnaroundTime,
-      experience,
-      explainMore,
-      prices,
-      primaryGenres,
-      serviceType,
-      whyAreYouTheRightFit,
-    },
-  } = listingAttributes
+    audio,
+    averageTurnaroundTime,
+    experience,
+    explainMore,
+    prices,
+    primaryGenres,
+    serviceType,
+    whyAreYouTheRightFit,
+  } = publicData
 
   return (
     <section>

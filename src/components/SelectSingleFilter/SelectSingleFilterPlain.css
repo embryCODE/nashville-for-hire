@@ -132,6 +132,7 @@
   @apply --marketplaceH5FontStyles;
   font-weight: var(--fontWeightMedium);
   color: var(--matterColorAnti);
+  cursor: pointer;
 
   /* Layout */
   display: inline;

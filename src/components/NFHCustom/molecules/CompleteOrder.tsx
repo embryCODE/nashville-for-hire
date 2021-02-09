@@ -21,6 +21,11 @@ const CompleteOrder: React.FC<CompleteOrderProps> = ({ isCustomer, onCompleteOrd
         </p>
       ) : (
         <>
+          <p>
+            Work should now begin. When work is complete and delivered, click this button to charge
+            the customer.
+          </p>
+
           <PrimaryButton onClick={onCompleteOrder}>Complete order</PrimaryButton>
         </>
       )}

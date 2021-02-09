@@ -410,6 +410,7 @@
   width: 100%;
   display: flex;
   flex-direction: row;
+  background-color: var(--matterColorLight);
 
   @media (--viewportLarge) {
     flex-direction: column;

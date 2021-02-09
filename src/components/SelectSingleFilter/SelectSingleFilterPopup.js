@@ -64,6 +64,15 @@ class SelectSingleFilterPopup extends Component {
       >
         <MenuLabel className={menuLabelClass}>{menuLabel}</MenuLabel>
         <MenuContent className={css.menuContent}>
+          <MenuItem key={'clearLink'}>
+            <button
+              className={css.clearMenuItem}
+              onClick={() => this.selectOption(queryParamName, null)}
+            >
+              <FormattedMessage id={'SelectSingleFilter.popupClear'} />
+            </button>
+          </MenuItem>
+
           {options.map((option) => {
             // check if this option is selected
             const selected = initialValue === option.key
@@ -82,14 +91,6 @@ class SelectSingleFilterPopup extends Component {
               </MenuItem>
             )
           })}
-          <MenuItem key={'clearLink'}>
-            <button
-              className={css.clearMenuItem}
-              onClick={() => this.selectOption(queryParamName, null)}
-            >
-              <FormattedMessage id={'SelectSingleFilter.popupClear'} />
-            </button>
-          </MenuItem>
         </MenuContent>
       </Menu>
     )

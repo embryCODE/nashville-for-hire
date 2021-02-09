@@ -17,8 +17,22 @@ import {
 import { TopbarSearchForm } from '../../forms'
 
 import css from './TopbarDesktop.css'
-import { Button } from '../NFHCustom/atoms'
 import { css as cssFunction } from 'styled-components/macro'
+import styled from 'styled-components'
+
+const LinkButton = styled(NamedLink)`
+  padding: 0.5rem 1rem;
+  border: solid 2px;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+`
 
 const TopbarDesktop = (props) => {
   const {
@@ -150,7 +164,6 @@ const TopbarDesktop = (props) => {
         </span>
       </NamedLink>
 
-      {/* TODO: Not this */}
       <div
         css={cssFunction`
           height: 100%;
@@ -161,13 +174,7 @@ const TopbarDesktop = (props) => {
           min-width: 300px;
         `}
       >
-        <Button
-          onClick={() => {
-            alert('Just call Rich Redmond')
-          }}
-        >
-          find your nashville pro
-        </Button>
+        <LinkButton name="SearchPage">find your nashville pro</LinkButton>
       </div>
 
       {inboxLink}

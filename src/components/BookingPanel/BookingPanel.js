@@ -10,7 +10,11 @@ const BookingPanel = (props) => {
   const { listing, onSubmit } = props
 
   const sellerName = listing.attributes.title
-  const prices = listing.attributes.publicData.prices
+  const publicData = listing.attributes.publicData
+
+  if (!publicData) return null
+
+  const prices = publicData.prices
 
   return <Booking sellerName={sellerName} prices={prices} onSubmit={onSubmit} />
 }

@@ -1,3 +1,12 @@
+import pricingOptions from './util/pricingOptions'
+import { startCase } from 'lodash'
+
+const generateCategoryOptions = () =>
+  Object.keys(pricingOptions).map((key) => ({
+    key,
+    label: startCase(key),
+  }))
+
 /*
  * Marketplace specific configuration.
  *
@@ -35,192 +44,29 @@
 
 export const filters = [
   {
-    id: 'dates',
-    label: 'Dates',
-    type: 'BookingDateRangeFilter',
+    id: 'serviceType',
+    label: 'Service Type',
+    type: 'SelectSingleFilter',
     group: 'primary',
-    // Note: BookingDateRangeFilter is fixed filter,
-    // you can't change "queryParamNames: ['dates'],"
-    queryParamNames: ['dates'],
-    config: {},
-  },
-  {
-    id: 'price',
-    label: 'Price',
-    type: 'PriceFilter',
-    group: 'primary',
-    // Note: PriceFilter is fixed filter,
-    // you can't change "queryParamNames: ['price'],"
-    queryParamNames: ['price'],
-    // Price filter configuration
-    // Note: unlike most prices this is not handled in subunits
+    queryParamNames: ['pub_serviceType'],
     config: {
-      min: 0,
-      max: 1000,
-      step: 5,
+      // "key" is the option you see in Flex Console.
+      // "label" is set here for the UI only.
+      // Note: label is not added through the translation files
+      // to make filter customizations a bit easier.
+      options: generateCategoryOptions(),
     },
   },
   {
     id: 'keyword',
     label: 'Keyword',
     type: 'KeywordFilter',
-    group: 'primary',
-    // Note: KeywordFilter is fixed filter,
+    group: 'primary', // Note: KeywordFilter is fixed filter,
     // you can't change "queryParamNames: ['keywords'],"
-    queryParamNames: ['keywords'],
-    // NOTE: If you are ordering search results by distance
+    queryParamNames: ['keywords'], // NOTE: If you are ordering search results by distance
     // the keyword search can't be used at the same time.
     // You can turn on/off ordering by distance from config.js file.
     config: {},
-  },
-  {
-    id: 'category',
-    label: 'Category',
-    type: 'SelectSingleFilter',
-    group: 'secondary',
-    queryParamNames: ['pub_category'],
-    config: {
-      // "key" is the option you see in Flex Console.
-      // "label" is set here for the UI only.
-      // Note: label is not added through the translation files
-      // to make filter customizations a bit easier.
-      options: [
-        { key: 'femaleVocals', label: 'Female Vocals' },
-        { key: 'maleVocals', label: 'Male Vocals' },
-        { key: 'songwriting', label: 'Songwriting' },
-        { key: 'topline', label: 'Topline' },
-        { key: 'acousticGuitar', label: 'Acoustic Guitar' },
-        { key: 'electricGuitar', label: 'Electric Guitar' },
-        { key: 'bass', label: 'Bass' },
-        { key: 'drums', label: 'Drums' },
-        { key: 'piano', label: 'Piano' },
-        { key: 'keys', label: 'Keys' },
-        { key: 'synth', label: 'Synth' },
-        { key: 'organ', label: 'Organ' },
-        { key: 'beatProgramming', label: 'Beat Programming' },
-        { key: 'cello', label: 'Cello' },
-        { key: 'violin', label: 'Violin' },
-        { key: 'fiddle', label: 'Fiddle' },
-        { key: 'fullStringArrangement', label: 'Full String Arrangement' },
-        { key: 'pedalSteel', label: 'Pedal Steel' },
-        { key: 'bango', label: 'Banjo' },
-        { key: 'dobro', label: 'Dobro' },
-        { key: 'lapSteel', label: 'Lap Steel' },
-        { key: 'harmonica', label: 'Harmonica' },
-        { key: 'trumpet', label: 'Trumpet' },
-        { key: 'trombone', label: 'Trombone' },
-        { key: 'saxophone', label: 'Saxophone' },
-        { key: 'hornSection', label: 'Horn Section' },
-        { key: 'mixing', label: 'Mixing' },
-        { key: 'mastering', label: 'Mastering' },
-        { key: 'produce', label: 'Produce Your Entire Song' }
-      ],
-    },
-  },
-  {
-    id: "termsOfUse",
-    label: "Terms Of Use",
-    type: "SelectMultipleFilter",
-    group: "secondary",
-    queryParamNames: ['pub_termsOfUse'],
-    config: {
-      // Optional modes: 'has_all', 'has_any'
-      // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
-      searchMode: 'has_all',
-
-      // "key" is the option you see in Flex Console.
-      // "label" is set here for this web app's UI only.
-      // Note: label is not added through the translation files
-      // to make filter customizations a bit easier.
-      options: [
-        {
-          key: 'agree',
-          label: 'I agree to Terms of Use',
-        }
-      ],
-    },
-  },
-  {
-    id: 'amenities',
-    label: 'Amenities',
-    type: 'SelectMultipleFilter',
-    group: 'secondary',
-    queryParamNames: ['pub_amenities'],
-    config: {
-      // Optional modes: 'has_all', 'has_any'
-      // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
-      searchMode: 'has_all',
-
-      // "key" is the option you see in Flex Console.
-      // "label" is set here for this web app's UI only.
-      // Note: label is not added through the translation files
-      // to make filter customizations a bit easier.
-      options: [
-        {
-          key: 'towels',
-          label: 'Towels',
-        },
-        {
-          key: 'bathroom',
-          label: 'Bathroom',
-        },
-        {
-          key: 'swimming_pool',
-          label: 'Swimming pool',
-        },
-        {
-          key: 'own_drinks',
-          label: 'Own drinks allowed',
-        },
-        {
-          key: 'jacuzzi',
-          label: 'Jacuzzi',
-        },
-        {
-          key: 'audiovisual_entertainment',
-          label: 'Audiovisual entertainment',
-        },
-        {
-          key: 'barbeque',
-          label: 'Barbeque',
-        },
-        {
-          key: 'own_food_allowed',
-          label: 'Own food allowed',
-        },
-      ],
-    },
-  },
-  {
-    id: 'instruments',
-    label: 'Instruments',
-    type: 'SelectMultipleFilter',
-    group: 'secondary',
-    queryParamNames: ['instruments'],
-    config: {
-      // Optional modes: 'has_all', 'has_any'
-      // https://www.sharetribe.com/api-reference/marketplace.html#extended-data-filtering
-      searchMode: 'has_all',
-
-      // "key" is the option you see in Flex Console.
-      // "label" is set here for this web app's UI only.
-      // Note: label is not added through the translation files
-      // to make filter customizations a bit easier.
-      options: [
-        {
-          key: 'keyboard',
-          label: 'Keyboard',
-        },
-        {
-          key: 'guitar',
-          label: 'Guitar',
-        },
-        {
-          key: 'vocals',
-          label: 'Vocals',
-        },
-      ],
-    },
   },
 ]
 
@@ -241,9 +87,10 @@ export const sortConfig = {
 
   options: [
     { key: 'createdAt', label: 'Newest' },
-    { key: '-createdAt', label: 'Oldest' },
-    { key: '-price', label: 'Lowest price' },
-    { key: 'price', label: 'Highest price' },
+    {
+      key: '-createdAt',
+      label: 'Oldest',
+    },
 
     // The relevance is only used for keyword search, but the
     // parameter isn't sent to the Marketplace API. The key is purely

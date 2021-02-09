@@ -3,7 +3,6 @@
 .root {
   display: flex;
   flex-direction: column;
-  background-color: var(--matterColorBright);
   position: relative;
 }
 
@@ -63,7 +62,7 @@
   /* Layout */
   padding: 9px 24px 0 24px;
   margin: 0;
-  background-color: var(--matterColorBright);
+  background-color: var(--matterColorLight);
 
   @media (--viewportLarge) {
     padding: 9px 36px 0 36px;
