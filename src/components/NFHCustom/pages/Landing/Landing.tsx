@@ -8,6 +8,7 @@ import musicNotes from '../../../../assets/images/musicNotes.png'
 import guitarOnBed from '../../../../assets/images/guitarOnBed.jpg'
 import { InstrumentTiles, Testimonials, TestimonialVideo } from '../../organisms'
 import ScrollAnimation from 'react-animate-on-scroll'
+import { NamedLink } from '../../../index'
 
 const Image = styled.img`
   display: block;
@@ -148,6 +149,16 @@ const BackgroundColorDiv = styled.div`
   }
 `
 
+const LinkButton = styled(NamedLink)`
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--matterColorBright);
+
+  &:hover {
+    text-decoration: none;
+  }
+`
+
 export const Landing: React.FC = () => {
   return (
     <>
@@ -200,7 +211,9 @@ export const Landing: React.FC = () => {
             </ScrollAnimation>
           </FeatureCardContainer>
 
-          <CTAButton className={landingCSS.ctaButton}>find your nashville pro</CTAButton>
+          <CTAButton className={landingCSS.ctaButton}>
+            <LinkButton name="SearchPage">find your nashville pro</LinkButton>
+          </CTAButton>
 
           <InfoCardContainer>
             <ScrollAnimation animateIn="fadeInBottomLeft">

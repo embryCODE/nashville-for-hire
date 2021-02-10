@@ -17,12 +17,24 @@
    :from :state/enquiry,
    :to :state/price-negotiation}
 
+  {:name :transition/cancel-negotiation,
+   :actor :actor.role/operator,
+   :actions [],
+   :from :state/price-negotiation,
+   :to :state/cancelled}
+
   {:name :transition/set-prices,
    :actor :actor.role/provider,
    :actions [{:name :action/set-line-items-and-total}],
    :from :state/price-negotiation,
    :to :state/set-prices,
    }
+
+  {:name :transition/cancel-set-prices,
+   :actor :actor.role/operator,
+   :actions [],
+   :from :state/set-prices,
+   :to :state/cancelled}
 
   {:name :transition/request-payment,
    :actor :actor.role/customer,
@@ -39,8 +51,7 @@
     [{:fn/timepoint [:time/first-entered-state :state/pending-payment]}
      {:fn/period ["PT15M"]}]},
    :actions
-   [{:name :action/decline-booking}
-    {:name :action/calculate-full-refund}
+   [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}],
    :from :state/pending-payment,
    :to :state/payment-expired}
@@ -68,17 +79,20 @@
 
   {:name :transition/expire,
    :at
-   {:fn/min
-    [{:fn/plus
-      [{:fn/timepoint [:time/first-entered-state :state/preauthorized]}
-       {:fn/period ["P6D"]}]}
-     {:fn/plus
-      [{:fn/timepoint [:time/booking-end]} {:fn/period ["P1D"]}]}]},
+   {:fn/plus
+    [{:fn/timepoint [:time/first-entered-state :state/preauthorized]}
+     {:fn/period ["P6D"]}]},
    :actions
    [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}],
    :from :state/preauthorized,
    :to :state/declined}
+
+  {:name :transition/cancel-preauthorized,
+   :actor :actor.role/operator,
+   :actions [],
+   :from :state/preauthorized,
+   :to :state/cancelled}
 
   {:name :transition/complete,
    :actor :actor.role/provider,

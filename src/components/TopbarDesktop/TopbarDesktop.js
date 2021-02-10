@@ -157,12 +157,11 @@ const TopbarDesktop = (props) => {
           alt={intl.formatMessage({ id: 'TopbarDesktop.logo' })}
         />
       </NamedLink>
+
       {search}
-      <NamedLink className={css.createListingLink} name="NewListingPage">
-        <span className={css.createListing} data-testid="Become a seller link">
-          <FormattedMessage id="TopbarDesktop.createListing" />
-        </span>
-      </NamedLink>
+
+      {/* Spacer */}
+      <div style={{ flex: '1' }} />
 
       <div
         css={cssFunction`

@@ -15,7 +15,7 @@
   }
 
   @media (--viewportLarge) {
-    padding: 0 0 81px 0;
+    padding: 0 0 1rem 0;
     border-top: none;
   }
 }
@@ -24,11 +24,11 @@
  * view from the outermost paddings*/
 .topBorderWrapper {
   @media (--viewportMedium) {
-    padding-top: 41px;
+    padding-top: 1rem;
   }
 
   @media (--viewportLarge) {
-    padding-top: 73px;
+    padding-top: 2rem;
 
     border-top-style: solid;
     border-top-width: 1px;
@@ -83,6 +83,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
+  align-items: center;
   width: 100%;
   margin-bottom: 18px;
 
@@ -230,7 +231,7 @@
   flex-shrink: 0;
   order: 5;
   display: none;
-  flex-basis: 109px;
+  flex-basis: 200px;
   margin-right: 24px;
   margin-bottom: 24px;
 
@@ -265,7 +266,7 @@
 .terms {
   /* Font */
   @apply --marketplaceTinyFontStyles;
-  color: var(--matterColorLight);
+  color: var(--matterColorAnti);
   transition: var(--transitionStyleButton);
 
   margin-top: 0;

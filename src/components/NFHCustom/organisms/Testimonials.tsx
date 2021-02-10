@@ -23,15 +23,6 @@ export const Testimonials: React.FC = () => {
         when I need talent. Their artists are top drawer and their pricing is quite reasonable.{' '}
         <strong>I recommend NFH without reservations.</strong>"
       </Testimonial>
-
-      <Testimonial name="that person">
-        "So many things I love. This and that. And don't forget. This. What a great time. Be back
-        soon."
-      </Testimonial>
-
-      <Testimonial name="person">
-        "My favorite. Never to use another. WOW. WOW. WOW. To say, I was suprised. Not sad."
-      </Testimonial>
     </TestimonialsContainer>
   )
 }

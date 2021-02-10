@@ -268,6 +268,7 @@ export const InboxPageComponent = (props) => {
     providerNotificationCount,
     scrollingDisabled,
     transactions,
+    currentUserHasListings,
   } = props
   const { tab } = params
   const ensuredCurrentUser = ensureCurrentUser(currentUser)
@@ -327,6 +328,7 @@ export const InboxPageComponent = (props) => {
 
   const providerNotificationBadge =
     providerNotificationCount > 0 ? <NotificationBadge count={providerNotificationCount} /> : null
+
   const tabs = [
     {
       text: (
@@ -340,7 +342,11 @@ export const InboxPageComponent = (props) => {
         params: { tab: 'orders' },
       },
     },
-    {
+  ]
+
+  // The "Selling" tab only appears if the user has listings
+  if (currentUserHasListings) {
+    tabs.push({
       text: (
         <span>
           <FormattedMessage id="InboxPage.salesTabTitle" />
@@ -352,8 +358,9 @@ export const InboxPageComponent = (props) => {
         name: 'InboxPage',
         params: { tab: 'sales' },
       },
-    },
-  ]
+    })
+  }
+
   const nav = <TabNav rootClassName={css.tabs} tabRootClassName={css.tab} tabs={tabs} />
 
   return (
@@ -371,10 +378,12 @@ export const InboxPageComponent = (props) => {
           <h1 className={css.title}>
             <FormattedMessage id="InboxPage.title" />
           </h1>
+
           {nav}
         </LayoutWrapperSideNav>
         <LayoutWrapperMain>
           {error}
+
           <ul className={css.itemList}>
             {!fetchInProgress ? (
               transactions.map(toTxItem)
@@ -425,7 +434,12 @@ InboxPageComponent.propTypes = {
 
 const mapStateToProps = (state) => {
   const { fetchInProgress, fetchOrdersOrSalesError, pagination, transactionRefs } = state.InboxPage
-  const { currentUser, currentUserNotificationCount: providerNotificationCount } = state.user
+  const {
+    currentUser,
+    currentUserNotificationCount: providerNotificationCount,
+    currentUserHasListings,
+  } = state.user
+
   return {
     currentUser,
     fetchInProgress,
@@ -434,6 +448,7 @@ const mapStateToProps = (state) => {
     providerNotificationCount,
     scrollingDisabled: isScrollingDisabled(state),
     transactions: getMarketplaceEntities(state, transactionRefs),
+    currentUserHasListings,
   }
 }
 

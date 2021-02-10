@@ -111,10 +111,19 @@ export class ListingPageComponent extends Component {
       ...createCustomPricingParams({ listing, bookingData }),
     }
 
-    callBeginNegotiation(beginNegotiation, data).then((txId) => {
-      // Redirect to OrderDetailsPage
-      history.push(createResourceLocatorString('OrderDetailsPage', routes, { id: txId.uuid }, {}))
-    })
+    callBeginNegotiation(beginNegotiation, data)
+      .then((txId) => {
+        // Redirect to OrderDetailsPage
+        history.push(createResourceLocatorString('OrderDetailsPage', routes, { id: txId.uuid }, {}))
+      })
+      .catch((err) => {
+        if (err.status === 403) {
+          history.push(createResourceLocatorString('LoginPage', routes, {}, {}))
+          return
+        }
+
+        console.error(err)
+      })
   }
 
   onContactUser() {
@@ -426,7 +435,11 @@ export class ListingPageComponent extends Component {
                 </div>
 
                 <div style={{ margin: '60px 0.5rem 0' }}>
-                  <BookingPanel listing={currentListing} onSubmit={handleBookingSubmit} />
+                  <BookingPanel
+                    isDisabled={!currentUser}
+                    listing={currentListing}
+                    onSubmit={handleBookingSubmit}
+                  />
                 </div>
               </div>
             </div>

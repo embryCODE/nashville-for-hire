@@ -9,6 +9,11 @@ const BookingWrapper = styled.div`
   padding: 0 1rem 1rem;
 `
 
+const LoginHint = styled.p`
+  font-size: 14px;
+  color: red;
+`
+
 const createInitialPricesAndQuantity = (prices: Record<string, Price>) => {
   return Object.entries(prices).reduce<Record<string, PriceWithQuantity>>(
     (acc, [currKey, currPrice]) => {
@@ -24,9 +29,10 @@ interface BookingProps {
   sellerName: string
   prices: Record<string, Price>
   onSubmit: (data: Record<string, PriceWithQuantity>) => void
+  isDisabled?: boolean
 }
 
-const Booking: React.FC<BookingProps> = ({ sellerName, prices, onSubmit }) => {
+const Booking: React.FC<BookingProps> = ({ sellerName, prices, onSubmit, isDisabled }) => {
   const [pricesAndQuantity, setPricesAndQuantity] = useState(createInitialPricesAndQuantity(prices))
 
   const handleQuantityChange = (key: string) => (quantity: number) => {
@@ -71,7 +77,10 @@ const Booking: React.FC<BookingProps> = ({ sellerName, prices, onSubmit }) => {
             />
           )
         })}
-        <PrimaryButton>Hire!</PrimaryButton>
+
+        {isDisabled && <LoginHint>Must sign up or login to hire</LoginHint>}
+
+        <PrimaryButton disabled={isDisabled}>Hire!</PrimaryButton>
       </form>
     </BookingWrapper>
   )

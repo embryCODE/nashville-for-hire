@@ -58,25 +58,27 @@ const PriceItemSelector: React.FC<PriceItemSelectorProps> = ({
 
   return (
     <PriceItemSelectorWrapper>
-      {quantity > 0 ? (
-        <input
-          id={price.label}
-          type="number"
-          value={quantity}
-          onChange={handleQuantityChange}
-          css={css`
-            margin-top: -10px;
-          `}
-        />
-      ) : (
-        <input
-          type="checkbox"
-          onChange={handleSelect}
-          css={css`
-            margin-top: 6px;
-          `}
-        />
-      )}
+      <span>
+        {quantity > 0 ? (
+          <input
+            id={price.label}
+            type="number"
+            value={quantity}
+            onChange={handleQuantityChange}
+            css={css`
+              margin-top: -10px;
+            `}
+          />
+        ) : (
+          <input
+            type="checkbox"
+            onChange={handleSelect}
+            css={css`
+              margin-top: 6px;
+            `}
+          />
+        )}
+      </span>
 
       <div>{price.label}</div>
 
