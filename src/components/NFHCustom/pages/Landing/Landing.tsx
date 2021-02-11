@@ -152,7 +152,7 @@ const BackgroundColorDiv = styled.div`
 const LinkButton = styled(NamedLink)`
   cursor: pointer;
   text-decoration: none;
-  color: var(--matterColorBright);
+  color: white;
 
   &:hover {
     text-decoration: none;
