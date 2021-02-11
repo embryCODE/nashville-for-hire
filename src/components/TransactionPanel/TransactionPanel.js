@@ -58,6 +58,7 @@ import css from './TransactionPanel.css'
 import { FinishNegotiation } from '../NFHCustom/pages/FinishNegotiation'
 import { ProceedToPayment } from '../NFHCustom/pages/ProceedToPayment'
 import { CompleteOrder } from '../NFHCustom/molecules/CompleteOrder'
+import { TransactionAudio } from '../NFHCustom'
 
 // Helper function to get display names for different roles
 const displayNames = (currentUser, currentProvider, currentCustomer, intl) => {
@@ -506,9 +507,15 @@ export class TransactionPanelComponent extends Component {
               {stateData.showCompleteOrder ? (
                 <CompleteOrder isCustomer={isCustomer} onCompleteOrder={onCompleteOrder} />
               ) : null}
+
+              <div style={{ padding: '0 1rem 1rem' }}>
+                <hr />
+                <TransactionAudio transactionId={transaction.id.uuid} />
+              </div>
             </div>
           </div>
         </div>
+
         <ReviewModal
           id="ReviewOrderModal"
           isOpen={this.state.isReviewModalOpen}

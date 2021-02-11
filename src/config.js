@@ -181,6 +181,7 @@ const maps = {
 
 export const s3UrlSigningServer = process.env.REACT_APP_S3_URL_SIGNING_SERVER || ''
 export const s3UrlSigningUrl = process.env.REACT_APP_S3_URL_SIGNING_URL || ''
+export const s3AudioBucket = process.env.REACT_APP_S3_AUDIO_BUCKET || ''
 
 // NOTE: only expose configuration that should be visible in the
 // client side, don't add any server secrets in this file.
