@@ -97,6 +97,7 @@ const TransactionAudio: React.FC<TransactionAudioProps> = ({ transactionId }) =>
         signingUrl={s3UrlSigningUrl}
         signingUrlQueryParams={{
           // @ts-ignore
+          bucketName: s3AudioBucketName,
           namespace: 'transaction-id-' + transactionId,
         }}
         signingUrlMethod="GET"

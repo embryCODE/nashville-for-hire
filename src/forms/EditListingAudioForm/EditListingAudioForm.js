@@ -8,7 +8,7 @@ import { propTypes } from '../../util/types'
 import { Button, Form } from '../../components'
 import ReactS3Uploader from 'react-s3-uploader'
 import css from './EditListingAudioForm.css'
-import { s3UrlSigningServer, s3UrlSigningUrl } from '../../config'
+import { s3AudioBucketName, s3UrlSigningServer, s3UrlSigningUrl } from '../../config'
 
 const ACCEPT_AUDIO = 'audio/*'
 
@@ -102,6 +102,7 @@ export class EditListingAudioFormComponent extends Component {
               <ReactS3Uploader
                 signingUrl={s3UrlSigningUrl}
                 signingUrlQueryParams={{
+                  bucketName: s3AudioBucketName,
                   namespace: 'listing-id-' + this.state.listingId.uuid,
                 }}
                 signingUrlMethod="GET"
