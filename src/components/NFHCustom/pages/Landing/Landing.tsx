@@ -149,16 +149,6 @@ const BackgroundColorDiv = styled.div`
   }
 `
 
-const LinkButton = styled(NamedLink)`
-  cursor: pointer;
-  text-decoration: none;
-  color: white;
-
-  &:hover {
-    text-decoration: none;
-  }
-`
-
 export const Landing: React.FC = () => {
   return (
     <>
@@ -212,7 +202,20 @@ export const Landing: React.FC = () => {
           </FeatureCardContainer>
 
           <CTAButton className={landingCSS.ctaButton}>
-            <LinkButton name="SearchPage">find your nashville pro</LinkButton>
+            <NamedLink
+              name="SearchPage"
+              css={css`
+                cursor: pointer;
+                text-decoration: none;
+                color: white;
+
+                &:hover {
+                  text-decoration: none;
+                }
+              `}
+            >
+              find your nashville pro
+            </NamedLink>
           </CTAButton>
 
           <InfoCardContainer>

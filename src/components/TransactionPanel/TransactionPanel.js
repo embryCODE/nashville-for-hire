@@ -58,7 +58,7 @@ import css from './TransactionPanel.css'
 import { FinishNegotiation } from '../NFHCustom/pages/FinishNegotiation'
 import { ProceedToPayment } from '../NFHCustom/pages/ProceedToPayment'
 import { CompleteOrder } from '../NFHCustom/molecules/CompleteOrder'
-import { TransactionAudio } from '../NFHCustom'
+import { TransactionAudio } from '../NFHCustom/organisms/TransactionAudio'
 
 // Helper function to get display names for different roles
 const displayNames = (currentUser, currentProvider, currentCustomer, intl) => {
