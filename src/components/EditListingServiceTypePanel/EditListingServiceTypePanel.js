@@ -49,7 +49,7 @@ const EditListingServiceTypePanel = (props) => {
     </p>
   )
 
-  const categoryOptions = findOptionsForSelectFilter('category', config.custom.filters)
+  const categoryOptions = findOptionsForSelectFilter('serviceType', config.custom.filters)
 
   return (
     <div className={classes}>

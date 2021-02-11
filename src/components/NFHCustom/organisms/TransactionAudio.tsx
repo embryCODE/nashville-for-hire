@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { s3UrlSigningServer, s3UrlSigningUrl, s3AudioBucket } from '../../../config'
+import {
+  s3UrlSigningServer,
+  s3UrlSigningUrl,
+  s3AudioBucket,
+  cognitoIdentityPoolId,
+  s3AudioBucketName,
+} from '../../../config'
 import ReactS3Uploader from 'react-s3-uploader'
 import AWS from 'aws-sdk'
 import styled from 'styled-components'
 
 AWS.config.region = 'us-east-2'
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  IdentityPoolId: 'us-east-2:c17672bb-7db7-48fd-97c2-60ba5633592c',
+  IdentityPoolId: cognitoIdentityPoolId,
 })
 
 const s3 = new AWS.S3({
   apiVersion: '2006-03-01',
-  params: { Bucket: 'nfh-nonprod-audio' },
+  params: { Bucket: s3AudioBucketName },
 })
 
 const ACCEPT_AUDIO = 'audio/*'
@@ -35,7 +41,7 @@ const TransactionAudio: React.FC<TransactionAudioProps> = ({ transactionId }) =>
     s3.listObjects(
       {
         Delimiter: '/',
-        Bucket: 'nfh-nonprod-audio',
+        Bucket: s3AudioBucketName,
         Prefix: `transaction-id-${transactionId}/`,
       },
       function (err, data) {
