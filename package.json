@@ -73,6 +73,7 @@
     "chalk": "^2.4.1",
     "concurrently": "^5.3.0",
     "cypress": "^5.2.0",
+    "env-cmd": "^10.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "enzyme-to-json": "^3.6.1",
@@ -116,7 +117,8 @@
     "test-server": "jest ./server/**/*.test.js",
     "heroku-postbuild": "yarn run build",
     "translate": "node scripts/translations.js",
-    "deploy-nonprod": "unset AWS_PROFILE && yarn build && aws s3 sync --acl public-read ./build s3://nfh-nonprod",
+    "deploy-nonprod": "env-cmd -f .env.nonprod yarn build && AWS_PROFILE=nfh aws s3 sync --acl public-read ./build s3://nashville-for-hire-nonprod",
+    "deploy-prod": "yarn build && AWS_PROFILE=nfh aws s3 sync --acl public-read ./build s3://nashville-for-hire-prod",
     "test:e2e:run": "yarn start-server-and-test 'dev' http://localhost:3000 'cypress run'",
     "test:e2e:open": "yarn start-server-and-test 'dev' http://localhost:3000 'cypress open'",
     "startS3UploadServer": "nodemon tempServer.js"
