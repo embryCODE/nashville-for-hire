@@ -73,6 +73,9 @@ const TransactionAudio: React.FC<TransactionAudioProps> = ({ transactionId }) =>
     getAudio(transactionId)
   }
 
+  const namespace = 'transaction-id-' + transactionId
+  const tags = `daysUntilExpiration=30`
+
   return (
     <div>
       <h2>Audio</h2>
@@ -98,24 +101,17 @@ const TransactionAudio: React.FC<TransactionAudioProps> = ({ transactionId }) =>
         signingUrlQueryParams={{
           // @ts-ignore
           bucketName: s3AudioBucketName,
-          namespace: 'transaction-id-' + transactionId,
+          namespace,
         }}
         signingUrlMethod="GET"
         accept={ACCEPT_AUDIO}
-        onSignedUrl={(res) => {
-          console.log('onSignedUrl', res)
-        }}
-        onProgress={(value) => {
-          console.log('onProgress', value)
-        }}
-        onError={(err) => {
-          console.error({ onError: err })
-        }}
+        onSignedUrl={(res) => {}}
+        onProgress={(value) => {}}
+        onError={(err) => {}}
         onFinish={() => {
-          console.log('onFinish')
           handleFinish()
         }}
-        uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
+        uploadRequestHeaders={{ 'x-amz-acl': 'public-read', 'x-amz-tagging': tags }}
         contentDisposition="auto"
         scrubFilename={(filename) => filename.replace(/[^\w\d_\-.]+/gi, '')}
         server={s3UrlSigningServer}
