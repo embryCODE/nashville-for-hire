@@ -62,6 +62,9 @@ export class EditListingAudioFormComponent extends Component {
             bypassDefaultSubmit(this.state.audio)
           }
 
+          const namespace = 'listing-id-' + this.state.listingId.uuid
+          const tags = `daysUntilExpiration=0`
+
           return (
             <Form className={classes} onSubmit={handleSubmit}>
               {updateListingError ? (
@@ -103,11 +106,10 @@ export class EditListingAudioFormComponent extends Component {
                 signingUrl={s3UrlSigningUrl}
                 signingUrlQueryParams={{
                   bucketName: s3AudioBucketName,
-                  namespace: 'listing-id-' + this.state.listingId.uuid,
+                  namespace,
                 }}
                 signingUrlMethod="GET"
                 accept={ACCEPT_AUDIO}
-                // preprocess={(thing)=> console.log({thing})} // keeping just in case
                 onSignedUrl={(res) => {
                   this.handleUploadProgress({ type: 'fileName', fileName: res.filename })
                   this.handleUpload(res.filename)
@@ -123,12 +125,13 @@ export class EditListingAudioFormComponent extends Component {
                   this.handleUploadProgress({ type: 'fileName', fileName: '' })
                   this.handleUploadProgress({ type: 'value', value: 0 })
                 }}
-                uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
+                uploadRequestHeaders={{ 'x-amz-acl': 'public-read', 'x-amz-tagging': tags }}
                 contentDisposition="auto"
                 scrubFilename={(filename) => filename.replace(/[^\w\d_\-.]+/gi, '')}
                 server={s3UrlSigningServer}
-                inputRef={(cmp) => (this.uploadInput = cmp)}
                 autoUpload={true}
+                // preprocess={(thing)=> console.log({thing})} // keeping just in case
+                // inputRef={}
               />
 
               <p className={css.tip}>
@@ -154,10 +157,7 @@ export class EditListingAudioFormComponent extends Component {
 EditListingAudioFormComponent.defaultProps = { fetchErrors: null, audio: [] }
 
 EditListingAudioFormComponent.propTypes = {
-  fetchErrors: shape({
-    showListingsError: propTypes.error,
-    updateListingError: propTypes.error,
-  }),
+  fetchErrors: shape({ showListingsError: propTypes.error, updateListingError: propTypes.error }),
   audio: array,
   intl: intlShape.isRequired,
   onSubmit: func.isRequired,

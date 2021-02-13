@@ -38,7 +38,6 @@ export const isAnyFilterActive = (filterIds, urlQueryParams, filterConfigs) => {
  * Check if the filter is currently active.
  */
 export const findOptionsForSelectFilter = (filterId, filters) => {
-  console.log(filters)
   const filter = filters.find((f) => f.id === filterId)
   return filter && filter.config && filter.config.options ? filter.config.options : []
 }
