@@ -6,7 +6,6 @@ import { PrimaryButton } from '../../../Button/Button'
 
 const BookingWrapper = styled.div`
   width: 100%;
-  padding: 0 1rem 1rem;
 `
 
 const LoginHint = styled.p`

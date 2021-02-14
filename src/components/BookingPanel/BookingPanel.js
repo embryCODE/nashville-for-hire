@@ -9,7 +9,7 @@ import { Booking } from '../NFHCustom/pages/Booking'
 const BookingPanel = (props) => {
   const { listing, onSubmit, isDisabled } = props
 
-  const sellerName = listing.attributes.title
+  const sellerName = listing.author.attributes.profile.displayName
   const publicData = listing.attributes.publicData
 
   if (!publicData) return null

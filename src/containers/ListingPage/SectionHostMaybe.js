@@ -26,10 +26,8 @@ const SectionHostMaybe = (props) => {
 
   return (
     <div id="host" className={css.sectionHost}>
-      <h2 className={css.yourHostHeading}>
-        <FormattedMessage id="ListingPage.yourHostHeading" />
-      </h2>
       <UserCard user={listing.author} currentUser={currentUser} onContactUser={onContactUser} />
+
       <Modal
         id="ListingPage.enquiry"
         contentClassName={css.enquiryModalContent}

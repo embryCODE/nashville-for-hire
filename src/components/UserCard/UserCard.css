@@ -28,6 +28,7 @@
 
 .link {
   white-space: nowrap;
+  font-size: 16px;
 }
 
 .mobileBio,
@@ -101,6 +102,7 @@
   display: none;
   margin-bottom: 0;
   white-space: nowrap;
+  font-size: 16px;
 
   @media (--viewportMedium) {
     display: inline;

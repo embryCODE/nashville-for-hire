@@ -190,24 +190,8 @@
 }
 
 .contentContainer {
-  @media (--viewportMedium) {
-    max-width: 1056px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: flex;
-    position: relative;
-  }
-
-  @media (--viewportLarge) {
-    max-width: 1128px;
-    padding: 0 36px;
-    margin: 0 auto 117px;
-  }
-
-  @media (--viewportXLarge) {
-    max-width: 1056px;
-    padding: 0;
-  }
+  padding: 0 2rem;
+  position: relative;
 }
 
 .mainContent {

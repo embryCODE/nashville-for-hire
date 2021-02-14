@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import config from '../../config'
 import routeConfiguration from '../../routeConfiguration'
-import { findOptionsForSelectFilter } from '../../util/search'
 import { LISTING_STATE_PENDING_APPROVAL, propTypes } from '../../util/types'
 import { types as sdkTypes } from '../../util/sdkLoader'
 import {
@@ -17,7 +16,6 @@ import {
   LISTING_PAGE_PARAM_TYPE_EDIT,
   createSlug,
 } from '../../util/urlHelpers'
-import { formatMoney } from '../../util/currency'
 import { createResourceLocatorString } from '../../util/routes'
 import {
   ensureListing,
@@ -25,13 +23,11 @@ import {
   ensureUser,
   userDisplayNameAsString,
 } from '../../util/data'
-import { richText } from '../../util/richText'
 import { getMarketplaceEntities } from '../../ducks/marketplaceData.duck'
 import { manageDisableScrolling, isScrollingDisabled } from '../../ducks/UI.duck'
 import { initializeCardPaymentData } from '../../ducks/stripe.duck.js'
 import {
   Page,
-  NamedLink,
   NamedRedirect,
   LayoutSingleColumn,
   LayoutWrapperTopbar,
@@ -44,35 +40,41 @@ import { TopbarContainer, NotFoundPage } from '../../containers'
 import { sendEnquiry, loadData, setInitialValues } from './ListingPage.duck'
 import SectionImages from './SectionImages'
 import SectionAvatar from './SectionAvatar'
-import SectionHeading from './SectionHeading'
 import SectionReviews from './SectionReviews'
 import SectionHostMaybe from './SectionHostMaybe'
 import css from './ListingPage.css'
 import { Listing } from '../../components/NFHCustom/pages/Listing'
 import { beginNegotiation } from '../../ducks/Negotiation.duck'
 import createCustomPricingParams from '../../util/createCustomPricingParams'
-
-const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16
+import styled from 'styled-components'
 
 const { UUID } = sdkTypes
 
-const priceData = (price, intl) => {
-  if (price && price.currency === config.currency) {
-    const formattedPrice = formatMoney(intl, price)
-    return { formattedPrice, priceTitle: formattedPrice }
-  } else if (price) {
-    return {
-      formattedPrice: `(${price.currency})`,
-      priceTitle: `Unsupported currency (${price.currency})`,
-    }
-  }
-  return {}
-}
+const AvatarWrapper = styled.div`
+  position: relative;
+  padding: 0 3rem;
+`
 
-const categoryLabel = (categories, key) => {
-  const cat = categories.find((c) => c.key === key)
-  return cat ? cat.label : key
-}
+const ContentWrapper = styled.div`
+  width: 100%;
+  padding: 0 2rem;
+`
+
+const Links = styled.div`
+  margin-top: 1rem;
+  text-align: right;
+`
+
+const Columns = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+`
+
+const LeftColumn = styled.div``
+
+const MiddleColumn = styled.div``
+
+const RightColumn = styled.div``
 
 export class ListingPageComponent extends Component {
   constructor(props) {
@@ -177,7 +179,6 @@ export class ListingPageComponent extends Component {
       fetchReviewsError,
       sendEnquiryInProgress,
       sendEnquiryError,
-      filterConfig,
     } = this.props
 
     const listingId = new UUID(rawParams.id)
@@ -216,21 +217,7 @@ export class ListingPageComponent extends Component {
       return <NamedRedirect name="ListingPage" params={params} search={location.search} />
     }
 
-    const {
-      description = '', // geolocation = null,
-      price = null,
-      title = '',
-      publicData,
-    } = currentListing.attributes
-
-    const richTitle = (
-      <span>
-        {richText(title, {
-          longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE,
-          longWordClass: css.longWord,
-        })}
-      </span>
-    )
+    const { description = '', title = '' } = currentListing.attributes
 
     const topbar = <TopbarContainer />
 
@@ -296,7 +283,6 @@ export class ListingPageComponent extends Component {
     const userAndListingAuthorAvailable = !!(currentUser && authorAvailable)
     const isOwnListing =
       userAndListingAuthorAvailable && currentListing.author.id.uuid === currentUser.id.uuid
-    const showContactUser = authorAvailable && (!currentUser || (currentUser && !isOwnListing))
 
     const currentAuthor = authorAvailable ? currentListing.author : null
     const ensuredAuthor = ensureUser(currentAuthor)
@@ -305,8 +291,6 @@ export class ListingPageComponent extends Component {
     // Because listing can be never showed with banned or deleted user we don't have to provide
     // banned or deleted display names for the function
     const authorDisplayName = userDisplayNameAsString(ensuredAuthor, '')
-
-    const { formattedPrice } = priceData(price, intl)
 
     const handleBookingSubmit = (values) => {
       if (isOwnListing) {
@@ -339,31 +323,9 @@ export class ListingPageComponent extends Component {
       { id: 'ListingPage.schemaTitle' },
       {
         title,
-        price: formattedPrice,
         siteTitle,
       },
     )
-
-    const hostLink = (
-      <NamedLink
-        className={css.authorNameLink}
-        name="ListingPage"
-        params={params}
-        to={{ hash: '#host' }}
-      >
-        {authorDisplayName}
-      </NamedLink>
-    )
-
-    // const amenityOptions = findOptionsForSelectFilter('amenities', filterConfig)
-    const categoryOptions = findOptionsForSelectFilter('category', filterConfig)
-    const category =
-      publicData && publicData.category ? (
-        <span>
-          {categoryLabel(categoryOptions, publicData.category)}
-          <span className={css.separator}>•</span>
-        </span>
-      ) : null
 
     return (
       <Page
@@ -403,22 +365,12 @@ export class ListingPageComponent extends Component {
                 onManageDisableScrolling={onManageDisableScrolling}
               />
 
-              <div className={css.contentContainer}>
+              <AvatarWrapper>
                 <SectionAvatar user={currentAuthor} params={params} />
+              </AvatarWrapper>
 
-                <div className={css.mainContent} style={{ marginRight: '0.5rem' }}>
-                  <SectionHeading
-                    richTitle={richTitle}
-                    category={category}
-                    hostLink={hostLink}
-                    showContactUser={showContactUser}
-                    onContactUser={this.onContactUser}
-                  />
-
-                  <Listing listingAttributes={currentListing.attributes} />
-
-                  <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
-
+              <ContentWrapper>
+                <Links>
                   <SectionHostMaybe
                     title={title}
                     listing={currentListing}
@@ -432,16 +384,28 @@ export class ListingPageComponent extends Component {
                     currentUser={currentUser}
                     onManageDisableScrolling={onManageDisableScrolling}
                   />
-                </div>
+                </Links>
 
-                <div style={{ margin: '60px 0.5rem 0' }}>
-                  <BookingPanel
-                    isDisabled={!currentUser}
-                    listing={currentListing}
-                    onSubmit={handleBookingSubmit}
-                  />
-                </div>
-              </div>
+                <Columns>
+                  <LeftColumn>
+                    <Listing listingAttributes={currentListing.attributes} />
+                  </LeftColumn>
+
+                  <MiddleColumn>
+                    <Listing listingAttributes={currentListing.attributes} />
+                  </MiddleColumn>
+
+                  <RightColumn>
+                    <BookingPanel
+                      isDisabled={!currentUser}
+                      listing={currentListing}
+                      onSubmit={handleBookingSubmit}
+                    />
+                  </RightColumn>
+                </Columns>
+
+                <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
+              </ContentWrapper>
             </div>
           </LayoutWrapperMain>
 

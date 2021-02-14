@@ -430,7 +430,7 @@
   "ListingPage.reviewsError": "Loading reviews failed.",
   "ListingPage.reviewsHeading": "Reviews ({count})",
   "ListingPage.rulesTitle": "Sauna rules",
-  "ListingPage.schemaTitle": "{title} - {price} | {siteTitle}",
+  "ListingPage.schemaTitle": "{title} | {siteTitle}",
   "ListingPage.viewImagesButton": "View photos ({count})",
   "ListingPage.yourHostHeading": "Your host",
   "ListingPage.serviceTypeTitle": "Service Type",
