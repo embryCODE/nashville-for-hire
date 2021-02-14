@@ -10,6 +10,7 @@ import { createSlug } from '../../util/urlHelpers'
 import { NamedLink, ResponsiveImage } from '../../components'
 
 import css from './ListingCard.css'
+import { startCase } from 'lodash'
 
 const MIN_LENGTH_FOR_LONG_WORDS = 10
 
@@ -53,7 +54,7 @@ export const ListingCardComponent = (props) => {
       <div className={css.info}>
         <div className={css.mainInfo}>
           <div className={css.title}>
-            {richText(title, {
+            {richText(startCase(title), {
               longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
               longWordClass: css.longWord,
             })}

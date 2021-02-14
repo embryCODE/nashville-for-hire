@@ -8,15 +8,6 @@ const FinishNegotiationWrapper = styled.div`
   padding: 0 1rem 1rem;
 `
 
-const unnestedPricingOptions = Object.values(pricingOptions)
-  .flat()
-  .map((po) => Object.values(po).flat())
-  .flat()
-
-const getLabel = (code: string): string => {
-  return unnestedPricingOptions.find((po) => code.includes(po.code)).label
-}
-
 interface FinishNegotiationProps {
   isCustomer: boolean
   lineItems: any[]
@@ -71,7 +62,7 @@ const FinishNegotiation: React.FC<FinishNegotiationProps> = ({
           <form onSubmit={handleSubmit}>
             {newLineItems.map((li: any) => (
               <div key={li.code} style={{ marginBottom: '1rem' }}>
-                <label htmlFor={li.code}>{getLabel(li.code)}</label>
+                <label htmlFor={li.code}>{li.code}</label>
                 <input
                   id={li.code}
                   value={li.unitPrice.amount / 100 || ''}

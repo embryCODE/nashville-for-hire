@@ -414,7 +414,9 @@ export class ListingPageComponent extends Component {
                   </RightColumn>
                 </Columns>
 
-                <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
+                <div style={{ marginBottom: '2rem' }}>
+                  <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
+                </div>
               </ContentWrapper>
             </div>
           </LayoutWrapperMain>
