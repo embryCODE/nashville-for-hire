@@ -25,31 +25,14 @@ const formatPrices = (prices) => {
 
 const generatePrices = (pricingOptions) => {
   return Object.entries(pricingOptions).reduce((acc, [currKey, currVal]) => {
-    acc[currKey] = {
-      ...currVal,
-      price: '',
-      shouldContactForPrice: false,
-    }
+    acc[currKey] = currVal
+
     return acc
   }, {})
 }
 
-/** Checks if price options don't match price options for this service type. */
-const checkIsServiceTypeMismatched = (prices = {}, pricingOptionsForThisServiceType) => {
-  return !Object.entries(prices).every(
-    ([key, value]) => pricingOptionsForThisServiceType[key].code === value.code,
-  )
-}
-
 const formatInitialValues = (prices, pricingOptionsForThisServiceType) => {
-  const isServiceTypeMismatched = checkIsServiceTypeMismatched(
-    prices,
-    pricingOptionsForThisServiceType,
-  )
-
-  return !prices || isServiceTypeMismatched
-    ? generatePrices(pricingOptionsForThisServiceType)
-    : formatPrices(prices)
+  return !prices ? generatePrices(pricingOptionsForThisServiceType) : formatPrices(prices)
 }
 
 const EditListingPricingPanel = (props) => {
@@ -71,9 +54,10 @@ const EditListingPricingPanel = (props) => {
   const currentListing = ensureOwnListing(listing)
 
   const {
-    publicData: { serviceType, prices },
+    title,
+    publicData: { prices },
   } = currentListing.attributes
-  const pricingOptionsForThisServiceType = pricingOptions[serviceType] || []
+  const pricingOptionsForThisServiceType = pricingOptions[title] || []
   const initialValues = formatInitialValues(prices, pricingOptionsForThisServiceType)
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
@@ -88,7 +72,7 @@ const EditListingPricingPanel = (props) => {
 
   const form = (
     <EditListingPricingForm
-      serviceType={serviceType}
+      title={title}
       className={css.form}
       initialValues={initialValues}
       onSubmit={(values) => {
@@ -98,6 +82,12 @@ const EditListingPricingPanel = (props) => {
         // eslint-disable-next-line
         for (let key in v) {
           if (v.hasOwnProperty(key)) {
+            // Filter out items with no price at all
+            if (!v[key].price && !v[key].shouldContactForPrice) {
+              delete v[key]
+              continue
+            }
+
             const thisItem = v[key]
             const priceAsMoney = v[key].price
 
@@ -138,11 +128,8 @@ const EditListingPricingPanel = (props) => {
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
-      <p style={{ fontSize: 14 }}>
-        <em>
-          Leave price empty if service is not offered. If you have additional prices, you can add
-          them in the “About This Service” section by requesting a custom order from the buyer.
-        </em>
+      <p style={{ fontSize: 14, color: 'red', marginTop: 0 }}>
+        <em>Leave price empty if service is not offered.</em>
       </p>
       {form}
     </div>

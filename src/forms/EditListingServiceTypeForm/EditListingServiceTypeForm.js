@@ -5,7 +5,7 @@ import { Form as FinalForm } from 'react-final-form'
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl'
 import classNames from 'classnames'
 import { propTypes } from '../../util/types'
-import { Form, Button, FieldTextInput } from '../../components'
+import { Form, Button } from '../../components'
 import CustomCategorySelectFieldMaybe from './CustomCategorySelectFieldMaybe'
 
 import css from './EditListingServiceTypeForm.css'
@@ -28,11 +28,6 @@ const EditListingServiceTypeFormComponent = (props) => (
         updateInProgress,
         fetchErrors,
       } = formRenderProps
-
-      const titleMessage = intl.formatMessage({ id: 'EditListingServiceTypeForm.title' })
-      const titlePlaceholderMessage = intl.formatMessage({
-        id: 'EditListingServiceTypeForm.titlePlaceholder',
-      })
 
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {}
       const errorMessageUpdateListing = updateListingError ? (
@@ -64,19 +59,10 @@ const EditListingServiceTypeFormComponent = (props) => (
           {errorMessageCreateListingDraft}
           {errorMessageUpdateListing}
           {errorMessageShowListing}
-          <FieldTextInput
-            id="title"
-            name="title"
-            className={css.title}
-            type="text"
-            label={titleMessage}
-            placeholder={titlePlaceholderMessage}
-            autoFocus
-          />
 
           <CustomCategorySelectFieldMaybe
-            id="serviceType"
-            name="serviceType"
+            id="title"
+            name="title"
             categories={categories}
             intl={intl}
           />

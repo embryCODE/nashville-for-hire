@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { useState } from 'react'
 import { bool, func, shape, string } from 'prop-types'
 import { compose } from 'redux'
 import { Form as FinalForm } from 'react-final-form'
@@ -6,10 +6,21 @@ import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl'
 import classNames from 'classnames'
 import config from '../../config'
 import { propTypes } from '../../util/types'
-import { Button, Form, FieldCurrencyInput, FieldCheckbox } from '../../components'
-import css from './EditListingPricingForm.css'
+import { Button, Form, FieldCurrencyInput, FieldCheckbox, FieldTextInput } from '../../components'
+import { css } from 'styled-components/macro'
 
 export const EditListingPricingFormComponent = (props) => {
+  const [numOfCustomOptions, setNumOfCustomOptions] = useState(0)
+  const handleAddCustomOption = () => {
+    setNumOfCustomOptions((prevState) => prevState + 1)
+  }
+
+  const customOptions = new Array(numOfCustomOptions).fill({}).map((co, i) => {
+    return {
+      code: `custom${i}`,
+    }
+  })
+
   return (
     <FinalForm
       {...props}
@@ -37,7 +48,6 @@ export const EditListingPricingFormComponent = (props) => {
           updated,
           updateInProgress,
           fetchErrors,
-          initialValues = {},
           handleSubmit,
           values,
         } = formRenderProps
@@ -61,49 +71,121 @@ export const EditListingPricingFormComponent = (props) => {
               </p>
             ) : null}
 
-            {Object.entries(initialValues).map(([priceKey, priceValue], index) => {
-              const { label, placeholder } = priceValue
+            {Object.entries(values).map(([priceKey, priceValue], index) => {
+              const { title, description } = priceValue
 
               return (
-                <Fragment key={priceKey}>
-                  {!values[priceKey].shouldContactForPrice && (
-                    <FieldCurrencyInput
-                      id={label}
-                      name={`${priceKey}.price`}
-                      className={css.priceInput}
-                      autoFocus={index === 0}
-                      label={label}
-                      placeholder={placeholder}
-                      currencyConfig={config.currencyConfig}
-                      data-test={`${priceKey}-input`}
+                <div
+                  key={priceKey}
+                  css={css`
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                  `}
+                >
+                  <div
+                    css={css`
+                      min-width: 225px;
+                    `}
+                  >
+                    {!values[priceKey].shouldContactForPrice && (
+                      <FieldCurrencyInput
+                        id={title}
+                        name={`${priceKey}.price`}
+                        className={css.priceInput}
+                        autoFocus={index === 0}
+                        label={title}
+                        placeholder="Enter price..."
+                        currencyConfig={config.currencyConfig}
+                        data-test={`${priceKey}-input`}
+                      />
+                    )}
+
+                    {values[priceKey].shouldContactForPrice && (
+                      <label
+                        // Judge not, lest ye be judged
+                        style={{
+                          fontWeight: 600,
+                          marginTop: 0,
+                          marginBottom: 0,
+                          paddingTop: 6,
+                          paddingBottom: 2,
+                        }}
+                      >
+                        {title}
+                      </label>
+                    )}
+
+                    <FieldCheckbox
+                      id={`${title}-shouldContactForPrice`}
+                      name={`${priceKey}.shouldContactForPrice`}
+                      label="Contact for pricing"
+                      format={Boolean}
+                      parse={Boolean}
                     />
-                  )}
+                  </div>
 
-                  {values[priceKey].shouldContactForPrice && (
-                    <label
-                      // Judge not, lest ye be judged
-                      style={{
-                        fontWeight: 600,
-                        marginTop: 0,
-                        marginBottom: 0,
-                        paddingTop: 6,
-                        paddingBottom: 2,
-                      }}
-                    >
-                      {label}
-                    </label>
-                  )}
-
-                  <FieldCheckbox
-                    id={`${label}-shouldContactForPrice`}
-                    name={`${priceKey}.shouldContactForPrice`}
-                    label="Contact for pricing"
-                    format={Boolean}
-                    parse={Boolean}
-                  />
-                </Fragment>
+                  <div
+                    css={css`
+                      flex: 1;
+                      margin-left: 2rem;
+                      font-size: 14px;
+                    `}
+                  >
+                    {description}
+                  </div>
+                </div>
               )
             })}
+
+            <h2>Custom options</h2>
+
+            {customOptions.map(({ code }) => {
+              return (
+                <div
+                  key={code}
+                  css={css`
+                    margin-bottom: 1rem;
+                  `}
+                >
+                  <FieldTextInput
+                    id={`${code}.code`}
+                    name={`${code}.code`}
+                    initialValue={code}
+                    type="hidden"
+                  />
+
+                  <FieldTextInput
+                    id={`${code}.title`}
+                    name={`${code}.title`}
+                    label="Title"
+                    initialValue="Custom title"
+                    placeholder="Enter title..."
+                    type="text"
+                  />
+
+                  <FieldTextInput
+                    id={`${code}.description`}
+                    name={`${code}.description`}
+                    label="Description"
+                    initialValue="Custom description"
+                    placeholder="Enter description..."
+                    type="text"
+                  />
+                </div>
+              )
+            })}
+
+            <button
+              css={css`
+                margin-bottom: 2rem;
+                cursor: pointer;
+              `}
+              type="button"
+              onClick={handleAddCustomOption}
+            >
+              Add custom option
+            </button>
 
             <Button
               className={css.submitButton}
@@ -123,7 +205,7 @@ export const EditListingPricingFormComponent = (props) => {
 EditListingPricingFormComponent.defaultProps = { fetchErrors: null }
 
 EditListingPricingFormComponent.propTypes = {
-  serviceType: string.isRequired,
+  title: string.isRequired,
   intl: intlShape.isRequired,
   onSubmit: func.isRequired,
   saveActionMsg: string.isRequired,

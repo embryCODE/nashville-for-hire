@@ -61,10 +61,16 @@ const EditListingServiceTypePanel = (props) => {
         className={css.form}
         initialValues={{ title, description, ...publicData }}
         saveActionMsg={submitButtonText}
-        onSubmit={({ title, serviceType }) => {
+        onSubmit={({ title: newTitle }) => {
           const updateValues = {
-            title: title.trim(),
-            publicData: { serviceType },
+            title: newTitle.trim(),
+            publicData,
+          }
+
+          // If service type changes, we have to clear out any previously chosen prices for a
+          // different service type.
+          if (newTitle !== title) {
+            updateValues.publicData.prices = null
           }
 
           onSubmit(updateValues)

@@ -79,7 +79,7 @@ const tabCompleted = (tab, listing) => {
 
   switch (tab) {
     case SERVICETYPE:
-      return !!title && !!publicData.serviceType
+      return !!title
     case PRICING:
       return Object.values(publicData.prices || {}).some((option) => {
         return (option.price && option.price.amount > 0) || option.shouldContactForPrice === true

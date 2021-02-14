@@ -14,10 +14,9 @@
 }
 
 .title {
-  margin-bottom: 19px;
+  margin-bottom: 1rem;
 
   @media (--viewportMedium) {
-    margin-bottom: 38px;
     padding: 1px 0 7px 0;
   }
 }
