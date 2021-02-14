@@ -19,7 +19,6 @@ export interface PublicData {
   explainMore: string
   prices: Record<string, Price>
   primaryGenres: string
-  serviceType: string
   whyAreYouTheRightFit: string
 }
 
@@ -35,8 +34,8 @@ export type PriceData = null | {
 
 export interface Price {
   code: string
-  label: string
-  placeholder: string
+  title: string
+  description: string
   price: PriceData
   shouldContactForPrice: boolean
 }

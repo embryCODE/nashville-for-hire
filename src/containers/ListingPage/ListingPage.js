@@ -47,6 +47,8 @@ import { Listing } from '../../components/NFHCustom/pages/Listing'
 import { beginNegotiation } from '../../ducks/Negotiation.duck'
 import createCustomPricingParams from '../../util/createCustomPricingParams'
 import styled from 'styled-components'
+import { Services } from '../../components/NFHCustom/pages/Services'
+import { startCase } from 'lodash'
 
 const { UUID } = sdkTypes
 
@@ -68,13 +70,18 @@ const Links = styled.div`
 const Columns = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
 `
 
 const LeftColumn = styled.div``
 
-const MiddleColumn = styled.div``
+const MiddleColumn = styled.div`
+  padding-top: 2rem;
+`
 
-const RightColumn = styled.div``
+const RightColumn = styled.div`
+  padding-top: 2rem;
+`
 
 export class ListingPageComponent extends Component {
   constructor(props) {
@@ -322,7 +329,7 @@ export class ListingPageComponent extends Component {
     const schemaTitle = intl.formatMessage(
       { id: 'ListingPage.schemaTitle' },
       {
-        title,
+        title: startCase(title),
         siteTitle,
       },
     )
@@ -388,11 +395,14 @@ export class ListingPageComponent extends Component {
 
                 <Columns>
                   <LeftColumn>
-                    <Listing listingAttributes={currentListing.attributes} />
+                    <Listing
+                      listingAttributes={currentListing.attributes}
+                      sellerName={currentAuthor.attributes.profile.displayName}
+                    />
                   </LeftColumn>
 
                   <MiddleColumn>
-                    <Listing listingAttributes={currentListing.attributes} />
+                    <Services listingAttributes={currentListing.attributes} />
                   </MiddleColumn>
 
                   <RightColumn>

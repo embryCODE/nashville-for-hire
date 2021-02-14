@@ -18,6 +18,7 @@ import {
 import { NamedLink } from '../../components'
 
 import css from './ListingLink.css'
+import { startCase } from 'lodash'
 
 const MIN_LENGTH_FOR_LONG_WORDS = 16
 
@@ -32,7 +33,7 @@ const ListingLink = (props) => {
   const slug = createSlug(title)
   const richTitle = (
     <span>
-      {richText(title, {
+      {richText(startCase(title), {
         longWordMinLength: MIN_LENGTH_FOR_LONG_WORDS,
         longWordClass: css.longWord,
       })}

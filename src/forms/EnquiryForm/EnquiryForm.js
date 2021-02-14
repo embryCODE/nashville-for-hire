@@ -9,6 +9,7 @@ import * as validators from '../../util/validators'
 import { propTypes } from '../../util/types'
 
 import css from './EnquiryForm.css'
+import { startCase } from 'lodash'
 
 const EnquiryFormComponent = (props) => (
   <FinalForm
@@ -51,9 +52,9 @@ const EnquiryFormComponent = (props) => (
       return (
         <Form className={classes} onSubmit={handleSubmit}>
           <IconEnquiry className={css.icon} />
-          <h2 className={css.heading}>
-            <FormattedMessage id="EnquiryForm.heading" values={{ listingTitle }} />
-          </h2>
+
+          <h2 className={css.heading}>Send a message about {startCase(listingTitle)}</h2>
+
           <FieldTextInput
             className={css.field}
             type="textarea"

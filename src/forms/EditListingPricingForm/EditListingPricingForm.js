@@ -9,6 +9,18 @@ import { propTypes } from '../../util/types'
 import { Button, Form, FieldCurrencyInput, FieldCheckbox, FieldTextInput } from '../../components'
 import { css } from 'styled-components/macro'
 
+const getStartingCustomOptionNumber = (initialValues) => {
+  const customCodes = Object.values(initialValues)
+    .filter((option) => {
+      return option.code.includes('custom')
+    })
+    .map((option) => {
+      return parseInt(option.code.split('custom').slice(1))
+    })
+
+  return customCodes[customCodes.length - 1] + 1
+}
+
 export const EditListingPricingFormComponent = (props) => {
   const [numOfCustomOptions, setNumOfCustomOptions] = useState(0)
   const handleAddCustomOption = () => {
@@ -17,7 +29,7 @@ export const EditListingPricingFormComponent = (props) => {
 
   const customOptions = new Array(numOfCustomOptions).fill({}).map((co, i) => {
     return {
-      code: `custom${i}`,
+      code: `custom${i + getStartingCustomOptionNumber(props.initialValues)}`,
     }
   })
 

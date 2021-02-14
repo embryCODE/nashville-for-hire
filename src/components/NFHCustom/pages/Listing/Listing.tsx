@@ -1,15 +1,16 @@
 import React from 'react'
 import { ListingAttributes } from '../../types'
 import { startCase } from 'lodash'
-import { Prices } from '../../organisms'
 import { Audio } from '../../organisms/Audio'
+import { css } from 'styled-components/macro'
 
 interface ListingProps {
   listingAttributes: ListingAttributes
+  sellerName: string
 }
 
-const Listing: React.FC<ListingProps> = ({ listingAttributes }) => {
-  const publicData = listingAttributes.publicData
+const Listing: React.FC<ListingProps> = ({ listingAttributes, sellerName }) => {
+  const { title, publicData } = listingAttributes
 
   if (!publicData) return null
 
@@ -20,35 +21,38 @@ const Listing: React.FC<ListingProps> = ({ listingAttributes }) => {
     explainMore,
     prices,
     primaryGenres,
-    serviceType,
     whyAreYouTheRightFit,
   } = publicData
 
   return (
     <section>
-      <h2>Service type</h2>
-      <div>{startCase(serviceType)}</div>
+      <h1 style={{ margin: 0 }}>{startCase(title)}</h1>
+      <div>by {sellerName}</div>
 
-      <h2>Prices</h2>
-      <Prices prices={prices} />
+      <div
+        css={css`
+          margin: 2rem 0;
+        `}
+      >
+        <Audio audio={audio} />
+      </div>
 
-      <h2>Why are you the right fit?</h2>
-      <div>{whyAreYouTheRightFit}</div>
+      <h2>About {sellerName}</h2>
 
-      <h2>Primary genres</h2>
-      <div>{primaryGenres}</div>
+      <h3>Primary genres</h3>
+      <p>{primaryGenres}</p>
 
-      <h2>Experience</h2>
-      <div>{experience}</div>
+      <h3>Average turnaround time</h3>
+      <p>{averageTurnaroundTime}</p>
 
-      <h2>Average turnaround time</h2>
-      <div>{averageTurnaroundTime}</div>
+      <h3>Why are you the right fit?</h3>
+      <p>{whyAreYouTheRightFit}</p>
 
-      <h2>Explain more</h2>
-      <div>{explainMore}</div>
+      <h3>Experience</h3>
+      <p>{experience}</p>
 
-      <h2>Audio</h2>
-      <Audio audio={audio} />
+      <h3>Explain more</h3>
+      <p>{explainMore}</p>
     </section>
   )
 }

@@ -61,7 +61,7 @@ const PriceItemSelector: React.FC<PriceItemSelectorProps> = ({
       <span>
         {quantity > 0 ? (
           <input
-            id={price.label}
+            id={price.title}
             type="number"
             value={quantity}
             onChange={handleQuantityChange}
@@ -80,7 +80,7 @@ const PriceItemSelector: React.FC<PriceItemSelectorProps> = ({
         )}
       </span>
 
-      <div>{price.label}</div>
+      <div>{price.title}</div>
 
       <PriceBubble>
         {price.shouldContactForPrice ? 'Contact for price' : formatPrice(price.price)}
