@@ -20,7 +20,7 @@ const Services: React.FC<ServicesProps> = ({ listingAttributes }) => {
 
       <div
         css={css`
-          margin: 2rem 0;
+          margin: 27px 0;
         `}
       >
         <Prices prices={prices} />
