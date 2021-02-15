@@ -1,8 +1,8 @@
 import React, { SyntheticEvent, useState } from 'react'
 import styled from 'styled-components'
-import pricingOptions from '../../../../util/pricingOptions'
 import { Money } from 'sharetribe-flex-sdk/src/types'
 import { PrimaryButton } from '../../../Button/Button'
+import getTitle from '../../../../util/getTitle'
 
 const FinishNegotiationWrapper = styled.div`
   padding: 0 1rem 1rem;
@@ -12,14 +12,20 @@ interface FinishNegotiationProps {
   isCustomer: boolean
   lineItems: any[]
   onFinishNegotiation: (newLineItems: any) => void
+  listing: any
 }
 
 const FinishNegotiation: React.FC<FinishNegotiationProps> = ({
   isCustomer,
   lineItems,
   onFinishNegotiation,
+  listing,
 }) => {
   const [newLineItems, setNewLineItems] = useState(lineItems)
+
+  if (!listing.attributes.publicData) return null
+
+  const publicData = listing.attributes.publicData
 
   const handleChange = (code: string) => (e: SyntheticEvent) => {
     const target = e.target as typeof e.target & {
@@ -62,7 +68,7 @@ const FinishNegotiation: React.FC<FinishNegotiationProps> = ({
           <form onSubmit={handleSubmit}>
             {newLineItems.map((li: any) => (
               <div key={li.code} style={{ marginBottom: '1rem' }}>
-                <label htmlFor={li.code}>{li.code}</label>
+                <label htmlFor={li.code}>{getTitle(li.code, publicData)}</label>
                 <input
                   id={li.code}
                   value={li.unitPrice.amount / 100 || ''}

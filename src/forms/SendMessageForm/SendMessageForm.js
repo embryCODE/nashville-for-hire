@@ -72,6 +72,7 @@ class SendMessageFormComponent extends Component {
           const classes = classNames(rootClassName || css.root, className)
           const submitInProgress = inProgress
           const submitDisabled = invalid || submitInProgress
+
           return (
             <Form className={classes} onSubmit={(values) => handleSubmit(values, form)}>
               <FieldTextInput
@@ -83,6 +84,7 @@ class SendMessageFormComponent extends Component {
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
               />
+
               <div className={css.submitContainer}>
                 <div className={css.errorContainer}>
                   {sendMessageError ? (

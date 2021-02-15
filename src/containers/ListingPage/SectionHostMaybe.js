@@ -1,5 +1,4 @@
 import React from 'react'
-import { FormattedMessage } from '../../util/reactIntl'
 import { UserCard, Modal } from '../../components'
 import { EnquiryForm } from '../../forms'
 

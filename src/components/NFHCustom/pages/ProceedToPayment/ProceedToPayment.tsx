@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { PrimaryButton } from '../../../Button/Button'
 
 const ProceedToPaymentWrapper = styled.div`
-  padding: 0 1rem 1rem;
+  padding: 1rem;
 `
 
 interface ProceedToPaymentProps {

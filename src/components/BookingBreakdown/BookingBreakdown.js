@@ -22,7 +22,7 @@ import LineItemUnknownItemsMaybe from './LineItemUnknownItemsMaybe'
 import css from './BookingBreakdown.css'
 
 export const BookingBreakdownComponent = (props) => {
-  const { rootClassName, className, userRole, transaction, intl } = props
+  const { rootClassName, className, userRole, transaction, intl, publicData } = props
 
   const isCustomer = userRole === 'customer'
   const isProvider = userRole === 'provider'
@@ -74,7 +74,7 @@ export const BookingBreakdownComponent = (props) => {
 
   return (
     <div className={classes}>
-      <LineItemUnknownItemsMaybe transaction={transaction} intl={intl} />
+      <LineItemUnknownItemsMaybe transaction={transaction} intl={intl} publicData={publicData} />
 
       <LineItemSubTotalMaybe transaction={transaction} userRole={userRole} intl={intl} />
       <LineItemRefundMaybe transaction={transaction} intl={intl} />

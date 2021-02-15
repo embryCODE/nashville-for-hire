@@ -1,4 +1,4 @@
-import React, { ReactDOM } from 'react'
+import React from 'react'
 import { IconSpinner } from '../../index'
 import { css } from 'styled-components/macro'
 import { createPortal } from 'react-dom'

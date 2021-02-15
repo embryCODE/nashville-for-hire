@@ -28,8 +28,6 @@ interface AboutProps {
 }
 
 const About: React.FC<AboutProps> = ({ listingAttributes, sellerName }) => {
-  const { description } = listingAttributes
-
   const {
     primaryGenres,
     averageTurnaroundTime,

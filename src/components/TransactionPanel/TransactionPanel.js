@@ -302,6 +302,7 @@ export class TransactionPanelComponent extends Component {
     } = displayNames(currentUser, currentProvider, currentCustomer, intl)
 
     const { publicData, geolocation } = currentListing.attributes
+
     const location = publicData && publicData.location ? publicData.location : {}
     const listingTitle = currentListing.attributes.deleted
       ? deletedListingTitle
@@ -481,6 +482,7 @@ export class TransactionPanelComponent extends Component {
                   isCustomer={isCustomer}
                   lineItems={lineItems}
                   onFinishNegotiation={onFinishNegotiation}
+                  listing={currentListing}
                 />
               ) : null}
 
@@ -489,6 +491,7 @@ export class TransactionPanelComponent extends Component {
                   className={css.breakdownContainer}
                   transaction={currentTransaction}
                   transactionRole={transactionRole}
+                  publicData={publicData}
                 />
               )}
 
@@ -509,7 +512,14 @@ export class TransactionPanelComponent extends Component {
               ) : null}
 
               <div style={{ padding: '0 1rem 1rem' }}>
-                <hr />
+                <hr
+                  style={{
+                    border: 'none',
+                    borderTop: 'solid 2px rgb(221, 153, 114)',
+                    color: 'rgb(221, 153, 114)',
+                    backgroundColor: 'transparent',
+                  }}
+                />
                 <TransactionAudio transactionId={transaction.id.uuid} />
               </div>
             </div>

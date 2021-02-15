@@ -15,16 +15,11 @@
 
 .textarea {
   @apply --marketplaceH4FontStyles;
-  border-bottom-width: 0;
 
-  /* Avoid text going behind the submit button */
-  padding: 22px 52px 25px 0;
+  padding: 4px 0;
+  width: 100%;
 
   margin: 0;
-
-  /* We need to remove horizontal paddings,
-   since textarea uses content-box (autosize library fix). */
-  width: calc(100% - 52px);
 
   border-bottom-width: 2px;
   border-bottom-color: var(--attentionColor);
@@ -58,6 +53,7 @@
 .submitContainer {
   display: flex;
   flex-direction: row;
+  margin-bottom: 2rem;
 }
 
 .errorContainer {

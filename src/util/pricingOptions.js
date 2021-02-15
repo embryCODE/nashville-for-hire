@@ -75,102 +75,101 @@ export default {
       title: 'Help Finish Your Song',
     },
   },
-  // TODO: Improve title and description from here down
   topline: {
     option0: {
       code: 'topline0',
-      description: 'Full Topline (write lyrics, melody and sing)',
-      title: 'Full Topline (write lyrics, melody and sing)',
+      description: 'Write lyrics, melody, and sing',
+      title: 'Full Topline',
     },
     option1: {
       code: 'topline1',
-      description: 'Sing Your Melody / Lyrics',
-      title: 'Sing Your Melody ',
+      description: 'Sing your melody and lyrics',
+      title: 'Sing Your Melody',
     },
     option2: {
       code: 'topline2',
-      description: 'Write Lyrics and Sing to YOUR Melody',
-      title: 'Write Lyrics and Sing to YOUR Melody',
+      description: 'Write lyrics and sing your melody',
+      title: 'Write Lyrics and Sing Your Melody',
     },
     option3: {
       code: 'topline3',
-      description: 'Create a Melody and Sing YOUR Lyrics',
-      title: 'Create a Melody and Sing YOUR Lyrics',
+      description: 'Write melody and sing your lyrics',
+      title: 'Write Melody and Sing Your Lyrics',
     },
   },
   acousticGuitar: {
     option0: {
       code: 'acousticGuitar0',
-      description: 'Acoustic Guitar Package | Up to 4 Tracks',
-      title: 'Acoustic Guitar Package | Up to 4 Tracks',
+      description: 'Up to 4 tracks',
+      title: 'Acoustic Guitar Package',
     },
     option1: {
       code: 'acousticGuitar1',
-      description: 'Acoustic Guitar Solo | Up to 40 seconds',
-      title: 'Acoustic Guitar Solo | Up to 40 seconds',
+      description: 'Up to 40 seconds',
+      title: 'Acoustic Guitar Solo',
     },
     option2: {
       code: 'acousticGuitar2',
-      description: 'Acoustic Guitar Solo plus harmony line | Up to 40 seconds',
-      title: 'Acoustic Guitar Solo plus harmony line | Up to 40 seconds',
+      description: 'Acoustic guitar solo plus harmony line. Up to 40 seconds.',
+      title: 'Acoustic Guitar Solo + Harmony',
     },
   },
   electricGuitar: {
     option0: {
       code: 'electricGuitar0',
-      description: 'Electric Guitar Package | Up to 4 Tracks (doubled)',
-      title: 'Electric Guitar Package | Up to 4 Tracks (doubled)',
+      description: 'Up to 4 tracks (doubled)',
+      title: 'Electric Guitar Package',
     },
     option1: {
       code: 'electricGuitar1',
-      description: 'Electric Guitar Solo | Up to 40 seconds',
-      title: 'Electric Guitar Solo | Up to 40 seconds',
+      description: 'Up to 40 seconds',
+      title: 'Electric Guitar Solo',
     },
     option2: {
       code: 'electricGuitar2',
-      description: 'Electric Guitar Solo plus harmony line | Up to 40 seconds',
-      title: 'Electric Guitar Solo plus harmony line | Up to 40 seconds',
+      description: 'Electric guitar solo plus harmony line. Up to 40 seconds.',
+      title: 'Electric Guitar Solo + Harmony',
     },
   },
   bass: {
     option0: {
       code: 'bass0',
-      description: 'Electric Bass',
+      description: 'Electric bass',
       title: 'Electric Bass',
     },
     option1: {
       code: 'bass1',
-      description: 'Upright Bass',
+      description: 'Upright bass',
       title: 'Upright Bass',
     },
     option2: {
       code: 'bass2',
-      description: 'Synth Bass',
+      description: 'Synth bass',
       title: 'Synth Bass',
     },
   },
   drums: {
     option0: {
       code: 'drums0',
-      description: 'Drum Kit',
+      description: 'Drum kit',
       title: 'Drum Kit',
     },
     option1: {
       code: 'drums1',
-      description: 'Add Percussion',
-      title: 'Add Percussion',
+      description: 'Add percussion',
+      title: 'Percussion',
     },
   },
   piano: {
     option0: {
       code: 'piano0',
-      description: 'Piano Package | Up to 3 Piano Tracks on A Song',
-      title: 'Piano Package | Up to 3 Piano Tracks on A Song',
+      description: 'Up to 3 piano tracks on a song',
+      title: 'Piano Package',
     },
     option1: {
       code: 'piano1',
-      description: '1 Piano Track on a Song',
-      title: '1 Piano Track on a Song',
+      description: '1 piano track on a song',
+      title: '1 Piano Track',
     },
   },
   keys: {
@@ -222,117 +221,117 @@ export default {
   beatProgramming: {
     option0: {
       code: 'beatProgramming0',
-      description: 'Basic Beat Package',
+      description: 'Basic beat package',
       title: 'Basic Beat Package',
     },
     option1: {
       code: 'beatProgramming1',
-      description: 'Complex Beat Package',
+      description: 'Complex beat package',
       title: 'Complex Beat Package',
     },
   },
   cello: {
     option0: {
       code: 'cello0',
-      description: 'Solo Cello',
+      description: 'Solo cello',
       title: 'Solo Cello',
     },
     option1: {
       code: 'cello1',
-      description: 'Cello Trio',
+      description: 'Cello trio',
       title: 'Cello Trio',
     },
     option2: {
       code: 'cello2',
-      description: 'Cello Quartet',
+      description: 'Cello quartet',
       title: 'Cello Quartet',
     },
   },
   violin: {
     option0: {
       code: 'violin0',
-      description: 'Solo Violin',
+      description: 'Solo violin',
       title: 'Solo Violin',
     },
     option1: {
       code: 'violin1',
-      description: 'Violin Trio',
+      description: 'Violin trio',
       title: 'Violin Trio',
     },
     option2: {
       code: 'violin2',
-      description: 'Violin Quartet',
+      description: 'Violin quartet',
       title: 'Violin Quartet',
     },
   },
   fiddle: {
     option0: {
       code: 'fiddle0',
-      description: 'Solo Fiddle',
+      description: 'Solo fiddle',
       title: 'Solo Fiddle',
     },
     option1: {
       code: 'fiddle1',
-      description: 'Solo Viola',
+      description: 'Solo viola',
       title: 'Solo Viola',
     },
     option2: {
       code: 'fiddle2',
-      description: 'Viola Trio',
+      description: 'Viola trio',
       title: 'Viola Trio',
     },
     option3: {
       code: 'fiddle3',
-      description: 'Viola Quartet',
+      description: 'Viola quartet',
       title: 'Viola Quartet',
     },
   },
   fullStringArrangement: {
     option0: {
       code: 'fullStringArrangement0',
-      description: 'Trio',
+      description: 'Full string arrangement for trio',
       title: 'Trio',
     },
     option1: {
       code: 'fullStringArrangement1',
-      description: 'Quartet',
+      description: 'Full string arrangement for quartet',
       title: 'Quartet',
     },
     option2: {
       code: 'fullStringArrangement2',
-      description: 'Large String Arrangement',
+      description: 'Full string arrangement for large string ensemble',
       title: 'Large String Arrangement',
     },
   },
   pedalSteel: {
     option0: {
       code: 'pedalSteel0',
-      description: 'Pedal Steel Package | Up to 3 Lap Steel Tracks on A Song',
-      title: 'Pedal Steel Package | Up to 3 Lap Steel Tracks on A Song',
+      description: 'Up to 3 pedal steel tracks on a song',
+      title: 'Pedal Steel Package',
     },
     option1: {
       code: 'pedalSteel1',
-      description: '1 Lap Steel Track on a Song',
-      title: '1 Lap Steel Track on a Song',
+      description: '1 pedal steel track on a song',
+      title: '1 Pedal Steel Track',
     },
   },
   banjo: {
     option0: {
       code: 'banjo0',
-      description: 'Banjo Package | Up to 3 Banjo Tracks on A Song',
-      title: 'Banjo Package | Up to 3 Banjo Tracks on A Song',
+      description: 'Up to 3 banjo tracks on a song',
+      title: 'Banjo Package',
     },
     option1: {
       code: 'banjo1',
-      description: '1 Banjo Track on a Song',
-      title: '1 Banjo Track on a Song',
+      description: '1 banjo track on a song',
+      title: '1 Banjo Track',
     },
   },
   dobro: {
     option0: {
       code: 'dobro0',
-      description: 'Dobro Package | Up to 3 Dobro Tracks on A Song',
-      title: 'Dobro Package | Up to 3 Dobro Tracks on A Song',
+      description: 'Up to 3 dobro tracks on a song',
+      title: 'Dobro Package',
     },
     option1: {
       code: 'dobro1',
@@ -343,144 +342,144 @@ export default {
   lapSteel: {
     option0: {
       code: 'lapSteel0',
-      description: 'Lap Steel Package | Up to 3 Lap Steel Tracks on A Song',
-      title: 'Lap Steel Package | Up to 3 Lap Steel Tracks on A Song',
+      description: 'Up to 3 lap steel tracks on a song',
+      title: 'Lap Steel Package',
     },
     option1: {
       code: 'lapSteel1',
-      description: '1 Lap Steel Track on a Song',
-      title: '1 Lap Steel Track on a Song',
+      description: '1 lap steel track on a song',
+      title: '1 Lap Steel Track',
     },
   },
   harmonica: {
     option0: {
       code: 'harmonica0',
-      description: 'Solo Harmonica',
+      description: 'Solo harmonica',
       title: 'Solo Harmonica',
     },
   },
   trumpet: {
     option0: {
       code: 'trumpet0',
-      description: 'Solo Trumpet',
+      description: 'Solo trumpet',
       title: 'Solo Trumpet',
     },
     option1: {
       code: 'trumpet1',
-      description: 'Trumpet Section',
+      description: 'Trumpet section',
       title: 'Trumpet Section',
     },
   },
   trombone: {
     option0: {
       code: 'trombone0',
-      description: 'Solo Trombone',
+      description: 'Solo trombone',
       title: 'Solo Trombone',
     },
     option1: {
       code: 'trombone1',
-      description: 'Trombone Section',
+      description: 'Trombone section',
       title: 'Trombone Section',
     },
   },
   saxophone: {
     option0: {
       code: 'saxophone0',
-      description: 'Solo Sax',
+      description: 'Solo sax',
       title: 'Solo Sax',
     },
     option1: {
       code: 'saxophone1',
-      description: 'Sax Section',
+      description: 'Sax section',
       title: 'Sax Section',
     },
   },
   hornSection: {
     option0: {
       code: 'hornSection0',
-      description: '3 Piece',
+      description: '3 piece horn section',
       title: '3 Piece',
     },
     option1: {
       code: 'hornSection1',
-      description: '5 Piece',
+      description: '5 piece horn section',
       title: '5 Piece',
     },
   },
   mixing: {
     option0: {
       code: 'mixing0',
-      description: '1-16 Tracks',
+      description: '1-16 tracks',
       title: '1-16 Tracks',
     },
     option1: {
       code: 'mixing1',
-      description: '17-48 Tracks',
+      description: '17-48 tracks',
       title: '17-48 Tracks',
     },
     option2: {
       code: 'mixing2',
-      description: '49+ Tracks',
+      description: '49+ tracks',
       title: '49+ Tracks',
     },
     option3: {
       code: 'mixing3',
-      description: 'Vocal Tuning 1-2 Tracks',
+      description: '1-2 tracks',
       title: 'Vocal Tuning 1-2 Tracks',
     },
     option4: {
       code: 'mixing4',
-      description: 'Vocal Tuning 3-5 Tracks',
+      description: '3-5 tracks',
       title: 'Vocal Tuning 3-5 Tracks',
     },
     option5: {
       code: 'mixing5',
-      description: 'Vocal Tuning 6-12 Tracks',
+      description: '6-12 tracks',
       title: 'Vocal Tuning 6-12 Tracks',
     },
   },
   mastering: {
     option0: {
       code: 'mastering0',
-      description: 'Master One Song',
+      description: 'Master one song',
       title: 'Master One Song',
     },
   },
   produce: {
     option0: {
       code: 'produce0',
-      description: 'Simple Production: 1-3 instruments',
-      title: 'Simple Production: 1-3 instruments',
+      description: '1-3 instruments',
+      title: 'Simple Production',
     },
     option1: {
       code: 'produce1',
-      description: 'Full Production | Full Band or Programmed',
-      title: 'Full Production | Full Band or Programmed',
+      description: 'Full band or programmed',
+      title: 'Full Production',
     },
     option2: {
       code: 'produce2',
-      description: 'Vocal Tuning 1-2 Tracks',
+      description: '1-2 tracks',
       title: 'Vocal Tuning 1-2 Tracks',
     },
     option3: {
       code: 'produce3',
-      description: 'Vocal Tuning 3-5 Tracks',
+      description: '3-5 tracks',
       title: 'Vocal Tuning 3-5 Tracks',
     },
     option4: {
       code: 'produce4',
-      description: 'Vocal Tuning 6-12 Tracks',
+      description: '6-12 tracks',
       title: 'Vocal Tuning 6-12 Tracks',
     },
     option5: {
       code: 'produce5',
-      description: 'Add Mixing To Simple Production',
-      title: 'Add Mixing To Simple Production',
+      description: 'Add mixing to simple production',
+      title: 'Simple mix',
     },
     option6: {
       code: 'produce6',
-      description: 'Add Mixing to Full Production',
-      title: 'Add Mixing to Full Production',
+      description: 'Add mixing to full production',
+      title: 'Full mix',
     },
   },
 }

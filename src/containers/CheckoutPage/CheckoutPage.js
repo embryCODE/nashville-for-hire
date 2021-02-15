@@ -50,6 +50,7 @@ import {
 } from './CheckoutPage.duck'
 import { storeData, storedData, clearData } from './CheckoutPageSessionHelpers'
 import css from './CheckoutPage.css'
+import { startCase } from 'lodash'
 
 const STORAGE_KEY = 'CheckoutPage'
 
@@ -492,6 +493,7 @@ export class CheckoutPageComponent extends Component {
     const speculatedTransaction = ensureTransaction(speculatedTransactionMaybe, {}, null)
     const currentListing = ensureListing(listing)
     const currentAuthor = ensureUser(currentListing.author)
+    const publicData = currentListing.attributes.publicData
 
     const listingTitle = currentListing.attributes.title
     const title = intl.formatMessage({ id: 'CheckoutPage.title' }, { listingTitle })
@@ -722,6 +724,7 @@ export class CheckoutPageComponent extends Component {
                   className={breakdownClasses}
                   userRole="customer"
                   transaction={transaction}
+                  publicData={publicData}
                 />
               </div>
             </div>
@@ -784,7 +787,7 @@ export class CheckoutPageComponent extends Component {
               <AvatarMedium user={currentAuthor} disableProfileLink />
             </div>
             <div className={css.detailsHeadings}>
-              <h2 className={css.detailsTitle}>{listingTitle}</h2>
+              <h2 className={css.detailsTitle}>{startCase(listingTitle)}</h2>
             </div>
             {speculateTransactionErrorMessage}
 
@@ -793,6 +796,7 @@ export class CheckoutPageComponent extends Component {
                 className={breakdownClasses}
                 userRole="customer"
                 transaction={transaction}
+                publicData={publicData}
               />
             </div>
           </div>

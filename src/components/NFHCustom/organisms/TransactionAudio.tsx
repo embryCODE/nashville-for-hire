@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react'
 import {
   s3UrlSigningServer,
   s3UrlSigningUrl,
-  s3AudioBucket,
   cognitoIdentityPoolId,
   s3AudioBucketName,
 } from '../../../config'
 import ReactS3Uploader from 'react-s3-uploader'
 import AWS from 'aws-sdk'
 import styled, { css } from 'styled-components/macro'
-import { IconSpinner } from '../../index'
 import { LoadingSpinner } from '../molecules/LoadingSpinner'
 import { Audio } from './Audio'
 
@@ -94,7 +92,7 @@ const TransactionAudio: React.FC<TransactionAudioProps> = ({ transactionId }) =>
       <p style={{ fontSize: '14px', marginTop: 0 }}>Audio files will expire after 30 days</p>
 
       <AudioFilesWrapper>
-        {audioFiles.length && <Audio audio={audioFiles} autoPlay={false} />}
+        {!!audioFiles.length && <Audio audio={audioFiles} autoPlay={false} />}
       </AudioFilesWrapper>
 
       <h3 style={{ marginTop: 0 }}>Add audio</h3>
@@ -120,8 +118,7 @@ const TransactionAudio: React.FC<TransactionAudioProps> = ({ transactionId }) =>
         }}
         signingUrlMethod="GET"
         accept={ACCEPT_AUDIO}
-        onSignedUrl={(res) => {}}
-        onProgress={(value) => {
+        onProgress={() => {
           setIsLoading(true)
         }}
         onError={(err) => {
@@ -135,6 +132,7 @@ const TransactionAudio: React.FC<TransactionAudioProps> = ({ transactionId }) =>
         scrubFilename={(filename) => filename.replace(/[^\w\d_\-.]+/gi, '')}
         server={s3UrlSigningServer}
         autoUpload={true}
+        // onSignedUrl={() => {}}
         // preprocess={(thing)=> console.log({thing})}
         // inputRef={}
       />

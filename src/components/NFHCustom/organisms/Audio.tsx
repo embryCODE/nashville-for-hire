@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import { Audio as AudioType } from '../types'
 import { s3AudioBucket } from '../../../config'
 import styled from 'styled-components'

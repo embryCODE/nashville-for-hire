@@ -15,9 +15,12 @@ import { formatMoney } from '../../util/currency'
 import { LINE_ITEMS, propTypes } from '../../util/types'
 
 import css from './BookingBreakdown.css'
+import getTitle from '../../util/getTitle'
 
 const LineItemUnknownItemsMaybe = (props) => {
-  const { transaction, intl } = props
+  const { transaction, intl, publicData } = props
+
+  if (!publicData) return null
 
   // resolve unknown non-reversal line items
   const items = transaction.attributes.lineItems.filter(
@@ -31,7 +34,7 @@ const LineItemUnknownItemsMaybe = (props) => {
 
         return (
           <div key={`${i}-item.code`} className={css.lineItem}>
-            <span className={css.itemLabel}>{item.code}</span>
+            <span className={css.itemLabel}>{getTitle(item.code, publicData)}</span>
             <span className={css.itemValue}>{formattedTotal}</span>
           </div>
         )

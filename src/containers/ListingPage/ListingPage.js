@@ -206,6 +206,8 @@ export class ListingPageComponent extends Component {
         ? ensureOwnListing(getOwnListing(listingId))
         : ensureListing(getListing(listingId))
 
+    if (!currentListing.attributes || !currentListing.attributes.publicData) return null
+
     const listingSlug = rawParams.slug || createSlug(currentListing.attributes.title || '')
     const params = { slug: listingSlug, ...rawParams }
 
@@ -343,7 +345,7 @@ export class ListingPageComponent extends Component {
         siteTitle,
       },
     )
-    const audio = (currentListing.attributes && currentListing.attributes.publicData.audio) || []
+    const audio = currentListing.attributes.publicData.audio || []
 
     return (
       <Page
@@ -411,9 +413,11 @@ export class ListingPageComponent extends Component {
 
                 <Columns>
                   <LeftColumn>
-                    <div style={{ marginBottom: '1rem', overflow: 'hidden' }}>
-                      <Audio audio={audio} />
-                    </div>
+                    {!!audio.length && (
+                      <div style={{ marginBottom: '1rem', overflow: 'hidden' }}>
+                        <Audio audio={audio} />
+                      </div>
+                    )}
                     <Services listingAttributes={currentListing.attributes} />
                   </LeftColumn>
 

@@ -100,6 +100,7 @@ const estimatedTransaction = (prices) => {
 
 const EstimatedBreakdownMaybe = (props) => {
   const { prices } = props.bookingData
+  const publicData = props.publicData
 
   const canEstimatePrice = true // TODO
   if (!canEstimatePrice) {
@@ -116,6 +117,7 @@ const EstimatedBreakdownMaybe = (props) => {
       transaction={tx}
       booking={tx.booking}
       dateType={DATE_TYPE_DATE}
+      publicData={publicData}
     />
   )
 }
