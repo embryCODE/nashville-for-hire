@@ -5,6 +5,7 @@ import { createSlug, stringify } from '../../util/urlHelpers'
 import { NamedLink } from '../../components'
 
 import css from './TransactionPanel.css'
+import { startCase } from 'lodash'
 
 export const HEADING_ENQUIRED = 'enquired'
 export const HEADING_NEGOTIATING = 'price-negotiating'
@@ -111,7 +112,7 @@ const PanelHeading = (props) => {
 
   const defaultRootClassName = isCustomer ? css.headingOrder : css.headingSale
   const titleClasses = classNames(rootClassName || defaultRootClassName, className)
-  const listingLink = createListingLink(listingId, listingTitle, listingDeleted)
+  const listingLink = createListingLink(listingId, startCase(listingTitle), listingDeleted)
 
   switch (panelHeadingState) {
     case HEADING_ENQUIRED:

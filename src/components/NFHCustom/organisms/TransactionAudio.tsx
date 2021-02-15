@@ -8,7 +8,10 @@ import {
 } from '../../../config'
 import ReactS3Uploader from 'react-s3-uploader'
 import AWS from 'aws-sdk'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components/macro'
+import { IconSpinner } from '../../index'
+import { LoadingSpinner } from '../molecules/LoadingSpinner'
+import { Audio } from './Audio'
 
 AWS.config.region = 'us-east-2'
 AWS.config.credentials = new AWS.CognitoIdentityCredentials({
@@ -32,12 +35,16 @@ interface TransactionAudioProps {
 
 const TransactionAudio: React.FC<TransactionAudioProps> = ({ transactionId }) => {
   const [audioFiles, setAudioFiles] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     getAudio(transactionId)
   }, [transactionId])
 
   const getAudio = (transactionId: string) => {
+    setIsLoading(true)
+
     s3.listObjects(
       {
         Delimiter: '/',
@@ -54,47 +61,55 @@ const TransactionAudio: React.FC<TransactionAudioProps> = ({ transactionId }) =>
             if (!file.Key) throw new Error()
 
             return {
-              key: file.Key,
-              name: file.Key.split('/')[1],
+              fileName: file.Key,
+              title: file.Key.split('/')[1],
             }
           })
 
           setAudioFiles(audioFiles)
+          setIsLoading(false)
         }
       },
     )
   }
 
-  const buildSrc = (key: string) => {
-    return `${s3AudioBucket}/${key}`
-  }
-
   const handleFinish = () => {
     getAudio(transactionId)
+    setIsLoading(false)
   }
 
   const namespace = 'transaction-id-' + transactionId
   const tags = `daysUntilExpiration=30`
 
   return (
-    <div>
-      <h2>Audio</h2>
-      <p style={{ fontSize: '14px' }}>Audio files will expire after 30 days</p>
+    <div
+      css={css`
+        position: relative;
+        margin-bottom: 2rem;
+      `}
+    >
+      {isLoading && <LoadingSpinner />}
+
+      <h2 style={{ marginBottom: 0 }}>Audio</h2>
+      <p style={{ fontSize: '14px', marginTop: 0 }}>Audio files will expire after 30 days</p>
 
       <AudioFilesWrapper>
-        {audioFiles.map(({ key, name }) => {
-          const src = buildSrc(key)
-
-          return (
-            <div key={key}>
-              <h3>{name}</h3>
-              <audio src={src} controls />
-            </div>
-          )
-        })}
+        {audioFiles.length && <Audio audio={audioFiles} autoPlay={false} />}
       </AudioFilesWrapper>
 
       <h3 style={{ marginTop: 0 }}>Add audio</h3>
+
+      {error && (
+        <div
+          css={css`
+            color: red;
+            font-size: 15px;
+            margin-bottom: 1rem;
+          `}
+        >
+          {error}
+        </div>
+      )}
 
       <ReactS3Uploader
         signingUrl={s3UrlSigningUrl}
@@ -106,8 +121,12 @@ const TransactionAudio: React.FC<TransactionAudioProps> = ({ transactionId }) =>
         signingUrlMethod="GET"
         accept={ACCEPT_AUDIO}
         onSignedUrl={(res) => {}}
-        onProgress={(value) => {}}
-        onError={(err) => {}}
+        onProgress={(value) => {
+          setIsLoading(true)
+        }}
+        onError={(err) => {
+          setError('There was an error')
+        }}
         onFinish={() => {
           handleFinish()
         }}

@@ -61,9 +61,10 @@ const EditListingServiceTypePanel = (props) => {
         className={css.form}
         initialValues={{ title, description, ...publicData }}
         saveActionMsg={submitButtonText}
-        onSubmit={({ title: newTitle }) => {
+        onSubmit={({ title: newTitle, description }) => {
           const updateValues = {
             title: newTitle.trim(),
+            description: description.trim(),
             publicData,
           }
 

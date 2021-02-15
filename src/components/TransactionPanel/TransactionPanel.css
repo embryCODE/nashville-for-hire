@@ -23,8 +23,6 @@
 }
 
 .txInfo {
-  margin-bottom: 210px;
-
   @media (--viewportLarge) {
     flex-basis: 538px;
     flex-grow: 0;
@@ -235,7 +233,7 @@
 
   @media (--viewportLarge) {
     display: block;
-    margin: 0 48px 33px 48px;
+    margin: 0 1rem 33px;
   }
 }
 

@@ -43,12 +43,13 @@ import SectionAvatar from './SectionAvatar'
 import SectionReviews from './SectionReviews'
 import SectionHostMaybe from './SectionHostMaybe'
 import css from './ListingPage.css'
-import { Listing } from '../../components/NFHCustom/pages/Listing'
 import { beginNegotiation } from '../../ducks/Negotiation.duck'
 import createCustomPricingParams from '../../util/createCustomPricingParams'
 import styled from 'styled-components'
 import { Services } from '../../components/NFHCustom/pages/Services'
 import { startCase } from 'lodash'
+import { About } from '../../components/NFHCustom'
+import { Audio } from '../../components/NFHCustom/organisms/Audio'
 
 const { UUID } = sdkTypes
 
@@ -69,19 +70,28 @@ const Links = styled.div`
 
 const Columns = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 2rem;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+
+  // Large
+  @media (min-width: 1000px) {
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+  }
 `
 
-const LeftColumn = styled.div``
+const LeftColumn = styled.div`
+  overflow: hidden;
 
-const MiddleColumn = styled.div`
-  padding-top: 2rem;
+  // Large
+  @media (min-width: 1000px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
 `
 
-const RightColumn = styled.div`
-  padding-top: 2rem;
-`
+const RightColumn = styled.div``
 
 export class ListingPageComponent extends Component {
   constructor(props) {
@@ -333,6 +343,7 @@ export class ListingPageComponent extends Component {
         siteTitle,
       },
     )
+    const audio = (currentListing.attributes && currentListing.attributes.publicData.audio) || []
 
     return (
       <Page
@@ -393,17 +404,18 @@ export class ListingPageComponent extends Component {
                   />
                 </Links>
 
+                <div style={{ marginBottom: '2rem' }}>
+                  <h1 style={{ margin: 0 }}>{startCase(title)}</h1>
+                  <div>by {currentAuthor.attributes.profile.displayName}</div>
+                </div>
+
                 <Columns>
                   <LeftColumn>
-                    <Listing
-                      listingAttributes={currentListing.attributes}
-                      sellerName={currentAuthor.attributes.profile.displayName}
-                    />
-                  </LeftColumn>
-
-                  <MiddleColumn>
+                    <div style={{ marginBottom: '1rem', overflow: 'hidden' }}>
+                      <Audio audio={audio} />
+                    </div>
                     <Services listingAttributes={currentListing.attributes} />
-                  </MiddleColumn>
+                  </LeftColumn>
 
                   <RightColumn>
                     <BookingPanel
@@ -413,6 +425,13 @@ export class ListingPageComponent extends Component {
                     />
                   </RightColumn>
                 </Columns>
+
+                <hr style={{ margin: '1rem 0' }} />
+
+                <About
+                  listingAttributes={currentListing.attributes}
+                  sellerName={currentAuthor.attributes.profile.displayName}
+                />
 
                 <div style={{ marginBottom: '2rem' }}>
                   <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />

@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import css from './IconSpinner.css'
 
 const IconSpinner = (props) => {
-  const { rootClassName, className } = props
+  const { rootClassName, className, style } = props
   const classes = classNames(rootClassName || css.root, className)
   return (
     <svg
@@ -13,6 +13,7 @@ const IconSpinner = (props) => {
       viewBox="0 0 30 30"
       preserveAspectRatio="xMidYMid"
       xmlns="http://www.w3.org/2000/svg"
+      style={style}
     >
       <circle cx="15" cy="15" r="12" fill="none" strokeLinecap="round">
         <animateTransform

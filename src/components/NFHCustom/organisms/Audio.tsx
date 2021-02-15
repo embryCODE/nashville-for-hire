@@ -12,7 +12,7 @@ const Card = styled.div`
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   width: 100%;
-  padding: 1rem 2rem;
+  padding: 1rem;
 `
 
 const UnstyledButton = styled.button`
@@ -27,6 +27,11 @@ const UnstyledButton = styled.button`
 
   display: block;
   margin: 4px 0;
+  text-align: left;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 100%;
 `
 
 const getFileName = (audio: AudioType) => {
@@ -35,13 +40,19 @@ const getFileName = (audio: AudioType) => {
 
 interface AudioProps {
   audio: AudioType[]
+  autoPlay?: boolean
 }
 
-const Audio: React.FC<AudioProps> = ({ audio }) => {
+const Audio: React.FC<AudioProps> = ({ audio, autoPlay = true }) => {
+  // Auto play on initial load will be set by the autoPlay prop
+  const [shouldPlay, setShouldPlay] = useState(autoPlay)
   const [selectedAudio, setSelectedAudio] = useState(audio[0])
 
   const handleClick = (audio: AudioType) => () => {
     setSelectedAudio(audio)
+
+    // After initial load, always auto play what has been selected
+    setShouldPlay(true)
   }
 
   return (
@@ -52,7 +63,7 @@ const Audio: React.FC<AudioProps> = ({ audio }) => {
           src={`${s3AudioBucket}/${selectedAudio.fileName}`}
           key={selectedAudio.fileName}
           style={{ width: '100%' }}
-          autoPlay
+          autoPlay={shouldPlay}
           controlsList="nodownload"
         />
 
@@ -64,7 +75,7 @@ const Audio: React.FC<AudioProps> = ({ audio }) => {
       {audio.map((audio) => (
         <UnstyledButton key={audio.fileName} onClick={handleClick(audio)}>
           <img src={play} alt="Play" height={32} style={{ marginRight: 4 }} />
-          {getFileName(audio)}
+          &nbsp;{getFileName(audio)}
         </UnstyledButton>
       ))}
     </Card>

@@ -62,7 +62,7 @@ const Booking: React.FC<BookingProps> = ({ sellerName, prices, onSubmit, isDisab
 
   return (
     <BookingWrapper>
-      <h2>Hire {sellerName}</h2>
+      <h2 style={{ marginTop: 0 }}>Hire {sellerName}</h2>
       <form onSubmit={handleSubmit}>
         {Object.entries(pricesAndQuantity).map(([key, price]) => {
           const currentPriceWithQuantity = pricesAndQuantity[key]

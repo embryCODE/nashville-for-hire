@@ -233,22 +233,13 @@
 }
 
 .sectionAvatar {
-  /* Position (over the listing image)*/
-  margin-left: 24px;
-  margin-top: -31px;
-
-  /* Rendering context to the same lavel as listing image */
-  position: relative;
-
   /* Flex would give too much width by default. */
   width: 60px;
-
-  @media (--viewportMedium) {
-    position: absolute;
-    top: -49px;
-    margin-left: 0;
-    margin-top: 0;
-  }
+  
+  position: absolute;
+  top: -49px;
+  margin-left: 0;
+  margin-top: 0;
 }
 
 .avatarMobile {
@@ -455,7 +446,6 @@
 }
 
 .sectionReviews {
-  padding: 0 24px;
   margin-bottom: 5px;
 
   @media (--viewportMedium) {
@@ -477,19 +467,6 @@
   }
   @media (--viewportLarge) {
     margin: 50px 0 26px 0;
-  }
-}
-
-.sectionHost {
-  position: relative;
-  padding: 0 24px;
-  margin-bottom: 5px;
-
-  @media (--viewportMedium) {
-    padding: 0;
-  }
-  @media (--viewportLarge) {
-    margin-bottom: 3px;
   }
 }
 

@@ -5,7 +5,7 @@ import { Form as FinalForm } from 'react-final-form'
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl'
 import classNames from 'classnames'
 import { propTypes } from '../../util/types'
-import { Form, Button } from '../../components'
+import { Form, Button, FieldTextInput } from '../../components'
 import CustomCategorySelectFieldMaybe from './CustomCategorySelectFieldMaybe'
 
 import css from './EditListingServiceTypeForm.css'
@@ -27,6 +27,7 @@ const EditListingServiceTypeFormComponent = (props) => (
         updated,
         updateInProgress,
         fetchErrors,
+        values,
       } = formRenderProps
 
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {}
@@ -52,7 +53,8 @@ const EditListingServiceTypeFormComponent = (props) => (
       const classes = classNames(css.root, className)
       const submitReady = (updated && pristine) || ready
       const submitInProgress = updateInProgress
-      const submitDisabled = invalid || disabled || submitInProgress
+      const submitDisabled =
+        invalid || disabled || submitInProgress || !values.title || !values.description
 
       return (
         <Form className={classes} onSubmit={handleSubmit}>
@@ -65,6 +67,13 @@ const EditListingServiceTypeFormComponent = (props) => (
             name="title"
             categories={categories}
             intl={intl}
+          />
+
+          <FieldTextInput
+            id="description"
+            name="description"
+            label="Description"
+            placeholder="Enter a description for this service"
           />
 
           <Button
@@ -98,12 +107,7 @@ EditListingServiceTypeFormComponent.propTypes = {
     showListingsError: propTypes.error,
     updateListingError: propTypes.error,
   }),
-  categories: arrayOf(
-    shape({
-      key: string.isRequired,
-      label: string.isRequired,
-    }),
-  ),
+  categories: arrayOf(shape({ key: string.isRequired, label: string.isRequired })),
 }
 
 export default compose(injectIntl)(EditListingServiceTypeFormComponent)

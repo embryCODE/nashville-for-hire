@@ -16,11 +16,11 @@ const Services: React.FC<ServicesProps> = ({ listingAttributes }) => {
 
   return (
     <section>
-      <h2>Services offered</h2>
+      <h2 style={{ marginTop: 0 }}>Services offered</h2>
 
       <div
         css={css`
-          margin: 27px 0;
+          margin: 27px 0 0;
         `}
       >
         <Prices prices={prices} />

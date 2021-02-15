@@ -38,7 +38,7 @@ const Prices: React.FC<PriceProps> = ({ prices }) => {
   return (
     <div>
       {Object.values(prices).map((price) => (
-        <PriceCard>
+        <PriceCard key={price.code}>
           <h2>{price.title}</h2>
           <p>{price.description}</p>
           <div>

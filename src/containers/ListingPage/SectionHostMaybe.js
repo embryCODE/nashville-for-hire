@@ -25,7 +25,7 @@ const SectionHostMaybe = (props) => {
   }
 
   return (
-    <div id="host" className={css.sectionHost}>
+    <div id="host">
       <UserCard user={listing.author} currentUser={currentUser} onContactUser={onContactUser} />
 
       <Modal

@@ -1,3 +1,4 @@
+export * from './About'
 export * from './Testimonials'
 export * from './InstrumentTiles'
 export * from './TestimonialVideo'
