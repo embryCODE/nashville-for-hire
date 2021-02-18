@@ -81,8 +81,8 @@ export const InstrumentTiles: React.FC = () => {
         const search = `pub_serviceType=${key}`
 
         return (
-          <div>
-            <Link key={key} to={{ pathname, search }}>
+          <div key={key}>
+            <Link to={{ pathname, search }}>
               <img key={src} alt={alt} src={src} />
             </Link>
           </div>
