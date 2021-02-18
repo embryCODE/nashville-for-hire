@@ -79,7 +79,9 @@ const Booking: React.FC<BookingProps> = ({ sellerName, prices, onSubmit, isDisab
 
         {isDisabled && <LoginHint>Must sign up or login to hire</LoginHint>}
 
-        <PrimaryButton disabled={isDisabled}>Hire!</PrimaryButton>
+        <PrimaryButton disabled={isDisabled} style={{ backgroundColor: '#cd8575' }}>
+          Hire!
+        </PrimaryButton>
       </form>
     </BookingWrapper>
   )

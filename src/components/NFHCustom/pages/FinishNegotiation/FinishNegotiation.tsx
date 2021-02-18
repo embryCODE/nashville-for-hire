@@ -6,6 +6,11 @@ import getTitle from '../../../../util/getTitle'
 
 const FinishNegotiationWrapper = styled.div`
   padding: 0 1rem 1rem;
+
+  p {
+    font-size: 16px;
+    line-height: 28px;
+  }
 `
 
 interface FinishNegotiationProps {
@@ -53,17 +58,22 @@ const FinishNegotiation: React.FC<FinishNegotiationProps> = ({
 
   return (
     <FinishNegotiationWrapper>
-      <h2>Negotiation</h2>
       {isCustomer ? (
         <>
+          <h2>Step 1</h2>
           <p>
-            Discuss prices with the seller. Once in agreement, the seller will set the prices and
-            you can continue to payment.
+            Send over any information you have about your project (deadline, what you need to hire,
+            reference tracks, etc.), then upload any files you want to share.
           </p>
+          <p>Our music pro will then confirm availability and send an invoice!</p>
         </>
       ) : (
         <>
-          <p>Communicate with the buyer then submit the agreed upon prices below</p>
+          <h2>Step 1: Confirm service and price </h2>
+          <p>
+            The client has been prompted to share all needed info and files with you. Once you are
+            ready to move forward, click “Send Invoice” to confirm the below price points.
+          </p>
 
           <form onSubmit={handleSubmit}>
             {newLineItems.map((li: any) => (
@@ -77,7 +87,12 @@ const FinishNegotiation: React.FC<FinishNegotiationProps> = ({
               </div>
             ))}
 
-            <PrimaryButton disabled={isDisabled}>Submit</PrimaryButton>
+            <PrimaryButton
+              disabled={isDisabled}
+              style={{ marginTop: '2rem', backgroundColor: '#5d576d' }}
+            >
+              Send Invoice
+            </PrimaryButton>
           </form>
         </>
       )}

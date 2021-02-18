@@ -74,6 +74,7 @@ const EditListingAboutThisServiceFormComponent = (props) => (
           {errorMessageCreateListingDraft}
           {errorMessageUpdateListing}
           {errorMessageShowListing}
+
           <FieldTextInput
             id="averageTurnaroundTime"
             name="averageTurnaroundTime"

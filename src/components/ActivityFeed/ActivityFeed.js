@@ -32,6 +32,7 @@ import { propTypes } from '../../util/types'
 import * as log from '../../util/log'
 
 import css from './ActivityFeed.css'
+import { startCase } from 'lodash'
 
 const Message = (props) => {
   const { message, intl } = props
@@ -155,7 +156,12 @@ const resolveTransitionMessage = (
         </InlineTextButton>
       ) : null
 
-      return (
+      return txRoleIsProvider(ownRole) ? (
+        <FormattedMessage
+          id="ActivityFeed.ownTransitionComplete"
+          values={{ reviewLink: reviewAsFirstLink }}
+        />
+      ) : (
         <FormattedMessage
           id="ActivityFeed.transitionComplete"
           values={{ reviewLink: reviewAsFirstLink }}
@@ -222,7 +228,7 @@ const Transition = (props) => {
   })
   const listingTitle = currentTransaction.listing.attributes.deleted
     ? deletedListing
-    : currentTransaction.listing.attributes.title
+    : startCase(currentTransaction.listing.attributes.title)
   const lastTransition = currentTransaction.attributes.lastTransition
 
   const ownRole = getUserTxRole(currentUser.id, currentTransaction)

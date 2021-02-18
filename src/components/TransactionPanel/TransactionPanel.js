@@ -462,19 +462,21 @@ export class TransactionPanelComponent extends Component {
               />
 
               {stateData.showBookingPanel ? (
-                <BookingPanel
-                  className={css.bookingPanel}
-                  titleClassName={css.bookingTitle}
-                  isOwnListing={false}
-                  listing={currentListing}
-                  title={listingTitle}
-                  subTitle={bookingSubTitle}
-                  authorDisplayName={authorDisplayName}
-                  onSubmit={onSubmitBookingRequest}
-                  onManageDisableScrolling={onManageDisableScrolling}
-                  timeSlots={timeSlots}
-                  fetchTimeSlotsError={fetchTimeSlotsError}
-                />
+                <div style={{ padding: '0 1rem' }}>
+                  <BookingPanel
+                    className={css.bookingPanel}
+                    titleClassName={css.bookingTitle}
+                    isOwnListing={false}
+                    listing={currentListing}
+                    title={listingTitle}
+                    subTitle={bookingSubTitle}
+                    authorDisplayName={authorDisplayName}
+                    onSubmit={onSubmitBookingRequest}
+                    onManageDisableScrolling={onManageDisableScrolling}
+                    timeSlots={timeSlots}
+                    fetchTimeSlotsError={fetchTimeSlotsError}
+                  />
+                </div>
               ) : null}
 
               {stateData.showNegotiationPanel ? (

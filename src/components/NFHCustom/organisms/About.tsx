@@ -1,6 +1,7 @@
 import React from 'react'
 import { ListingAttributes } from '../types'
 import styled, { css } from 'styled-components/macro'
+import { SeeMore } from '../molecules/SeeMore'
 
 const Card = styled.div`
   background: #fff;
@@ -61,20 +62,32 @@ const About: React.FC<AboutProps> = ({ listingAttributes, sellerName }) => {
         `}
       >
         <div>
-          <h3
-            css={css`
-              margin-top: 0;
-            `}
-          >
-            Turnaround time
-          </h3>
-          <p>{averageTurnaroundTime}</p>
+          {averageTurnaroundTime && (
+            <>
+              <h3
+                css={css`
+                  margin-top: 0;
+                `}
+              >
+                Turnaround time
+              </h3>
+              <p>{averageTurnaroundTime}</p>
+            </>
+          )}
 
-          <h3>Why is {sellerName} the right fit?</h3>
-          <p>{whyAreYouTheRightFit}</p>
+          {whyAreYouTheRightFit && (
+            <>
+              <h3>Why is {sellerName} the right fit?</h3>
+              <SeeMore>{whyAreYouTheRightFit}</SeeMore>
+            </>
+          )}
 
-          <h3>More details</h3>
-          <p>{explainMore}</p>
+          {explainMore && (
+            <>
+              <h3>More details</h3>
+              <SeeMore>{explainMore}</SeeMore>
+            </>
+          )}
         </div>
 
         <div

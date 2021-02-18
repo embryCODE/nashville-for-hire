@@ -495,7 +495,7 @@ export class CheckoutPageComponent extends Component {
     const currentAuthor = ensureUser(currentListing.author)
     const publicData = currentListing.attributes.publicData
 
-    const listingTitle = currentListing.attributes.title
+    const listingTitle = startCase(currentListing.attributes.title)
     const title = intl.formatMessage({ id: 'CheckoutPage.title' }, { listingTitle })
 
     const pageProps = { title, scrollingDisabled }

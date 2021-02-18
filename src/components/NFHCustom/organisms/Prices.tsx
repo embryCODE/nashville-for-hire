@@ -5,9 +5,9 @@ import styled from 'styled-components'
 const PriceCard = styled.div`
   background-color: #5d576d;
   color: white;
-  padding: 1rem;
+  padding: 12px;
   margin-bottom: 1rem;
-  border-radius: 4px;
+  border-radius: 8px;
 
   h2 {
     margin: 0;
@@ -16,14 +16,18 @@ const PriceCard = styled.div`
   }
 
   p {
-    margin-top: 0.5rem;
+    margin: 0.5rem 0;
   }
 
   div {
     font-size: 15px;
     font-weight: bold;
-    margin-bottom: 1rem;
   }
+`
+
+const PriceCardHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
 `
 
 const formatPrice = (pd: PriceData): string => {
@@ -37,15 +41,25 @@ interface PriceProps {
 const Prices: React.FC<PriceProps> = ({ prices }) => {
   return (
     <div>
-      {Object.values(prices).map((price) => (
-        <PriceCard key={price.code}>
-          <h2>{price.title}</h2>
-          <p>{price.description}</p>
-          <div>
-            {price.shouldContactForPrice ? 'Contact for Pricing' : formatPrice(price.price)}
-          </div>
-        </PriceCard>
-      ))}
+      {Object.values(prices)
+        // Sort custom services to bottom
+        .sort((a, b) => {
+          if (a.code.includes('custom')) return 1
+          if (b.code.includes('custom')) return -1
+          return 0
+        })
+        .map((price) => (
+          <PriceCard key={price.code}>
+            <PriceCardHeader>
+              <h2>{price.title}</h2>
+              <div style={{ flex: 0, whiteSpace: 'nowrap', marginLeft: '1rem' }}>
+                {price.shouldContactForPrice ? 'Contact for Pricing' : formatPrice(price.price)}
+              </div>
+            </PriceCardHeader>
+
+            <p>{price.description}</p>
+          </PriceCard>
+        ))}
     </div>
   )
 }

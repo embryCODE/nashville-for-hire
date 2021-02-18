@@ -45,9 +45,12 @@ const EditListingAboutThisServicePanel = (props) => {
         className={css.form}
         initialValues={publicData}
         saveActionMsg={submitButtonText}
-        onSubmit={(values) => {
+        onSubmit={({ averageTurnaroundTime, explainMore }) => {
           const updateValues = {
-            publicData: values,
+            publicData: {
+              averageTurnaroundTime,
+              explainMore,
+            },
           }
 
           onSubmit(updateValues)

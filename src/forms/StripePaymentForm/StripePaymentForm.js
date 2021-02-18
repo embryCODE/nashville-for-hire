@@ -166,8 +166,7 @@ const getPaymentMethod = (selectedPaymentMethod, hasDefaultPaymentMethod) => {
 
 const initialState = {
   error: null,
-  cardValueValid: false,
-  // The mode can be 'onetimePayment', 'defaultCard', or 'replaceCard'
+  cardValueValid: false, // The mode can be 'onetimePayment', 'defaultCard', or 'replaceCard'
   // Check SavedCardDetails component for more information
   paymentMethod: null,
 }
@@ -277,6 +276,7 @@ class StripePaymentForm extends Component {
       }
     })
   }
+
   handleSubmit(values) {
     const { onSubmit, inProgress, formId, hasHandledCardPayment, defaultPaymentMethod } = this.props
     const { initialMessage } = values
@@ -474,6 +474,7 @@ class StripePaymentForm extends Component {
             type="submit"
             inProgress={submitInProgress}
             disabled={submitDisabled}
+            style={{ backgroundColor: '#5d576d' }}
           >
             {billingDetailsNeeded ? (
               <FormattedMessage id="StripePaymentForm.submitPaymentInfo" />

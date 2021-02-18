@@ -175,11 +175,9 @@ const BookingInfoMaybe = (props) => {
   const { bookingClassName, tx } = props
   const isEnquiry = txIsEnquired(tx)
 
-  if (isEnquiry) {
-    return null
-  }
-
-  return (
+  return isEnquiry ? (
+    <div className={classNames(css.bookingInfoWrapper, bookingClassName)}>New message</div>
+  ) : (
     <div className={classNames(css.bookingInfoWrapper, bookingClassName)}>
       A booking has been requested
     </div>

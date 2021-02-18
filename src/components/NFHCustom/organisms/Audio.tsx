@@ -3,6 +3,7 @@ import { Audio as AudioType } from '../types'
 import { s3AudioBucket } from '../../../config'
 import styled from 'styled-components'
 import play from '../../../assets/images/play.svg'
+import UnstyledButton from '../atoms/UnstyledButton'
 
 const Card = styled.div`
   background: #fff;
@@ -13,25 +14,6 @@ const Card = styled.div`
 
   width: 100%;
   padding: 1rem;
-`
-
-const UnstyledButton = styled.button`
-  // Remove button styling
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
-
-  display: block;
-  margin: 4px 0;
-  text-align: left;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  max-width: 100%;
 `
 
 const getFileName = (audio: AudioType) => {

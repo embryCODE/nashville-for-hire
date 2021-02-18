@@ -6,14 +6,11 @@ import { FormattedMessage, intlShape, injectIntl } from '../../util/reactIntl'
 import classNames from 'classnames'
 import routeConfiguration from '../../routeConfiguration'
 import {
-  LINE_ITEM_NIGHT,
-  LINE_ITEM_DAY,
   LISTING_STATE_PENDING_APPROVAL,
   LISTING_STATE_CLOSED,
   LISTING_STATE_DRAFT,
   propTypes,
 } from '../../util/types'
-import { formatMoney } from '../../util/currency'
 import { ensureOwnListing } from '../../util/data'
 import {
   LISTING_PAGE_PENDING_APPROVAL_VARIANT,
@@ -38,29 +35,11 @@ import {
 import MenuIcon from './MenuIcon'
 import Overlay from './Overlay'
 import css from './ManageListingCard.css'
+import { startCase } from 'lodash'
 
 // Menu content needs the same padding
 const MENU_CONTENT_OFFSET = -12
 const MAX_LENGTH_FOR_WORDS_IN_TITLE = 7
-
-const priceData = (price, intl) => {
-  if (price && price.currency === config.currency) {
-    const formattedPrice = formatMoney(intl, price)
-    return { formattedPrice, priceTitle: formattedPrice }
-  } else if (price) {
-    return {
-      formattedPrice: intl.formatMessage(
-        { id: 'ManageListingCard.unsupportedPrice' },
-        { currency: price.currency },
-      ),
-      priceTitle: intl.formatMessage(
-        { id: 'ManageListingCard.unsupportedPriceTitle' },
-        { currency: price.currency },
-      ),
-    }
-  }
-  return {}
-}
 
 const createListingURL = (routes, listing) => {
   const id = listing.id.uuid
@@ -123,12 +102,11 @@ export const ManageListingCardComponent = (props) => {
     onOpenListing,
     onToggleMenu,
     renderSizes,
-    availabilityEnabled,
   } = props
   const classes = classNames(rootClassName || css.root, className)
   const currentListing = ensureOwnListing(listing)
   const id = currentListing.id.uuid
-  const { title = '', price, state } = currentListing.attributes
+  const { title = '', state } = currentListing.attributes
   const slug = createSlug(title)
   const isPendingApproval = state === LISTING_STATE_PENDING_APPROVAL
   const isClosed = state === LISTING_STATE_CLOSED
@@ -140,8 +118,6 @@ export const ManageListingCardComponent = (props) => {
     [css.menuItemDisabled]: !!actionsInProgressListingId,
   })
 
-  const { formattedPrice, priceTitle } = priceData(price, intl)
-
   const hasError = hasOpeningError || hasClosingError
   const thisListingInProgress = actionsInProgressListingId && actionsInProgressListingId.uuid === id
 
@@ -151,16 +127,6 @@ export const ManageListingCardComponent = (props) => {
   })
 
   const editListingLinkType = isDraft ? LISTING_PAGE_PARAM_TYPE_DRAFT : LISTING_PAGE_PARAM_TYPE_EDIT
-
-  const unitType = config.bookingUnitType
-  const isNightly = unitType === LINE_ITEM_NIGHT
-  const isDaily = unitType === LINE_ITEM_DAY
-
-  const unitTranslationKey = isNightly
-    ? 'ManageListingCard.perNight'
-    : isDaily
-    ? 'ManageListingCard.perDay'
-    : 'ManageListingCard.perUnit'
 
   return (
     <div className={classes}>
@@ -292,23 +258,6 @@ export const ManageListingCardComponent = (props) => {
       </div>
 
       <div className={css.info}>
-        <div className={css.price}>
-          {formattedPrice ? (
-            <React.Fragment>
-              <div className={css.priceValue} title={priceTitle}>
-                {formattedPrice}
-              </div>
-              <div className={css.perUnit}>
-                <FormattedMessage id={unitTranslationKey} />
-              </div>
-            </React.Fragment>
-          ) : (
-            <div className={css.noPrice}>
-              <FormattedMessage id="ManageListingCard.priceNotSet" />
-            </div>
-          )}
-        </div>
-
         <div className={css.mainInfo}>
           <div className={css.titleWrapper}>
             <InlineTextButton
@@ -319,7 +268,7 @@ export const ManageListingCardComponent = (props) => {
                 history.push(createListingURL(routeConfiguration(), listing))
               }}
             >
-              {formatTitle(title, MAX_LENGTH_FOR_WORDS_IN_TITLE)}
+              {formatTitle(startCase(title), MAX_LENGTH_FOR_WORDS_IN_TITLE)}
             </InlineTextButton>
           </div>
         </div>
@@ -332,20 +281,6 @@ export const ManageListingCardComponent = (props) => {
           >
             <FormattedMessage id="ManageListingCard.editListing" />
           </NamedLink>
-
-          {availabilityEnabled ? (
-            <React.Fragment>
-              <span className={css.manageLinksSeparator}>{' • '}</span>
-
-              <NamedLink
-                className={css.manageLink}
-                name="EditListingPage"
-                params={{ id, slug, type: editListingLinkType, tab: 'availability' }}
-              >
-                <FormattedMessage id="ManageListingCard.manageAvailability" />
-              </NamedLink>
-            </React.Fragment>
-          ) : null}
         </div>
       </div>
     </div>

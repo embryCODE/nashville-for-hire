@@ -72,6 +72,10 @@ export const BookingBreakdownComponent = (props) => {
    *
    */
 
+  const providerCommissionLineItem = transaction.attributes.lineItems.find(
+    (item) => item.code === LINE_ITEM_PROVIDER_COMMISSION && !item.reversal,
+  )
+
   return (
     <div className={classes}>
       <LineItemUnknownItemsMaybe transaction={transaction} intl={intl} publicData={publicData} />
@@ -101,7 +105,10 @@ export const BookingBreakdownComponent = (props) => {
         intl={intl}
       />
 
-      <LineItemTotalPrice transaction={transaction} isProvider={isProvider} intl={intl} />
+      {/* Only show total if we have calculated the commission */}
+      {providerCommissionLineItem && (
+        <LineItemTotalPrice transaction={transaction} isProvider={isProvider} intl={intl} />
+      )}
 
       {hasCommissionLineItem ? (
         <span className={css.feeInfo}>

@@ -122,7 +122,7 @@ export const beginNegotiation = (orderParams) => (dispatch, getState, sdk) => {
   dispatch(beginNegotiationRequest())
 
   const { transactionId, listingId, lineItems } = orderParams
-  const message = '[System Message] Negotiation started'
+  const message = '[Auto Message] Step 1: Order Initiated'
 
   // If we have an ID, we want to transition the transaction
   if (transactionId) {
@@ -182,7 +182,7 @@ export const setPrices = (orderParams) => (dispatch, getState, sdk) => {
   dispatch(setPricesRequest())
 
   const { transactionId, lineItems } = orderParams
-  const message = '[System Message] Prices set'
+  const message = '[Auto Message] Set up Payment'
 
   const bodyParams = {
     id: transactionId,
@@ -214,7 +214,7 @@ export const completeOrder = (orderParams) => (dispatch, getState, sdk) => {
   dispatch(completeOrderRequest())
 
   const { transactionId } = orderParams
-  const message = '[System Message] Order complete'
+  const message = '[Auto Message] Order Completed'
 
   const bodyParams = {
     id: transactionId,

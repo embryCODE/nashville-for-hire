@@ -29,9 +29,12 @@ const InstrumentTilesContainer = styled.div`
   justify-content: center;
   margin: 0 -16px 3rem;
 
+  div {
+    margin: 24px 16px;
+  }
+
   img {
     border-radius: 10px;
-    margin: 24px 16px;
     width: 200px;
     height: 200px;
   }
@@ -78,9 +81,11 @@ export const InstrumentTiles: React.FC = () => {
         const search = `pub_serviceType=${key}`
 
         return (
-          <Link key={key} to={{ pathname, search }}>
-            <img key={src} alt={alt} src={src} />
-          </Link>
+          <div>
+            <Link key={key} to={{ pathname, search }}>
+              <img key={src} alt={alt} src={src} />
+            </Link>
+          </div>
         )
       })}
     </InstrumentTilesContainer>

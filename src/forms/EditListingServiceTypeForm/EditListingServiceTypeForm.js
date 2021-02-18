@@ -5,7 +5,7 @@ import { Form as FinalForm } from 'react-final-form'
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl'
 import classNames from 'classnames'
 import { propTypes } from '../../util/types'
-import { Form, Button, FieldTextInput } from '../../components'
+import { Form, Button } from '../../components'
 import CustomCategorySelectFieldMaybe from './CustomCategorySelectFieldMaybe'
 
 import css from './EditListingServiceTypeForm.css'
@@ -67,13 +67,6 @@ const EditListingServiceTypeFormComponent = (props) => (
             name="title"
             categories={categories}
             intl={intl}
-          />
-
-          <FieldTextInput
-            id="description"
-            name="description"
-            label="Description"
-            placeholder="Enter a description for this service"
           />
 
           <Button

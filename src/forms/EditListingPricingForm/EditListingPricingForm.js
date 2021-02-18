@@ -17,8 +17,9 @@ const getStartingCustomOptionNumber = (initialValues) => {
     .map((option) => {
       return parseInt(option.code.split('custom').slice(1))
     })
+  const lastCustomCode = customCodes[customCodes.length - 1]
 
-  return customCodes[customCodes.length - 1] + 1
+  return lastCustomCode ? lastCustomCode + 1 : 0
 }
 
 export const EditListingPricingFormComponent = (props) => {
