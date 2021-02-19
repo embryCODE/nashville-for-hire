@@ -43,6 +43,7 @@ const LineItemCustomerCommissionMaybe = (props) => {
       <div className={css.lineItem}>
         <span className={css.itemLabel}>
           <FormattedMessage id="BookingBreakdown.commission" />
+          <sup>*</sup>
         </span>
         <span className={css.itemValue}>{formattedCommission}</span>
       </div>

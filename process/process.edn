@@ -40,7 +40,7 @@
    :actor :actor.role/customer,
    :actions
    [{:name :action/calculate-tx-provider-commission,
-     :config {:commission 0.05M}}
+     :config {:commission 0.079M}}
     {:name :action/stripe-create-payment-intent}],
    :from :state/set-prices
    :to :state/pending-payment}
