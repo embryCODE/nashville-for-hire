@@ -131,6 +131,12 @@ const EditListingPricingPanel = (props) => {
       <p style={{ fontSize: 14, color: 'red', marginTop: 0 }}>
         <em>Leave price empty if service is not offered.</em>
       </p>
+
+      <p style={{ fontSize: 14, marginTop: 0 }}>
+        Please note that Nashville For Hire charges a 5% commission + a third-party 2.9% Stripe
+        processing fee. These fees will be deducted from your sale before payout.
+      </p>
+
       {form}
     </div>
   )
