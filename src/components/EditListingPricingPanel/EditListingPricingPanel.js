@@ -82,12 +82,6 @@ const EditListingPricingPanel = (props) => {
         // eslint-disable-next-line
         for (let key in v) {
           if (v.hasOwnProperty(key)) {
-            // Filter out items with no price at all
-            if (!v[key].price && !v[key].shouldContactForPrice) {
-              delete v[key]
-              continue
-            }
-
             const thisItem = v[key]
             const priceAsMoney = v[key].price
 
@@ -99,6 +93,13 @@ const EditListingPricingPanel = (props) => {
                     currency: priceAsMoney.currency,
                   }
                 : null
+
+            if (!v[key].shouldContactForPrice) {
+              if (!v[key].price || v[key].price.amount <= 0) {
+                delete v[key]
+                continue
+              }
+            }
 
             v[key] = {
               ...thisItem,

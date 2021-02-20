@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { Price, PriceWithQuantity } from '../../types'
 import { PriceItemSelector } from './PriceItemSelector'
 import { PrimaryButton } from '../../../Button/Button'
+import { sortByPricesAndQuantityCode } from '../../../../util/sortFunctions'
 
 const BookingWrapper = styled.div`
   width: 100%;
@@ -14,14 +15,13 @@ const LoginHint = styled.p`
 `
 
 const createInitialPricesAndQuantity = (prices: Record<string, Price>) => {
-  return Object.entries(prices).reduce<Record<string, PriceWithQuantity>>(
-    (acc, [currKey, currPrice]) => {
+  return Object.entries(prices)
+    .sort(sortByPricesAndQuantityCode)
+    .reduce<Record<string, PriceWithQuantity>>((acc, [currKey, currPrice]) => {
       acc[currKey] = { ...currPrice, quantity: 0 }
 
       return acc
-    },
-    {},
-  )
+    }, {})
 }
 
 interface BookingProps {

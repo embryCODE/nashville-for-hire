@@ -1,6 +1,7 @@
 import React from 'react'
 import { Price as PriceType, PriceData } from '../types'
 import styled from 'styled-components'
+import { sortByPriceCode } from '../../../util/sortFunctions'
 
 const PriceCard = styled.div`
   background-color: #5d576d;
@@ -34,20 +35,17 @@ const formatPrice = (pd: PriceData): string => {
   return pd !== null ? `$${pd.amount / 100}` : ''
 }
 
+export type PricesType = Record<string, PriceType>
+
 interface PriceProps {
-  prices: Record<string, PriceType>
+  prices: PricesType
 }
 
 const Prices: React.FC<PriceProps> = ({ prices }) => {
   return (
     <div>
       {Object.values(prices)
-        // Sort custom services to bottom
-        .sort((a, b) => {
-          if (a.code.includes('custom')) return 1
-          if (b.code.includes('custom')) return -1
-          return 0
-        })
+        .sort(sortByPriceCode)
         .map((price) => (
           <PriceCard key={price.code}>
             <PriceCardHeader>

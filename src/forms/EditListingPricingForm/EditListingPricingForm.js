@@ -132,6 +132,7 @@ export const EditListingPricingFormComponent = (props) => {
                     <FieldCheckbox
                       id={`${title}-shouldContactForPrice`}
                       name={`${priceKey}.shouldContactForPrice`}
+                      // initialValue={false}
                       label="Contact for pricing"
                       format={Boolean}
                       parse={Boolean}
