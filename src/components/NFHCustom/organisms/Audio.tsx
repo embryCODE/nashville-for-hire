@@ -58,7 +58,7 @@ const Audio: React.FC<AudioProps> = ({ audio, autoPlay = true }) => {
       {audio.map((audio) => (
         <UnstyledButton key={audio.fileName} onClick={handleClick(audio)}>
           <img src={play} alt="Play" height={32} style={{ marginRight: 4 }} />
-          &nbsp;{getFileName(audio)}
+          &nbsp;{audio.name || getFileName(audio)}
         </UnstyledButton>
       ))}
     </Card>
