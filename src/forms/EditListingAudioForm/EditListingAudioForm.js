@@ -103,8 +103,8 @@ export class EditListingAudioFormComponent extends Component {
                         id="name"
                         type="text"
                         name={`audioObject-${index}.name`}
-                        label="Name"
-                        placeholder="Never Gonna Give You Up"
+                        label="Sample Name"
+                        placeholder="Bluesy Jams"
                         validate={required}
                       />
 
@@ -112,8 +112,8 @@ export class EditListingAudioFormComponent extends Component {
                         id="description"
                         type="textarea"
                         name={`audioObject-${index}.description`}
-                        label="Description"
-                        placeholder="This track never gets old"
+                        label="What was your involvement on this track?"
+                        placeholder="I played the guitar and sang harmonies"
                         validate={required}
                       />
                     </div>
