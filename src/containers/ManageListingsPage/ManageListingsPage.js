@@ -128,8 +128,11 @@ export class ManageListingsPageComponent extends Component {
             <UserNav selectedPageName="ManageListingsPage" />
           </LayoutWrapperTopbar>
           <LayoutWrapperMain>
-            {queryInProgress ? loadingResults : null}
-            {queryListingsError ? queryError : null}
+            <div style={{ padding: '1rem' }}>
+              {queryInProgress ? loadingResults : null}
+              {queryListingsError ? queryError : null}
+            </div>
+
             <div className={css.listingPanel}>
               {heading}
               <div className={css.listingCards}>

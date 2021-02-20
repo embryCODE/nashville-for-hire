@@ -53,14 +53,29 @@ export class EditListingAudioFormComponent extends Component {
     return (
       <FinalForm
         {...this.props}
+        initialValues={this.props.audio.reduce((acc, curr, i) => {
+          return { ...acc, [`audioObject-${i}`]: curr }
+        }, {})}
         render={(formRenderProps) => {
-          const { className, fetchErrors, saveActionMsg, handleSubmit, valid } = formRenderProps
+          const {
+            className,
+            fetchErrors,
+            saveActionMsg,
+            handleSubmit,
+            valid,
+            updated,
+            pristine,
+            ready,
+            updateInProgress,
+          } = formRenderProps
           const { updateListingError } = fetchErrors || {}
           const classes = classNames(css.root, className)
 
           const namespace = 'listing-id-' + this.state.listingId.uuid
           const tags = `daysUntilExpiration=0`
           const required = (value) => (value ? undefined : 'Required')
+          const submitReady = (updated && pristine) || ready
+          const inProgress = updateInProgress || this.state.isLoading
 
           return (
             <Form className={classes} onSubmit={handleSubmit}>
@@ -95,7 +110,7 @@ export class EditListingAudioFormComponent extends Component {
 
                       <FieldTextInput
                         id="description"
-                        type="text"
+                        type="textarea"
                         name={`audioObject-${index}.description`}
                         label="Description"
                         placeholder="This track never gets old"
@@ -145,8 +160,9 @@ export class EditListingAudioFormComponent extends Component {
               <Button
                 className={css.submitButton}
                 type="submit"
-                inProgress={this.state.isLoading}
+                inProgress={inProgress}
                 disabled={!valid}
+                ready={submitReady}
               >
                 {saveActionMsg}
               </Button>
@@ -170,7 +186,6 @@ EditListingAudioFormComponent.propTypes = {
   ready: bool.isRequired,
   updated: bool.isRequired,
   updateInProgress: bool.isRequired,
-  bypassDefaultSubmit: func.isRequired,
 }
 
 export default compose(injectIntl)(EditListingAudioFormComponent)

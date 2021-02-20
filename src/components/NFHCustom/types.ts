@@ -24,7 +24,8 @@ export interface PublicData {
 
 export interface Audio {
   fileName: string
-  title: string
+  name?: string
+  description?: string
 }
 
 export type PriceData = null | {

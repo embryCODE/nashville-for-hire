@@ -49,7 +49,8 @@ const Audio: React.FC<AudioProps> = ({ audio, autoPlay = true }) => {
           controlsList="nodownload"
         />
 
-        <div style={{ marginTop: '1rem', fontWeight: 'bold' }}>{getFileName(selectedAudio)}</div>
+        <h3>{selectedAudio.name || getFileName(selectedAudio)}</h3>
+        {selectedAudio.description && <p>{selectedAudio.description}</p>}
       </div>
 
       <hr style={{ margin: '1rem 0' }} />
