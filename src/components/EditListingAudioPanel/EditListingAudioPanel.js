@@ -62,14 +62,13 @@ class EditListingAudioPanel extends Component {
           disabled={disabled}
           ready={ready}
           fetchErrors={errors}
-          bypassDefaultSubmit={(audio) => {
+          onSubmit={(audio = {}) => {
             const updateValues = {
-              publicData: { audio },
+              publicData: { audio: Object.values(audio) },
             }
 
             onSubmit(updateValues)
           }}
-          onSubmit={() => {}}
           onChange={onChange}
           onUpdateImageOrder={onUpdateImageOrder}
           onRemoveImage={onRemoveImage}
