@@ -48,7 +48,7 @@ export const filters = [
     label: 'Service Type',
     type: 'SelectSingleFilter',
     group: 'primary',
-    queryParamNames: ['pub_serviceType'],
+    queryParamNames: ['keywords'],
     config: {
       // "key" is the option you see in Flex Console.
       // "label" is set here for the UI only.

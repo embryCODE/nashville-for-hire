@@ -92,7 +92,7 @@ const TransactionAudio: React.FC<TransactionAudioProps> = ({ transactionId }) =>
       <p style={{ fontSize: '14px', marginTop: 0 }}>Audio files will expire after 30 days</p>
 
       <AudioFilesWrapper>
-        {!!audioFiles.length && <Audio audio={audioFiles} />}
+        {!!audioFiles.length && <Audio audio={audioFiles} allowDownload={true} />}
       </AudioFilesWrapper>
 
       <h3 style={{ marginTop: 0 }}>Add audio</h3>

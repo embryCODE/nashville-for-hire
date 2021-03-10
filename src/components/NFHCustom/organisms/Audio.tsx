@@ -21,9 +21,10 @@ const getFileName = (audio: AudioType) => {
 
 interface AudioProps {
   audio: AudioType[]
+  allowDownload?: boolean
 }
 
-const Audio: React.FC<AudioProps> = ({ audio }) => {
+const Audio: React.FC<AudioProps> = ({ audio, allowDownload = false }) => {
   const [selectedAudio, setSelectedAudio] = useState(audio[0])
   const [isPlaying, setIsPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
@@ -91,7 +92,7 @@ const Audio: React.FC<AudioProps> = ({ audio }) => {
           controls
           src={`${s3AudioBucket}/${selectedAudio.fileName}`}
           style={{ width: '100%' }}
-          controlsList="nodownload"
+          controlsList={allowDownload ? '' : 'nodownload'}
         />
 
         <h3>{selectedAudio.name || getFileName(selectedAudio)}</h3>
