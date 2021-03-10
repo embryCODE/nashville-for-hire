@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Audio as AudioType } from '../types'
-import { s3AudioBucket } from '../../../config'
+import { cognitoIdentityPoolId, s3AudioBucket, s3AudioBucketName } from '../../../config'
 import styled from 'styled-components'
 import play from '../../../assets/images/play.svg'
 import pause from '../../../assets/images/pause.svg'
 import UnstyledButton from '../atoms/UnstyledButton'
+import AWS from 'aws-sdk'
+import Icon from '@mdi/react'
+import { mdiDownload } from '@mdi/js'
 
 const Card = styled.div`
   background: #fff;
@@ -14,6 +17,16 @@ const Card = styled.div`
   width: 100%;
   padding: 1rem;
 `
+
+AWS.config.region = 'us-east-2'
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  IdentityPoolId: cognitoIdentityPoolId,
+})
+
+const s3 = new AWS.S3({
+  apiVersion: '2006-03-01',
+  params: { Bucket: s3AudioBucketName },
+})
 
 const getFileName = (audio: AudioType) => {
   return audio.fileName.split('/')[1]
@@ -28,6 +41,7 @@ const Audio: React.FC<AudioProps> = ({ audio, allowDownload = false }) => {
   const [selectedAudio, setSelectedAudio] = useState(audio[0])
   const [isPlaying, setIsPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
+  const audioSrc = `${s3AudioBucket}/${selectedAudio.fileName}`
 
   useEffect(() => {
     if (audioRef.current) {
@@ -84,16 +98,35 @@ const Audio: React.FC<AudioProps> = ({ audio, allowDownload = false }) => {
     }
   }
 
+  const handleDownload = () => {
+    const s3 = new AWS.S3({ params: { Bucket: s3AudioBucketName } })
+    const getParams = { Bucket: s3AudioBucketName, Key: selectedAudio.fileName }
+    const fileNameDisplay = selectedAudio.fileName.split('/')[1]
+
+    s3.getObject(getParams, (err, data) => {
+      const blob = new Blob([data.Body as BlobPart], { type: data.ContentType })
+      const link = document.createElement('a')
+      link.href = window.URL.createObjectURL(blob)
+      link.download = fileNameDisplay
+      link.click()
+    })
+  }
+
   return (
     <Card>
       <div>
-        <audio
-          ref={audioRef}
-          controls
-          src={`${s3AudioBucket}/${selectedAudio.fileName}`}
-          style={{ width: '100%' }}
-          controlsList={allowDownload ? '' : 'nodownload'}
-        />
+        <div style={{ display: 'flex' }}>
+          <audio
+            ref={audioRef}
+            controls
+            src={audioSrc}
+            style={{ width: '100%' }}
+            controlsList="nodownload"
+          />
+          <UnstyledButton onClick={handleDownload} style={{ marginLeft: '4px' }}>
+            <Icon path={mdiDownload} size={1} color="#5d576d" />
+          </UnstyledButton>
+        </div>
 
         <h3>{selectedAudio.name || getFileName(selectedAudio)}</h3>
         {selectedAudio.description && <p>{selectedAudio.description}</p>}

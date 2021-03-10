@@ -6,6 +6,8 @@
   "dependencies": {
     "@formatjs/intl-relativetimeformat": "^4.2.1",
     "@mapbox/polyline": "^1.1.1",
+    "@mdi/js": "^5.9.55",
+    "@mdi/react": "^1.4.0",
     "@sentry/browser": "5.24.2",
     "@sentry/node": "5.24.2",
     "@types/react-animate-on-scroll": "^2.1.2",
