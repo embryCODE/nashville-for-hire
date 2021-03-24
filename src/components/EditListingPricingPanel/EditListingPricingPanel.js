@@ -1,14 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
-import { FormattedMessage } from '../../util/reactIntl'
+import { FormattedMessage } from 'react-intl'
 import { LISTING_STATE_DRAFT } from '../../util/types'
 import { ListingLink } from '../../components'
 import { EditListingPricingForm } from '../../forms'
 import { ensureOwnListing } from '../../util/data'
 import { types as sdkTypes } from '../../util/sdkLoader'
 import pricingOptions from '../../util/pricingOptions'
-
 import css from './EditListingPricingPanel.css'
 
 const { Money } = sdkTypes
@@ -35,31 +34,21 @@ const formatInitialValues = (prices, pricingOptionsForThisServiceType) => {
   return !prices ? generatePrices(pricingOptionsForThisServiceType) : formatPrices(prices)
 }
 
-const EditListingPricingPanel = (props) => {
-  const {
-    className,
-    rootClassName,
-    listing,
-    disabled,
-    ready,
-    onSubmit,
-    onChange,
-    submitButtonText,
-    panelUpdated,
-    updateInProgress,
-    errors,
-  } = props
-
+const EditListingPricingPanel = ({
+  className,
+  rootClassName,
+  listing,
+  disabled,
+  ready,
+  onSubmit,
+  onChange,
+  submitButtonText,
+  panelUpdated,
+  updateInProgress,
+  errors,
+}) => {
   const classes = classNames(rootClassName || css.root, className)
   const currentListing = ensureOwnListing(listing)
-
-  const {
-    title,
-    publicData: { prices },
-  } = currentListing.attributes
-  const pricingOptionsForThisServiceType = pricingOptions[title] || []
-  const initialValues = formatInitialValues(prices, pricingOptionsForThisServiceType)
-
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT
   const panelTitle = isPublished ? (
     <FormattedMessage
@@ -69,6 +58,13 @@ const EditListingPricingPanel = (props) => {
   ) : (
     <FormattedMessage id="EditListingPricingPanel.createListingTitle" />
   )
+  const {
+    title,
+    publicData: { prices },
+  } = currentListing.attributes
+  const pricingOptionsForThisServiceType = pricingOptions[title] || []
+
+  const [initialValues] = useState(formatInitialValues(prices, pricingOptionsForThisServiceType))
 
   const form = (
     <EditListingPricingForm

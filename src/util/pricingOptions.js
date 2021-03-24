@@ -382,6 +382,18 @@ export default {
       title: 'Trombone Section',
     },
   },
+  frenchHorn: {
+    option0: {
+      code: 'frenchHorn0',
+      description: 'Solo French Horn',
+      title: 'Solo French Horn',
+    },
+    option1: {
+      code: 'frenchHorn1',
+      description: 'French Horn section',
+      title: 'French Horn Section',
+    },
+  },
   saxophone: {
     option0: {
       code: 'saxophone0',

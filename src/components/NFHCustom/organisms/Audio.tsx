@@ -23,11 +23,6 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
   IdentityPoolId: cognitoIdentityPoolId,
 })
 
-const s3 = new AWS.S3({
-  apiVersion: '2006-03-01',
-  params: { Bucket: s3AudioBucketName },
-})
-
 const getFileName = (audio: AudioType) => {
   return audio.fileName.split('/')[1]
 }
@@ -37,7 +32,7 @@ interface AudioProps {
   allowDownload?: boolean
 }
 
-const Audio: React.FC<AudioProps> = ({ audio, allowDownload = false }) => {
+const Audio: React.FC<AudioProps> = ({ audio }) => {
   const [selectedAudio, setSelectedAudio] = useState(audio[0])
   const [isPlaying, setIsPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)

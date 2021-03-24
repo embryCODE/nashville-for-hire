@@ -104,6 +104,7 @@ const TopbarDesktop = (props) => {
             <FormattedMessage id="TopbarDesktop.yourListingsLink" />
           </NamedLink>
         </MenuItem>
+
         <MenuItem key="ProfileSettingsPage">
           <NamedLink
             className={classNames(css.profileSettingsLink, currentPageClass('ProfileSettingsPage'))}
@@ -113,6 +114,7 @@ const TopbarDesktop = (props) => {
             <FormattedMessage id="TopbarDesktop.profileSettingsLink" />
           </NamedLink>
         </MenuItem>
+
         <MenuItem key="AccountSettingsPage">
           <NamedLink
             className={classNames(css.yourListingsLink, currentPageClass('AccountSettingsPage'))}
@@ -122,6 +124,20 @@ const TopbarDesktop = (props) => {
             <FormattedMessage id="TopbarDesktop.accountSettingsLink" />
           </NamedLink>
         </MenuItem>
+
+        <MenuItem key="nfh-pro-link">
+          <div className={css.yourListingsLink}>
+            <span className={css.menuItemBorder} />
+            <a
+              href="https://learn.nashvilleforhire.com/login"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Nashville For Hire PRO
+            </a>
+          </div>
+        </MenuItem>
+
         <MenuItem key="logout">
           <InlineTextButton rootClassName={css.logoutButton} onClick={onLogout}>
             <span className={css.menuItemBorder} />

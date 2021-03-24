@@ -67,7 +67,7 @@ const images = [
   { alt: 'Programming', src: programming, key: 'programming' },
   { alt: 'Strings', src: strings, key: 'strings' },
   { alt: 'Utility', src: utility, key: 'utility' },
-  { alt: 'Brass', src: brass, key: 'brass' },
+  { alt: 'Brass', src: brass, key: 'frenchHorn,saxophone' },
   { alt: 'Mixing', src: mixing, key: 'mixing' },
   { alt: 'Mastering', src: mastering, key: 'mastering' },
   { alt: 'Produce your entire song', src: produce, key: 'produce' },
@@ -78,7 +78,7 @@ export const InstrumentTiles: React.FC = () => {
     <InstrumentTilesContainer>
       {images.map(({ alt, src, key }) => {
         const pathname = createResourceLocatorString('SearchPage', routeConfiguration(), {}, {})
-        const search = `pub_serviceType=${key}`
+        const search = `keywords=${key}`
 
         return (
           <div key={key}>

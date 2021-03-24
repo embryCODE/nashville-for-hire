@@ -41,6 +41,7 @@ const SearchResultsPanel = (props) => {
             setActiveListing={setActiveListing}
           />
         ))}
+
         {props.children}
       </div>
       {paginationLinks}
