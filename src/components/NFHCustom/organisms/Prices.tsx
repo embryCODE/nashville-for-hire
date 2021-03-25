@@ -2,6 +2,7 @@ import React from 'react'
 import { Price as PriceType, PriceData } from '../types'
 import styled from 'styled-components'
 import { sortByPriceCode } from '../../../util/sortFunctions'
+import clock from '../../../assets/images/clock.png'
 
 const PriceCard = styled.div`
   background-color: #5d576d;
@@ -31,6 +32,13 @@ const PriceCardHeader = styled.div`
   justify-content: space-between;
 `
 
+const TurnaroundTimeWrapper = styled.div`
+  img {
+    width: 20px;
+    margin-right: 0.5rem;
+  }
+`
+
 const formatPrice = (pd: PriceData): string => {
   return pd !== null ? `$${pd.amount / 100}` : ''
 }
@@ -56,6 +64,13 @@ const Prices: React.FC<PriceProps> = ({ prices }) => {
             </PriceCardHeader>
 
             <p>{price.description}</p>
+
+            {price.turnaroundTime && (
+              <TurnaroundTimeWrapper>
+                <img src={clock} alt="Clock" />
+                <span>{price.turnaroundTime}</span>
+              </TurnaroundTimeWrapper>
+            )}
           </PriceCard>
         ))}
     </div>

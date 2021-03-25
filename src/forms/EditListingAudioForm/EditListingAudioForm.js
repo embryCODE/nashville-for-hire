@@ -8,8 +8,14 @@ import { propTypes } from '../../util/types'
 import { Button, FieldTextInput, Form } from '../../components'
 import ReactS3Uploader from 'react-s3-uploader'
 import css from './EditListingAudioForm.css'
-import { s3AudioBucketName, s3UrlSigningServer, s3UrlSigningUrl } from '../../config'
+import {
+  cognitoIdentityPoolId,
+  s3AudioBucketName,
+  s3UrlSigningServer,
+  s3UrlSigningUrl,
+} from '../../config'
 import styled from 'styled-components/macro'
+import AWS from 'aws-sdk'
 
 const ACCEPT_AUDIO = 'audio/*'
 
@@ -30,32 +36,32 @@ const Card = styled.div`
   }
 `
 
+AWS.config.region = 'us-east-2'
+AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  IdentityPoolId: cognitoIdentityPoolId,
+})
+
+const removeDot = (string) => {
+  return string.replace('.', '_')
+}
+
 export class EditListingAudioFormComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentFileName: '',
-      listingId: props.listingId,
-      audio: props.audio,
       isLoading: false,
     }
     this.uploader = null
-    this.handleUpload = this.handleUpload.bind(this)
-  }
-
-  handleUpload(fileName) {
-    this.setState((prevState) => ({
-      audio: [...prevState.audio, { fileName }],
-    }))
+    this.formattedInitialValues = this.props.initialValues.reduce((acc, curr) => {
+      return { ...acc, [removeDot(curr.fileName)]: curr }
+    }, {})
   }
 
   render() {
     return (
       <FinalForm
         {...this.props}
-        initialValues={this.props.audio.reduce((acc, curr, i) => {
-          return { ...acc, [`audioObject-${i}`]: curr }
-        }, {})}
+        initialValues={this.formattedInitialValues}
         render={(formRenderProps) => {
           const {
             className,
@@ -67,15 +73,38 @@ export class EditListingAudioFormComponent extends Component {
             pristine,
             ready,
             updateInProgress,
+            values,
+            form,
           } = formRenderProps
           const { updateListingError } = fetchErrors || {}
           const classes = classNames(css.root, className)
-
-          const namespace = 'listing-id-' + this.state.listingId.uuid
+          const namespace = 'listing-id-' + this.props.listingId.uuid
           const tags = `daysUntilExpiration=0`
           const required = (value) => (value ? undefined : 'Required')
           const submitReady = (updated && pristine) || ready
           const inProgress = updateInProgress || this.state.isLoading
+
+          const handleUpload = (fileName) => {
+            const key = removeDot(fileName)
+            form.change(key, { fileName })
+            form.submit()
+          }
+
+          const handleDelete = (fileName) => {
+            const s3 = new AWS.S3({ params: { Bucket: s3AudioBucketName } })
+            const getParams = { Bucket: s3AudioBucketName, Key: fileName }
+
+            s3.deleteObject(getParams, (err) => {
+              if (err) {
+                console.error(err)
+                return
+              }
+
+              const key = removeDot(fileName)
+              form.change(key, undefined)
+              form.submit()
+            })
+          }
 
           return (
             <Form className={classes} onSubmit={handleSubmit}>
@@ -86,39 +115,39 @@ export class EditListingAudioFormComponent extends Component {
               ) : null}
 
               <div>
-                {this.state.audio.map(({ fileName }, index) => (
-                  <Card key={fileName + index}>
-                    <div>
-                      <h3>{fileName.split('/')[1]}</h3>
+                {Object.values(values).map((audioObject) => {
+                  const key = removeDot(audioObject.fileName)
 
-                      <FieldTextInput
-                        id="fileName"
-                        type="hidden"
-                        name={`audioObject-${index}.fileName`}
-                        initialValue={fileName}
-                        validate={required}
-                      />
+                  return (
+                    <Card key={key}>
+                      <div>
+                        <h3>{audioObject.fileName.split('/')[1]}</h3>
 
-                      <FieldTextInput
-                        id="name"
-                        type="text"
-                        name={`audioObject-${index}.name`}
-                        label="Sample Name"
-                        placeholder="Bluesy Jams"
-                        validate={required}
-                      />
+                        <FieldTextInput
+                          id={`${key}-name`}
+                          type="text"
+                          name={`${key}.name`}
+                          label="Sample Name"
+                          placeholder="Bluesy Jams"
+                          validate={required}
+                        />
 
-                      <FieldTextInput
-                        id="description"
-                        type="textarea"
-                        name={`audioObject-${index}.description`}
-                        label="What was your involvement on this track?"
-                        placeholder="I played the guitar and sang harmonies"
-                        validate={required}
-                      />
-                    </div>
-                  </Card>
-                ))}
+                        <FieldTextInput
+                          id={`${key}-description`}
+                          type="textarea"
+                          name={`${key}.description`}
+                          label="What was your involvement on this track?"
+                          placeholder="I played the guitar and sang harmonies"
+                          validate={required}
+                        />
+                      </div>
+
+                      <button css={{ marginTop: '1rem' }} onClick={() => handleDelete(key)}>
+                        Delete
+                      </button>
+                    </Card>
+                  )
+                })}
               </div>
 
               <h3>Add audio</h3>
@@ -132,7 +161,7 @@ export class EditListingAudioFormComponent extends Component {
                 signingUrlMethod="GET"
                 accept={ACCEPT_AUDIO}
                 onSignedUrl={(res) => {
-                  this.handleUpload(res.filename)
+                  handleUpload(res.filename)
                 }}
                 onProgress={() => {
                   this.setState({ isLoading: true })
@@ -178,7 +207,7 @@ EditListingAudioFormComponent.defaultProps = { fetchErrors: null, audio: [] }
 
 EditListingAudioFormComponent.propTypes = {
   fetchErrors: shape({ showListingsError: propTypes.error, updateListingError: propTypes.error }),
-  audio: array,
+  initialValues: array,
   intl: intlShape.isRequired,
   onSubmit: func.isRequired,
   saveActionMsg: string.isRequired,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { array, bool, func, object, string } from 'prop-types'
-import { FormattedMessage } from '../../util/reactIntl'
+import { FormattedMessage } from 'react-intl'
 import classNames from 'classnames'
 import { LISTING_STATE_DRAFT } from '../../util/types'
 import { EditListingAudioForm } from '../../forms'
@@ -57,7 +57,7 @@ class EditListingAudioPanel extends Component {
 
         <EditListingAudioForm
           listingId={currentListing.id}
-          audio={publicData.audio}
+          initialValues={publicData.audio}
           className={css.form}
           disabled={disabled}
           ready={ready}

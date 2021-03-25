@@ -59,6 +59,7 @@ import { FinishNegotiation } from '../NFHCustom/pages/FinishNegotiation'
 import { ProceedToPayment } from '../NFHCustom/pages/ProceedToPayment'
 import { CompleteOrder } from '../NFHCustom/molecules/CompleteOrder'
 import { TransactionAudio } from '../NFHCustom/organisms/TransactionAudio'
+import { TransactionFiles } from '../NFHCustom/organisms/TransactionFiles'
 
 // Helper function to get display names for different roles
 const displayNames = (currentUser, currentProvider, currentCustomer, intl) => {
@@ -513,7 +514,7 @@ export class TransactionPanelComponent extends Component {
                 <CompleteOrder isCustomer={isCustomer} onCompleteOrder={onCompleteOrder} />
               ) : null}
 
-              <div style={{ padding: '0 1rem 1rem' }}>
+              <div style={{ padding: '0 1rem' }}>
                 <hr
                   style={{
                     border: 'none',
@@ -523,6 +524,10 @@ export class TransactionPanelComponent extends Component {
                   }}
                 />
                 <TransactionAudio transactionId={transaction.id.uuid} />
+              </div>
+
+              <div style={{ padding: '0 1rem 1rem' }}>
+                <TransactionFiles transactionId={transaction.id.uuid} />
               </div>
             </div>
           </div>

@@ -28,6 +28,12 @@ export interface Audio {
   description?: string
 }
 
+export interface File {
+  fileName: string
+  name?: string
+  description?: string
+}
+
 export type PriceData = null | {
   amount: number
   currency: string
@@ -39,6 +45,7 @@ export interface Price {
   description: string
   price: PriceData
   shouldContactForPrice: boolean
+  turnaroundTime?: string
 }
 
 export interface PriceWithQuantity extends Price {
