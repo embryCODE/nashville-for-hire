@@ -25,6 +25,7 @@ class EditListingAudioPanel extends Component {
       onChange,
       onRemoveImage,
       onSubmit,
+      onSaveAudio,
     } = this.props
 
     const rootClass = rootClassName || css.root
@@ -57,11 +58,18 @@ class EditListingAudioPanel extends Component {
 
         <EditListingAudioForm
           listingId={currentListing.id}
-          initialValues={publicData.audio}
+          initialValues={publicData.audio || []}
           className={css.form}
           disabled={disabled}
           ready={ready}
           fetchErrors={errors}
+          onSaveAudio={(audio = {}) => {
+            const updateValues = {
+              publicData: { audio: Object.values(audio) },
+            }
+
+            onSaveAudio(updateValues)
+          }}
           onSubmit={(audio = {}) => {
             const updateValues = {
               publicData: { audio: Object.values(audio) },
@@ -101,6 +109,8 @@ EditListingAudioPanel.propTypes = {
   listing: object,
 
   onChange: func.isRequired,
+  onSubmit: func.isRequired,
+  onSaveAudio: func.isRequired,
   submitButtonText: string.isRequired,
   panelUpdated: bool.isRequired,
   updateInProgress: bool.isRequired,

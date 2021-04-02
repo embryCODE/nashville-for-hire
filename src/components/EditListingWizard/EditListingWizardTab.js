@@ -117,7 +117,7 @@ const EditListingWizardTab = (props) => {
     return images ? images.map((img) => img.imageId || img.id) : null
   }
 
-  const onCompleteEditListingWizardTab = (tab, updateValues) => {
+  const onCompleteEditListingWizardTab = (tab, updateValues, shouldDisableRedirect) => {
     // Normalize images for API call
     const { images: updatedImages, ...otherValues } = updateValues
     const imageProperty =
@@ -131,10 +131,15 @@ const EditListingWizardTab = (props) => {
 
       const upsertValues = isNewURI
         ? updateValuesWithImages
-        : { ...updateValuesWithImages, id: currentListing.id }
+        : {
+            ...updateValuesWithImages,
+            id: currentListing.id,
+          }
 
       onUpsertListingDraft(tab, upsertValues)
         .then((r) => {
+          if (shouldDisableRedirect) return
+
           if (tab !== marketplaceTabs[marketplaceTabs.length - 1]) {
             // Create listing flow: smooth scrolling polyfill to scroll to correct tab
             handleCreateFlowTabScrolling(false)
@@ -160,8 +165,7 @@ const EditListingWizardTab = (props) => {
       listing,
       onChange,
       panelUpdated: updatedTab === tab,
-      updateInProgress,
-      // newListingPublished and fetchInProgress are flags for the last wizard tab
+      updateInProgress, // newListingPublished and fetchInProgress are flags for the last wizard tab
       ready: newListingPublished,
       disabled: fetchInProgress,
     }
@@ -309,6 +313,10 @@ const EditListingWizardTab = (props) => {
         <EditListingAudioPanel
           {...panelProps(AUDIO)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          onSaveAudio={(value) => {
+            // Disable redirect. Hacky.
+            onCompleteEditListingWizardTab(tab, value, true)
+          }}
           onSubmit={(value) => {
             onCompleteEditListingWizardTab(tab, value)
           }}

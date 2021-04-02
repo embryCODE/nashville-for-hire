@@ -49,14 +49,11 @@ const Audio: React.FC<AudioProps> = ({ audio }) => {
     if (!audioRef.current) return
 
     if (audioRef.current.readyState === 4) {
-      console.log('was ready')
       await audioRef.current.play()
       setIsPlaying(true)
     } else {
-      console.log('was not ready')
       audioRef.current.oncanplay = async () => {
         if (!audioRef.current) return
-        console.log('can play now')
 
         await audioRef.current.play()
         setIsPlaying(true)

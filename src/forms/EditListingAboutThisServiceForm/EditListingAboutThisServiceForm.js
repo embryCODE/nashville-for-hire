@@ -5,7 +5,6 @@ import { Form as FinalForm } from 'react-final-form'
 import { intlShape, injectIntl, FormattedMessage } from '../../util/reactIntl'
 import classNames from 'classnames'
 import { propTypes } from '../../util/types'
-import { required, composeValidators } from '../../util/validators'
 import { Form, Button, FieldTextInput } from '../../components'
 
 import css from './EditListingAboutThisServiceForm.css'
@@ -28,20 +27,11 @@ const EditListingAboutThisServiceFormComponent = (props) => (
         fetchErrors,
       } = formRenderProps
 
-      const questionATitle = intl.formatMessage({
-        id: 'EditListingAboutThisServiceForm.questionATitle',
-      })
-      const questionATitlePlaceholderMessage = intl.formatMessage({
-        id: 'EditListingAboutThisServiceForm.questionATitlePlaceholder',
-      })
       const questionBTitle = intl.formatMessage({
         id: 'EditListingAboutThisServiceForm.questionBTitle',
       })
       const questionBTitlePlaceholderMessage = intl.formatMessage({
         id: 'EditListingAboutThisServiceForm.questionBTitlePlaceholder',
-      })
-      const titleRequiredMessage = intl.formatMessage({
-        id: 'EditListingAboutThisServiceForm.titleRequired',
       })
 
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {}
@@ -74,17 +64,6 @@ const EditListingAboutThisServiceFormComponent = (props) => (
           {errorMessageCreateListingDraft}
           {errorMessageUpdateListing}
           {errorMessageShowListing}
-
-          <FieldTextInput
-            id="averageTurnaroundTime"
-            name="averageTurnaroundTime"
-            className={css.title}
-            type="textarea"
-            label={questionATitle}
-            placeholder={questionATitlePlaceholderMessage}
-            validate={composeValidators(required(titleRequiredMessage))}
-            autoFocus
-          />
 
           <FieldTextInput
             id="explainMore"

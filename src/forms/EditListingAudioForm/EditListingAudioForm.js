@@ -69,25 +69,23 @@ export class EditListingAudioFormComponent extends Component {
             saveActionMsg,
             handleSubmit,
             valid,
-            updated,
-            pristine,
-            ready,
             updateInProgress,
             values,
             form,
+            onSaveAudio,
           } = formRenderProps
           const { updateListingError } = fetchErrors || {}
           const classes = classNames(css.root, className)
           const namespace = 'listing-id-' + this.props.listingId.uuid
           const tags = `daysUntilExpiration=0`
           const required = (value) => (value ? undefined : 'Required')
-          const submitReady = (updated && pristine) || ready
           const inProgress = updateInProgress || this.state.isLoading
+          const isValid = Object.values(values).length && valid
 
           const handleUpload = (fileName) => {
             const key = removeDot(fileName)
             form.change(key, { fileName })
-            form.submit()
+            onSaveAudio(form.getState().values)
           }
 
           const handleDelete = (fileName) => {
@@ -102,7 +100,7 @@ export class EditListingAudioFormComponent extends Component {
 
               const key = removeDot(fileName)
               form.change(key, undefined)
-              form.submit()
+              onSaveAudio(form.getState().values)
             })
           }
 
@@ -142,7 +140,11 @@ export class EditListingAudioFormComponent extends Component {
                         />
                       </div>
 
-                      <button css={{ marginTop: '1rem' }} onClick={() => handleDelete(key)}>
+                      <button
+                        type="button"
+                        css={{ marginTop: '1rem' }}
+                        onClick={() => handleDelete(key)}
+                      >
                         Delete
                       </button>
                     </Card>
@@ -191,7 +193,6 @@ export class EditListingAudioFormComponent extends Component {
                 type="submit"
                 inProgress={inProgress}
                 disabled={!valid}
-                ready={submitReady}
               >
                 {saveActionMsg}
               </Button>
@@ -210,6 +211,7 @@ EditListingAudioFormComponent.propTypes = {
   initialValues: array,
   intl: intlShape.isRequired,
   onSubmit: func.isRequired,
+  onSaveAudio: func.isRequired,
   saveActionMsg: string.isRequired,
   disabled: bool.isRequired,
   ready: bool.isRequired,

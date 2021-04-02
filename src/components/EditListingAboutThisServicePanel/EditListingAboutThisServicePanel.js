@@ -1,7 +1,7 @@
 import React from 'react'
 import { bool, func, object, string } from 'prop-types'
 import classNames from 'classnames'
-import { FormattedMessage } from '../../util/reactIntl'
+import { FormattedMessage } from 'react-intl'
 import { ensureOwnListing } from '../../util/data'
 import { LISTING_STATE_DRAFT } from '../../util/types'
 import { ListingLink } from '../../components'
@@ -45,10 +45,9 @@ const EditListingAboutThisServicePanel = (props) => {
         className={css.form}
         initialValues={publicData}
         saveActionMsg={submitButtonText}
-        onSubmit={({ averageTurnaroundTime, explainMore }) => {
+        onSubmit={({ explainMore }) => {
           const updateValues = {
             publicData: {
-              averageTurnaroundTime,
               explainMore,
             },
           }

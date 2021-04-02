@@ -31,7 +31,6 @@ interface AboutProps {
 const About: React.FC<AboutProps> = ({ listingAttributes, sellerName }) => {
   const {
     primaryGenres,
-    averageTurnaroundTime,
     whyAreYouTheRightFit,
     experience,
     explainMore,
@@ -62,22 +61,15 @@ const About: React.FC<AboutProps> = ({ listingAttributes, sellerName }) => {
         `}
       >
         <div>
-          {averageTurnaroundTime && (
+          {whyAreYouTheRightFit && (
             <>
               <h3
                 css={css`
                   margin-top: 0;
                 `}
               >
-                Turnaround time
+                Why is {sellerName} the right fit?
               </h3>
-              <p>{averageTurnaroundTime}</p>
-            </>
-          )}
-
-          {whyAreYouTheRightFit && (
-            <>
-              <h3>Why is {sellerName} the right fit?</h3>
               <SeeMore>{whyAreYouTheRightFit}</SeeMore>
             </>
           )}

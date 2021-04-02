@@ -88,8 +88,7 @@ const tabCompleted = (tab, listing) => {
       const { whyAreYouTheRightFit, primaryGenres, experience } = publicData
       return !!whyAreYouTheRightFit && !!primaryGenres && !!experience
     case ABOUTTHISSERVICE:
-      const { averageTurnaroundTime } = publicData
-      return !!averageTurnaroundTime
+      return true
     case PHOTOS:
       return images && images.length > 0
     case AUDIO:
