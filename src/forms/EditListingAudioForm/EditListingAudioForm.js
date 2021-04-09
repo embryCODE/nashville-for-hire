@@ -80,7 +80,6 @@ export class EditListingAudioFormComponent extends Component {
           const tags = `daysUntilExpiration=0`
           const required = (value) => (value ? undefined : 'Required')
           const inProgress = updateInProgress || this.state.isLoading
-          const isValid = Object.values(values).length && valid
 
           const handleUpload = (fileName) => {
             const key = removeDot(fileName)

@@ -25,6 +25,12 @@ export default {
       description: 'Commercial release',
       title: 'Commercial Release',
     },
+    option5: {
+      code: 'femaleVocals5',
+      description:
+        'We book a time for me to sing on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
+    },
   },
   maleVocals: {
     option0: {
@@ -51,6 +57,12 @@ export default {
       code: 'maleVocals4',
       description: 'Commercial release',
       title: 'Commercial Release',
+    },
+    option5: {
+      code: 'maleVocals5',
+      description:
+        'We book a time for me to sing on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
     },
   },
   songwriting: {
@@ -113,6 +125,12 @@ export default {
       description: 'Acoustic guitar solo plus harmony line. Up to 40 seconds.',
       title: 'Acoustic Guitar Solo + Harmony',
     },
+    option3: {
+      code: 'acousticGuitar3',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
+    },
   },
   electricGuitar: {
     option0: {
@@ -129,6 +147,12 @@ export default {
       code: 'electricGuitar2',
       description: 'Electric guitar solo plus harmony line. Up to 40 seconds.',
       title: 'Electric Guitar Solo + Harmony',
+    },
+    option3: {
+      code: 'electricGuitar3',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
     },
   },
   bass: {
@@ -147,6 +171,12 @@ export default {
       description: 'Synth bass',
       title: 'Synth Bass',
     },
+    option3: {
+      code: 'bass3',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
+    },
   },
   drums: {
     option0: {
@@ -158,6 +188,12 @@ export default {
       code: 'drums1',
       description: 'Add percussion',
       title: 'Percussion',
+    },
+    option2: {
+      code: 'drums2',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
     },
   },
   piano: {
@@ -171,6 +207,12 @@ export default {
       description: '1 piano track on a song',
       title: '1 Piano Track',
     },
+    option2: {
+      code: 'piano2',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
+    },
   },
   keys: {
     option0: {
@@ -182,6 +224,12 @@ export default {
       code: 'keys1',
       description: '1 keys track',
       title: '1 Keys Track',
+    },
+    option2: {
+      code: 'keys2',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
     },
   },
   organ: {
@@ -217,6 +265,12 @@ export default {
       description: '1-2 synth tracks',
       title: '1-2 Synth Tracks',
     },
+    option4: {
+      code: 'synth4',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
+    },
   },
   beatProgramming: {
     option0: {
@@ -228,6 +282,12 @@ export default {
       code: 'beatProgramming1',
       description: 'Complex beat package',
       title: 'Complex Beat Package',
+    },
+    option2: {
+      code: 'beatProgramming2',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
     },
   },
   cello: {
@@ -246,6 +306,12 @@ export default {
       description: 'Cello quartet',
       title: 'Cello Quartet',
     },
+    option3: {
+      code: 'cello3',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
+    },
   },
   violin: {
     option0: {
@@ -262,6 +328,12 @@ export default {
       code: 'violin2',
       description: 'Violin quartet',
       title: 'Violin Quartet',
+    },
+    option3: {
+      code: 'violin3',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
     },
   },
   fiddle: {
@@ -284,6 +356,12 @@ export default {
       code: 'fiddle3',
       description: 'Viola quartet',
       title: 'Viola Quartet',
+    },
+    option4: {
+      code: 'fiddle4',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
     },
   },
   fullStringArrangement: {
@@ -314,6 +392,12 @@ export default {
       description: '1 pedal steel track on a song',
       title: '1 Pedal Steel Track',
     },
+    option2: {
+      code: 'pedalSteel2',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
+    },
   },
   banjo: {
     option0: {
@@ -325,6 +409,12 @@ export default {
       code: 'banjo1',
       description: '1 banjo track on a song',
       title: '1 Banjo Track',
+    },
+    option2: {
+      code: 'banjo2',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
     },
   },
   dobro: {
@@ -338,6 +428,12 @@ export default {
       description: '1 Dobro Track on a Song',
       title: '1 Dobro Track on a Song',
     },
+    option2: {
+      code: 'dobro2',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
+    },
   },
   lapSteel: {
     option0: {
@@ -350,12 +446,42 @@ export default {
       description: '1 lap steel track on a song',
       title: '1 Lap Steel Track',
     },
+    option2: {
+      code: 'lapSteel2',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
+    },
+  },
+  mandolin: {
+    option0: {
+      code: 'mandolin0',
+      description: 'Up to 3 mandolin tracks on a song',
+      title: 'Mandolin Package',
+    },
+    option1: {
+      code: 'mandolin1',
+      description: '1 Mandolin Track on a Song',
+      title: '1 Mandolin Track on a Song',
+    },
+    option2: {
+      code: 'mandolin2',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
+    },
   },
   harmonica: {
     option0: {
       code: 'harmonica0',
       description: 'Solo harmonica',
       title: 'Solo Harmonica',
+    },
+    option1: {
+      code: 'harmonica1',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
     },
   },
   trumpet: {
@@ -369,6 +495,12 @@ export default {
       description: 'Trumpet section',
       title: 'Trumpet Section',
     },
+    option2: {
+      code: 'trumpet2',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
+    },
   },
   trombone: {
     option0: {
@@ -380,6 +512,12 @@ export default {
       code: 'trombone1',
       description: 'Trombone section',
       title: 'Trombone Section',
+    },
+    option2: {
+      code: 'trombone2',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
     },
   },
   frenchHorn: {
@@ -393,6 +531,12 @@ export default {
       description: 'French Horn section',
       title: 'French Horn Section',
     },
+    option2: {
+      code: 'frenchHorn2',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
+    },
   },
   saxophone: {
     option0: {
@@ -404,6 +548,12 @@ export default {
       code: 'saxophone1',
       description: 'Sax section',
       title: 'Sax Section',
+    },
+    option2: {
+      code: 'saxophone2',
+      description:
+        'We book a time for me to play on your song with you (virtually) in the room using the latest high quality audio sharing right from my DAW.',
+      title: 'Virtual Session',
     },
   },
   hornSection: {

@@ -1,7 +1,7 @@
 import { denormalisedResponseEntities, ensureOwnListing } from '../util/data'
 import { storableError } from '../util/errors'
 import { transitionsToRequested } from '../util/transaction'
-import { LISTING_STATE_DRAFT } from '../util/types'
+import { LISTING_STATE_PUBLISHED } from '../util/types'
 import * as log from '../util/log'
 import { authInfo } from './Auth.duck'
 import { stripeAccountCreateSuccess } from './stripeConnectAccount.duck'
@@ -50,7 +50,13 @@ const mergeCurrentUser = (oldCurrentUser, newCurrentUser) => {
     ? null
     : oldCurrentUser === null
     ? newCurrentUser
-    : { id, type, attributes, ...oldRelationships, ...relationships }
+    : {
+        id,
+        type,
+        attributes,
+        ...oldRelationships,
+        ...relationships,
+      }
 }
 
 const initialState = {
@@ -68,6 +74,7 @@ const initialState = {
 
 export default function reducer(state = initialState, action = {}) {
   const { type, payload } = action
+
   switch (type) {
     case CURRENT_USER_SHOW_REQUEST:
       return { ...state, currentUserShowError: null }
@@ -239,21 +246,18 @@ export const fetchCurrentUserHasListings = () => (dispatch, getState, sdk) => {
     return Promise.resolve(null)
   }
 
-  const params = {
-    // Since we are only interested in if the user has
-    // listings, we only need at most one result.
-    page: 1,
-    per_page: 1,
-  }
-
   return sdk.ownListings
-    .query(params)
+    .query()
     .then((response) => {
       const hasListings = response.data.data && response.data.data.length > 0
 
       const hasPublishedListings =
         hasListings &&
-        ensureOwnListing(response.data.data[0]).attributes.state !== LISTING_STATE_DRAFT
+        response.data.data.some(
+          (listing) =>
+            ensureOwnListing(listing) && listing.attributes.state === LISTING_STATE_PUBLISHED,
+        )
+
       dispatch(fetchCurrentUserHasListingsSuccess(!!hasPublishedListings))
     })
     .catch((e) => dispatch(fetchCurrentUserHasListingsError(storableError(e))))
