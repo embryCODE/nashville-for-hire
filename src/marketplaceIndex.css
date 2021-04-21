@@ -4,7 +4,7 @@
 /* ================ Fonts ================ */
 
 body {
-  font-family: monospace;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased; /* http://szafranek.net/blog/2009/02/22/font-smoothing-explained/ */
   -moz-osx-font-smoothing: grayscale; /* http://szafranek.net/blog/2009/02/22/font-smoothing-explained/ */
   text-rendering: optimizeSpeed;
@@ -29,18 +29,23 @@ a {
 h1 {
   @apply --marketplaceH1FontStyles;
 }
+
 h2 {
   @apply --marketplaceH2FontStyles;
 }
+
 h3 {
   @apply --marketplaceH3FontStyles;
 }
+
 h4 {
   @apply --marketplaceH4FontStyles;
 }
+
 h5 {
   @apply --marketplaceH5FontStyles;
 }
+
 h6 {
   @apply --marketplaceH6FontStyles;
 }
@@ -117,9 +122,10 @@ textarea {
 
 :global(.fontsLoaded) {
   & body {
-    font-family: 'Anonymous Pro', monospace;
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
+
   & button {
-    font-family: 'Anonymous Pro', monospace;
+    font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   }
 }

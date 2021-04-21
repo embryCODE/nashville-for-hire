@@ -23,7 +23,7 @@
   --backgroundImage: {
     /* Gradient direction and overlaying the black color on top of the image for better readability */
     background: linear-gradient(-45deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)),
-      url('../../assets/images/background-1440.jpg');
+    url('../../assets/images/background-1440.jpg');
 
     /* Add loading color for the div */
     background-color: var(--matterColor);
@@ -47,7 +47,7 @@
   --marketplaceColorDark: #814321;
 
   /* Used with inline CSS SVGs */
-  --marketplaceColorEncoded: %23c0392b;
+  --marketplaceColorEncoded:% 23 c0392b;
 
   --successColor: #2ecc71;
   --successColorDark: #239954;
@@ -60,11 +60,11 @@
   --bannedColorDark: var(--marketplaceColor);
 
   --matterColorDark: #161e2a;
-  --matterColor: #5d576d;
+  --matterColor: #5D576D;
   --matterColorAnti: #b2b2b2;
   --matterColorNegative: #e7e7e7;
   --matterColorBright: #ffffff;
-  --matterColorLight: #f9f4ee;
+  --matterColorLight: #F9F4EE;
 
   --matterColorLightTransparent: rgba(255, 255, 255, 0.65);
 
@@ -166,6 +166,7 @@
     line-height: 24px;
     letter-spacing: -0.3px;
   }
+
   --marketplaceButtonStyles {
     @apply --marketplaceButtonFontStyles;
 
@@ -202,6 +203,7 @@
       text-decoration: none;
       box-shadow: var(--boxShadowButton);
     }
+
     &:disabled {
       background-color: var(--matterColorNegative);
       color: var(--matterColorLight);
@@ -213,6 +215,7 @@
       min-height: 65px;
     }
   }
+
   --marketplaceButtonStylesPrimary {
     @apply --marketplaceButtonStyles;
 
@@ -223,11 +226,13 @@
     &:focus {
       background-color: var(--successColorDark);
     }
+
     &:disabled {
       background-color: var(--matterColorNegative);
       color: var(--matterColorLight);
     }
   }
+
   --marketplaceButtonStylesSecondary {
     @apply --marketplaceButtonStyles;
 
@@ -247,6 +252,7 @@
       background-color: var(--matterColorLight);
       border-color: var(--matterColorAnti);
     }
+
     &:disabled {
       background-color: var(--matterColorNegative);
       color: var(--matterColorLight);
@@ -509,10 +515,12 @@
       box-shadow: none;
       text-decoration: none;
     }
+
     &:enabled:active {
       background-color: transparent;
       color: var(--matterColorDark);
     }
+
     &:disabled {
       background-color: transparent;
     }
