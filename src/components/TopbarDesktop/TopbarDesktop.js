@@ -17,22 +17,6 @@ import {
 import { TopbarSearchForm } from '../../forms'
 
 import css from './TopbarDesktop.css'
-import { css as cssFunction } from 'styled-components/macro'
-import styled from 'styled-components'
-
-const LinkButton = styled(NamedLink)`
-  padding: 0.5rem 1rem;
-  border: solid 2px;
-  font: inherit;
-  color: inherit;
-  background-color: transparent;
-  cursor: pointer;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: none;
-  }
-`
 
 const TopbarDesktop = (props) => {
   const {
@@ -178,19 +162,6 @@ const TopbarDesktop = (props) => {
 
       {/* Spacer */}
       <div style={{ flex: '1' }} />
-
-      <div
-        css={cssFunction`
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin: 0 1rem;
-          min-width: 300px;
-        `}
-      >
-        <LinkButton name="SearchPage">find your nashville pro</LinkButton>
-      </div>
 
       {inboxLink}
       {profileMenu}
