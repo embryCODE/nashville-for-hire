@@ -129,7 +129,7 @@ const TopbarDesktop = (props) => {
           <div className={css.yourListingsLink}>
             <span className={css.menuItemBorder} />
             <a
-              href="https://learn.nashvilleforhire.com/login"
+              href="https://www.nashvilleforhire.com/products/nashville-for-hire-pro"
               target="_blank"
               rel="noopener noreferrer"
             >
