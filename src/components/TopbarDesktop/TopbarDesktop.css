@@ -65,6 +65,7 @@
   @apply --TopbarDesktop_linkHover;
   height: 100%;
   flex-shrink: 0;
+  width: 140px;
 
   display: flex;
   align-items: center;

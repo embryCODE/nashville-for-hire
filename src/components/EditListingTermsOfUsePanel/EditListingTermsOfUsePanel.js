@@ -62,18 +62,18 @@ const EditListingTermsOfUsePanel = (props) => {
         All orders that are initiated through Nashville For Hire must be processed and paid for
         through Nashville For Hire. We hate the culture of distrust that can exist in online
         communities, so we proactively extend trust to you that as a seller you will abide by that
-        rule so we can have money to advertise and br /ing you more work and keep our business
-        going.
+        rule so we can have money to advertise and bring you more work and keep our business going.
         <br />
         <br />
-        Nashville for Hire is free to use but keeps 7% of each transaction made. In addition, there
+        Nashville for Hire is free to use but keeps 5% of each transaction made. In addition, there
         is a standard 2.9% fee that PayPal and Credit Card Processors charge for usage. Both these
         percentages come OUT of your set price of product and are NOT IN ADDITION TO your set price,
         so your set prices remain what each customer will pay.
         <br />
         <br />
-        If you “Agree” to these terms, you are claiming to live within 1 hour (driving) of
-        Nashville, Tennessee.
+        If you "Agree" to these terms, you are claiming to live within 1 hour (driving) of
+        Nashville, Tennessee OR you have already been cleared explicitly as an exception by
+        Nashville For Hire staff.
         <br />
         <br />
         Thank you for reading through these riveting terms of use and we are pumped to have you and

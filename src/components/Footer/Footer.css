@@ -29,10 +29,6 @@
 
   @media (--viewportLarge) {
     padding-top: 2rem;
-
-    border-top-style: solid;
-    border-top-width: 1px;
-    border-top-color: var(--matterColorNegative);
   }
 }
 

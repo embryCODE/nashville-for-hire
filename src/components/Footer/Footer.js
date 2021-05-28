@@ -65,9 +65,9 @@ const Footer = (props) => {
           <div className={css.someLiksMobile}>{socialMediaLinks}</div>
           <div className={css.links}>
             <div className={css.organization} id="organization">
-              <NamedLink name="LandingPage" className={css.logoLink}>
+              <a className={css.logoLink} href="https://nashvilleforhire.com">
                 <img width={80} src={nfhLogoWhite} alt="Nashville For Hire logo" />
-              </NamedLink>
+              </a>
               <div className={css.organizationInfo}>
                 <p className={css.organizationDescription}>
                   <FormattedMessage id="Footer.organizationDescription" />
