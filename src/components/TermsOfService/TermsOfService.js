@@ -10,50 +10,38 @@ const TermsOfService = (props) => {
 
   return (
     <div className={classes}>
-      <p className={css.lastUpdated}>Last updated: October 30, 2017</p>
+      <p className={css.lastUpdated}>Last updated: May 28, 2021</p>
 
       <p>
-        Lorem ipsum dolor sit amet. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-        cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        The Nashville For Hire Marketplace is a curated marketplace that connects you to amazingly
+        talented Nashville music professionals. We help you make that connection, BUT we do not own
+        ANY of the materials, songs, lyrics, melodies, rights, content, etc that gets transferred
+        through us or created through us.
       </p>
 
-      <h2>1 Lorem ipsum dolor sit amet</h2>
       <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-        voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-        cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        Any terms of ownership or royalties are to be discussed on a case by case basis{' '}
+        <strong>between you and your Nashville Seller</strong> (the Nashville music professional you
+        choose to hire).
       </p>
 
-      <h2>2 Sed ut perspiciatis unde</h2>
       <p>
-        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-        laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-        architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit
-        aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione
-        voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet,
-        consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et
-        dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum
-        exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi
-        consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil
-        molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+        In most situations we see on Nashville For Hire, the agreement is a “Work For Hire”. This
+        means that YOU keep all your rights and the guitarist, drummer, producer, vocalist, audio
+        engineer, etc gives you the rights to her/his performance on that song.
       </p>
 
-      <h2>3 At vero eos et accusamus</h2>
       <p>
-        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium
-        voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati
-        cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id
-        est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam
-        libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod
-        maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.
-        Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut
-        et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a
-        sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis
-        doloribus asperiores repellat
+        If you hire songwriting or topline, you will most likely have different price ranges
+        depending on whether the songwriter keeps a percentage of ownership or if she / he gives
+        over all rights (the <em>Work For Hire</em> agreement).
+      </p>
+
+      <p>
+        <strong>
+          If you want advice or guidance in this process, email us at{' '}
+          <a href="mailto:hello@nashvilleforhire.com">hello@nashvilleforhire.com</a>
+        </strong>
       </p>
     </div>
   )
