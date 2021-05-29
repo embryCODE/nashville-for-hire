@@ -83,6 +83,7 @@ const FinishNegotiation: React.FC<FinishNegotiationProps> = ({
                   id={li.code}
                   value={li.unitPrice.amount / 100 || ''}
                   onChange={handleChange(li.code)}
+                  placeholder="Add cost of service here..."
                 />
               </div>
             ))}

@@ -89,10 +89,10 @@ const canonicalRootURL = process.env.REACT_APP_CANONICAL_ROOT_URL
 const siteTitle = 'Nashville For Hire'
 
 // Twitter handle is needed in meta tags (twitter:site). Start it with '@' character
-const siteTwitterHandle = '@NashForHire'
+const siteTwitterHandle = null
 
 // Instagram page is used in SEO schema (http://schema.org/Organization)
-const siteInstagramPage = null
+const siteInstagramPage = 'https://www.instagram.com/nashvilleforhire/'
 
 // Facebook page is used in SEO schema (http://schema.org/Organization)
 const siteFacebookPage = 'https://www.facebook.com/nashvilleforhire/'

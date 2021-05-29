@@ -256,9 +256,6 @@ class TopbarComponent extends Component {
               initialValues={initialSearchFormValues}
               isMobile
             />
-            <p className={css.mobileHelp}>
-              <FormattedMessage id="Topbar.mobileSearchHelp" />
-            </p>
           </div>
         </Modal>
         <ModalMissingInformation

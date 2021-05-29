@@ -122,7 +122,8 @@ export const beginNegotiation = (orderParams) => (dispatch, getState, sdk) => {
   dispatch(beginNegotiationRequest())
 
   const { transactionId, listingId, lineItems } = orderParams
-  const message = '[Auto Message] Step 1: Order Initiated'
+  const message =
+    '[Auto Message] Step 1: Order Sequence Initiated (Check panel on the right for instructions on next steps)'
 
   // If we have an ID, we want to transition the transaction
   if (transactionId) {

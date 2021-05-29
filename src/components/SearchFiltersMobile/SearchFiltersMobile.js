@@ -108,9 +108,6 @@ class SearchFiltersMobileComponent extends Component {
             />
           </Button>
           {sortByComponent}
-          <div className={css.mapIcon} onClick={onMapIconClick}>
-            <FormattedMessage id="SearchFiltersMobile.openMapView" className={css.mapIconText} />
-          </div>
         </div>
         <ModalInMobile
           id="SearchFiltersMobile.filters"

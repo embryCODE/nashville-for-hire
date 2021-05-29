@@ -1,12 +1,27 @@
 import React from 'react'
 import { string, func, oneOfType } from 'prop-types'
-import { FormattedMessage } from '../../util/reactIntl'
+import { FormattedMessage } from 'react-intl'
 import classNames from 'classnames'
-import { NamedLink, InlineTextButton } from '../../components'
+import { NamedLink, PrimaryButton } from '../../components'
 import { ensureUser, ensureCurrentUser } from '../../util/data'
 import { propTypes } from '../../util/types'
-
+import styled from 'styled-components'
 import css from './UserCard.css'
+
+const ContactButton = styled(PrimaryButton)`
+  display: inline-block;
+  background-color: #cd8575;
+  width: auto;
+  height: 48px;
+  min-height: unset;
+  padding: 0 0.75rem;
+  margin-left: 1rem;
+
+  &:hover {
+    background-color: #cd8575;
+    opacity: 0.8;
+  }
+`
 
 const UserCard = (props) => {
   const { rootClassName, className, user, currentUser, onContactUser } = props
@@ -30,11 +45,7 @@ const UserCard = (props) => {
         View profile
       </NamedLink>
 
-      <span className={css.linkSeparator}>•</span>
-
-      <InlineTextButton rootClassName={css.contact} onClick={handleContactUserClick}>
-        Contact
-      </InlineTextButton>
+      <ContactButton onClick={handleContactUserClick}>Contact</ContactButton>
     </div>
   ) : null
 

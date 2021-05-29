@@ -32,7 +32,7 @@ interface AudioProps {
   allowDownload?: boolean
 }
 
-const Audio: React.FC<AudioProps> = ({ audio }) => {
+const Audio: React.FC<AudioProps> = ({ audio, allowDownload = false }) => {
   const [selectedAudio, setSelectedAudio] = useState(audio[0])
   const [isPlaying, setIsPlaying] = useState(false)
   const audioRef = useRef<HTMLAudioElement>(null)
@@ -115,9 +115,11 @@ const Audio: React.FC<AudioProps> = ({ audio }) => {
             style={{ width: '100%' }}
             controlsList="nodownload"
           />
-          <UnstyledButton onClick={handleDownload} style={{ marginLeft: '4px' }}>
-            <Icon path={mdiDownload} size={1} color="#5d576d" />
-          </UnstyledButton>
+          {allowDownload && (
+            <UnstyledButton onClick={handleDownload} style={{ marginLeft: '4px' }}>
+              <Icon path={mdiDownload} size={1} color="#5d576d" />
+            </UnstyledButton>
+          )}
         </div>
 
         <h3>{selectedAudio.name || getFileName(selectedAudio)}</h3>

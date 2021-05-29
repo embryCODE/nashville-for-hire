@@ -149,7 +149,7 @@
 .searchContainer {
   position: relative;
   height: 100%;
-  margin-top: 94px;
+  margin: 94px 1rem 0;
 }
 
 .mobileHelp {

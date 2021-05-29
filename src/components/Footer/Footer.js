@@ -70,7 +70,12 @@ const Footer = (props) => {
               </a>
               <div className={css.organizationInfo}>
                 <p className={css.organizationDescription}>
-                  <FormattedMessage id="Footer.organizationDescription" />
+                  We don't harvest your data or sell it. Period. We are in the music business, not
+                  the data business.
+                </p>
+                <p className={css.organizationDescription}>
+                  If you ever have any questions, reach out:{' '}
+                  <a href="mailto:hello@nashvilleforhire.com">hello@nashvilleforhire.com</a>
                 </p>
               </div>
             </div>
@@ -78,24 +83,17 @@ const Footer = (props) => {
             <div className={css.infoLinks}>
               <ul className={css.list}>
                 <li className={css.listItem}>
-                  <NamedLink name="LandingPage" className={css.link}>
-                    <FormattedMessage id="Footer.toAboutPage" />
-                  </NamedLink>
-                </li>
-                <li className={css.listItem}>
-                  <NamedLink name="LandingPage" className={css.link}>
-                    <FormattedMessage id="Footer.toFAQPage" />
-                  </NamedLink>
-                </li>
-                <li className={css.listItem}>
-                  <NamedLink name="LandingPage" className={css.link}>
+                  <a href="https://www.nashvilleforhire.com/help" className={css.link}>
                     <FormattedMessage id="Footer.toHelpPage" />
-                  </NamedLink>
+                  </a>
                 </li>
                 <li className={css.listItem}>
-                  <NamedLink name="LandingPage" className={css.link}>
+                  <a
+                    href="https://www.nashvilleforhire.com/assessments/2147504856"
+                    className={css.link}
+                  >
                     <FormattedMessage id="Footer.toContactPage" />
-                  </NamedLink>
+                  </a>
                 </li>
               </ul>
             </div>
