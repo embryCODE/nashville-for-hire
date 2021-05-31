@@ -69,7 +69,6 @@ class SearchFiltersMobileComponent extends Component {
       resultsCount,
       searchInProgress,
       showAsModalMaxWidth,
-      onMapIconClick,
       onManageDisableScrolling,
       selectedFiltersCount,
       intl,

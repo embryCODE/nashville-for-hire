@@ -8,7 +8,7 @@ import { propTypes } from '../../util/types'
 import styled from 'styled-components'
 import css from './UserCard.css'
 
-const ContactButton = styled(PrimaryButton)`
+const ContactButton = styled((props) => <PrimaryButton {...props} />)`
   display: inline-block;
   background-color: #cd8575;
   width: auto;

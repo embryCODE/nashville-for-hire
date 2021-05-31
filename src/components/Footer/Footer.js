@@ -70,12 +70,8 @@ const Footer = (props) => {
               </a>
               <div className={css.organizationInfo}>
                 <p className={css.organizationDescription}>
-                  We don't harvest your data or sell it. Period. We are in the music business, not
-                  the data business.
-                </p>
-                <p className={css.organizationDescription}>
-                  If you ever have any questions, reach out:{' '}
-                  <a href="mailto:hello@nashvilleforhire.com">hello@nashvilleforhire.com</a>
+                  We help music creatives all over the world create better music, stay in budget and
+                  do it all with less stress.
                 </p>
               </div>
             </div>
