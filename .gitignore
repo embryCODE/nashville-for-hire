@@ -20,3 +20,5 @@ yarn-error.log
 .idea
 cypress/screenshots
 cypress/videos
+
+scripts/updateDisplayName.js
