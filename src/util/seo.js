@@ -100,14 +100,6 @@ export const twitterMetaProps = (data) => {
   } = data
 
   if (!(title && description && siteTwitterHandle && url)) {
-    /* eslint-disable no-console */
-    if (console && console.warn) {
-      console.warn(
-        `Can't create twitter card meta tags:
-        title, description, siteTwitterHandle, and url are needed.`,
-      )
-    }
-    /* eslint-enable no-console */
     return []
   }
 
