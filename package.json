@@ -87,6 +87,7 @@
     "node-sass": "^4.0.0",
     "nodemon": "^1.17.2",
     "prettier": "^2.1.2",
+    "sharetribe-flex-integration-sdk": "^1.4.0",
     "start-server-and-test": "^1.11.4"
   },
   "resolutions": {
