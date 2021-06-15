@@ -42,7 +42,7 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 })
 
 const removeDot = (string) => {
-  return string.replace('.', '_')
+  return string.replaceAll('.', '_')
 }
 
 export class EditListingAudioFormComponent extends Component {
