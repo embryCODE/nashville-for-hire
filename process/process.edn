@@ -4,47 +4,38 @@
    :actor :actor.role/customer,
    :actions [],
    :to :state/enquiry}
-
   {:name :transition/price-negotiation,
    :actor :actor.role/customer,
    :actions [{:name :action/set-line-items-and-total}],
-   :to :state/price-negotiation,
-    }
-
+   :to :state/price-negotiation}
   {:name :transition/price-negotiation-after-enquiry,
    :actor :actor.role/customer,
    :actions [{:name :action/set-line-items-and-total}],
    :from :state/enquiry,
    :to :state/price-negotiation}
-
   {:name :transition/cancel-negotiation,
    :actor :actor.role/operator,
    :actions [],
    :from :state/price-negotiation,
    :to :state/cancelled}
-
   {:name :transition/set-prices,
    :actor :actor.role/provider,
    :actions [{:name :action/set-line-items-and-total}],
    :from :state/price-negotiation,
-   :to :state/set-prices,
-   }
-
+   :to :state/set-prices}
   {:name :transition/cancel-set-prices,
    :actor :actor.role/operator,
    :actions [],
    :from :state/set-prices,
    :to :state/cancelled}
-
   {:name :transition/request-payment,
    :actor :actor.role/customer,
    :actions
    [{:name :action/calculate-tx-provider-commission,
      :config {:commission 0.079M}}
     {:name :action/stripe-create-payment-intent}],
-   :from :state/set-prices
+   :from :state/set-prices,
    :to :state/pending-payment}
-
   {:name :transition/expire-payment,
    :at
    {:fn/plus
@@ -55,20 +46,16 @@
     {:name :action/stripe-refund-payment}],
    :from :state/pending-payment,
    :to :state/payment-expired}
-
   {:name :transition/confirm-payment,
    :actor :actor.role/customer,
    :actions [{:name :action/stripe-confirm-payment-intent}],
    :from :state/pending-payment,
    :to :state/preauthorized}
-
   {:name :transition/accept,
    :actor :actor.role/provider,
-   :actions
-   [{:name :action/stripe-capture-payment-intent}],
+   :actions [{:name :action/stripe-capture-payment-intent}],
    :from :state/preauthorized,
    :to :state/accepted}
-
   {:name :transition/decline,
    :actor :actor.role/provider,
    :actions
@@ -76,7 +63,6 @@
     {:name :action/stripe-refund-payment}],
    :from :state/preauthorized,
    :to :state/declined}
-
   {:name :transition/expire,
    :at
    {:fn/plus
@@ -87,19 +73,16 @@
     {:name :action/stripe-refund-payment}],
    :from :state/preauthorized,
    :to :state/declined}
-
   {:name :transition/cancel-preauthorized,
    :actor :actor.role/operator,
    :actions [],
    :from :state/preauthorized,
    :to :state/cancelled}
-
   {:name :transition/complete,
    :actor :actor.role/provider,
    :actions [{:name :action/stripe-create-payout}],
    :from :state/accepted,
    :to :state/delivered}
-
   {:name :transition/cancel,
    :actor :actor.role/operator,
    :actions
@@ -107,13 +90,11 @@
     {:name :action/stripe-refund-payment}],
    :from :state/accepted,
    :to :state/cancelled}
-
   {:name :transition/review-1-by-provider,
    :actor :actor.role/provider,
    :actions [{:name :action/post-review-by-provider}],
    :from :state/delivered,
    :to :state/reviewed-by-provider}
-
   {:name :transition/review-2-by-provider,
    :actor :actor.role/provider,
    :actions
@@ -121,13 +102,11 @@
     {:name :action/publish-reviews}],
    :from :state/reviewed-by-customer,
    :to :state/reviewed}
-
   {:name :transition/review-1-by-customer,
    :actor :actor.role/customer,
    :actions [{:name :action/post-review-by-customer}],
    :from :state/delivered,
    :to :state/reviewed-by-customer}
-
   {:name :transition/review-2-by-customer,
    :actor :actor.role/customer,
    :actions
@@ -135,7 +114,6 @@
     {:name :action/publish-reviews}],
    :from :state/reviewed-by-provider,
    :to :state/reviewed}
-
   {:name :transition/expire-review-period,
    :at
    {:fn/plus
@@ -143,7 +121,6 @@
    :actions [],
    :from :state/delivered,
    :to :state/reviewed}
-
   {:name :transition/expire-provider-review-period,
    :at
    {:fn/plus
@@ -151,7 +128,6 @@
    :actions [{:name :action/publish-reviews}],
    :from :state/reviewed-by-customer,
    :to :state/reviewed}
-
   {:name :transition/expire-customer-review-period,
    :at
    {:fn/plus
@@ -159,7 +135,6 @@
    :actions [{:name :action/publish-reviews}],
    :from :state/reviewed-by-provider,
    :to :state/reviewed}],
-
  :notifications
  [{:name :notification/new-booking-request,
    :on :transition/confirm-payment,

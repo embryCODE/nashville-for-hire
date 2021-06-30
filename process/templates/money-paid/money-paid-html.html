@@ -12,7 +12,7 @@
     {{#with transaction}}
     <h1>You have been paid {{> format-money money=payout-total}}</h1>
 
-    <p>We have sent you {{> format-money money=payout-total}} for the booking of {{listing.title}} from {{> format-date date=booking.start}} to {{> format-date date=booking.end}} by {{customer.display-name}}. It might take up to 7 days for the money to reach your bank account.</p>
+    <p>We have sent you {{> format-money money=payout-total}} for the booking of {{listing.title}} by {{customer.display-name}}. It might take up to 7 days for the money to reach your bank account.</p>
 
     <p>Here's the breakdown.</p>
 
